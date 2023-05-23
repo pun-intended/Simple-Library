@@ -35,6 +35,47 @@ function generateStoryMarkup(story) {
     `);
 }
 
+/*
+Add or remove a story from a user's favorites given the story ID
+*/
+async function toggleFavorite(id) {
+  const token = currentUser.loginToken;
+  const username = currentUser.username;
+  
+  let action = "POST"
+
+  // If story already exists in list, change method to delete
+  for (let item of currentUser.favorites){
+    if (item.storyId === id){
+      action = "DELETE"
+    }
+  }
+
+  let response = await axios({
+    url: `${BASE_URL}/users/${username}/favorites/${id}`,
+    method: action,
+    params: {
+      "token": token
+    }
+  })
+
+  // update favorites of user
+  currentUser.favorites = response.data.user.favorites
+}
+
+
+function submitStory() {
+  const story = {
+    "title": $("#submission-title").val(),
+    "author": $("#submission-author").val(),
+    "url": $("#submission-url").val()
+  }
+  storyList.addStory(currentUser, story);
+  
+}
+
+$submissionForm.on("submit", submitStory)
+
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 
 function putStoriesOnPage() {
