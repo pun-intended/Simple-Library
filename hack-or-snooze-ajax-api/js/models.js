@@ -77,17 +77,26 @@ class StoryList {
     // UNIMPLEMENTED: complete this function!
     // needs to post to api, return story object
     const result = await axios({
-      url: `${BASE_URL}/login`,
+      url: `${BASE_URL}/stories`,
       method: "POST",
       data: {  
-        user: user,
-        title: newStory.title,
-        author: newStory.author,
-        url: newStory.url,
+        "token": user.loginToken,
+        "story": {
+        "author": newStory.author,
+        "title": newStory.title,
+        "url": newStory.url,
+        }
       }
     })
-
-    const story = new Story(result);
+    let resultStory = new Story(
+      result.data.story.storyId,
+      result.data.story.title,
+      result.data.story.author,
+      result.data.story.username,
+      result.data.story.createdAt,
+      );
+      getStories()
+    return resultStory;
   }
 }
 
@@ -219,3 +228,27 @@ TODO
 
 - 5  - Restyle landing and login pages to match example
 */
+
+// Helper function to clear posts made while testing
+async function clearTests(){
+  let list = await axios.get("https://hack-or-snooze-v3.herokuapp.com/stories")
+  console.log(list)
+  let storyList = list.data.stories
+  for (let story of storyList){
+    console.log(story.author)
+    if (story.author == "Me"){
+      console.log("attempting deletion")
+      await deleteStory(story.storyId);
+    }
+  }
+}
+
+async function deleteStory(storyId) {
+  const response = await axios({
+    url: `${BASE_URL}/stories/${storyId}`,
+    method: "delete",
+    params: { "token": currentUser.loginToken },
+  });
+
+  console.log(response)
+}
