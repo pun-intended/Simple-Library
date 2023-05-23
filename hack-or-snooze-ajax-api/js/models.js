@@ -95,7 +95,6 @@ class StoryList {
       result.data.story.username,
       result.data.story.createdAt,
       );
-      getStories()
     return resultStory;
   }
 }
@@ -222,7 +221,12 @@ TODO
 - 2A - Send story Data, get story object (done) - Test .addStory()
 - 2B - New Story Form UI - in progress - index.html section-form #storyForm
 
+--clear submit form details on submission
+--navigate back to stories page
+
 - 3A - allow users to log 'favorite', keep when page refreshes (localStorage)
+
+-- Add UI component
 
 - 4  - Remove Story - remove from dom, post change to API
 
@@ -250,5 +254,4 @@ async function deleteStory(storyId) {
     params: { "token": currentUser.loginToken },
   });
 
-  console.log(response)
 }
