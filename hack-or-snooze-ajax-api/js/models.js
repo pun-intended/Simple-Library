@@ -218,34 +218,26 @@ class User {
 
 /*
 TODO
-- 2A - Send story Data, get story object (done) - Test .addStory()
-- 2B - New Story Form UI - in progress - index.html section-form #storyForm
-
 --clear submit form details on submission
 --navigate back to stories page
-
-- 3A - allow users to log 'favorite', keep when page refreshes (localStorage)
-
--- Add UI component
-
 - 4  - Remove Story - remove from dom, post change to API
 
 - 5  - Restyle landing and login pages to match example
 */
 
 // Helper function to clear posts made while testing
-async function clearTests(){
-  let list = await axios.get("https://hack-or-snooze-v3.herokuapp.com/stories")
-  console.log(list)
-  let storyList = list.data.stories
-  for (let story of storyList){
-    console.log(story.author)
-    if (story.author == "Me"){
-      console.log("attempting deletion")
-      await deleteStory(story.storyId);
-    }
-  }
-}
+// async function clearTests(){
+//   let list = await axios.get("https://hack-or-snooze-v3.herokuapp.com/stories")
+//   console.log(list)
+//   let storyList = list.data.stories
+//   for (let story of storyList){
+//     console.log(story.author)
+//     if (story.author == "Me"){
+//       console.log("attempting deletion")
+//       await deleteStory(story.storyId);
+//     }
+//   }
+// }
 
 async function deleteStory(storyId) {
   const response = await axios({
@@ -253,5 +245,5 @@ async function deleteStory(storyId) {
     method: "delete",
     params: { "token": currentUser.loginToken },
   });
-
+  console.log(response)
 }
