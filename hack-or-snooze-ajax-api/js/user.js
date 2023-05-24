@@ -96,6 +96,9 @@ function saveUserCredentialsInLocalStorage() {
   }
 }
 
+// TODO
+// - Create updateUser method to get new favorites and myStories
+
 /******************************************************************************
  * General UI stuff about users
  */
@@ -109,8 +112,42 @@ function saveUserCredentialsInLocalStorage() {
 
 function updateUIOnUserLogin() {
   console.debug("updateUIOnUserLogin");
-
   $allStoriesList.show();
-
   updateNavOnLogin();
 }
+
+/*
+Add or remove a story from a user's favorites given the story ID
+*/
+async function toggleFavorite(id) {
+  const token = currentUser.loginToken;
+  const username = currentUser.username;
+  let action = "POST"
+
+  // If story already exists in list, change method to delete
+  for (let item of currentUser.favorites){
+    if (item.storyId === id){
+      action = "DELETE"
+    }
+  }
+
+  let response = await axios({
+    url: `${BASE_URL}/users/${username}/favorites/${id}`,
+    method: action,
+    params: {
+      "token": token
+    }
+  })
+
+  // update favorites of user
+  // TODO
+  // - replace with updateUser method
+  currentUser.favorites = response.data.user.favorites
+}
+
+$(".stories-container").on("click", ".favorite", (evt) => {
+  let id = evt.target.parentElement.id;
+  toggleFavorite(id);
+  evt.target.classList.toggle("fa-regular")
+  evt.target.classList.toggle("fa-solid")
+});
