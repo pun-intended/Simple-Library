@@ -29,6 +29,10 @@ a:hover {
   text-decoration: underline;
 }
 
+i {
+  font-family: 'Courier New', Courier, monospace;
+}
+
 
 /* Site layout */
 
