@@ -22,8 +22,8 @@
 .story-link {
   color: black;
   font-size: 0.85rem;
-  font-weight: normal;
-  margin: 18px 0;
+  margin: 0 0 0 0.3em;
+  font-weight: 600;
 }
 
 .story-link:hover {
@@ -31,9 +31,14 @@
 }
 
 .story-author {
-  margin-left: 2em;
+  color: rgb(79, 141, 63);
+  font-weight: bold;
+  margin: 0 1em 0 2em;
 }
 
 .story-user {
+  color: rgb(243, 157, 71);
+  font-weight: bold;
   display: block;
+  margin: 0 1em 0 2em;
 }
