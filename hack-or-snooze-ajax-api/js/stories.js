@@ -47,23 +47,27 @@ function generateStoryMarkup(story) {
 }
 
 
-function submitStory() {
+async function submitStory() {
   const story = {
     "title": $("#submission-title").val(),
     "author": $("#submission-author").val(),
     "url": $("#submission-url").val()
   }
-  storyList.addStory(currentUser, story);
-  
+  await storyList.addStory(currentUser, story);
+  await updateUser();
 }
 
-$submissionForm.on("submit", submitStory)
+$submissionForm.on("submit", async () => {
+  await submitStory();
+  await updateUser();
+  putStoriesOnPage();
+  $submissionForm.hide();
+})
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 
 function putStoriesOnPage() {
   console.debug("putStoriesOnPage");
-
   $allStoriesList.empty();
 
   // loop through all of our stories and generate HTML for them
@@ -75,3 +79,28 @@ function putStoriesOnPage() {
   $allStoriesList.show();
 }
 
+function showOwnStories(){
+  $myStoriesList.empty();
+  let ownList = StoryList.getOwnStories()
+  
+  markupStoryList(ownList, $myStoriesList)
+  
+  $myStoriesList.show()
+}
+
+function showFaveStories() {
+  $faveStoriesList.empty();
+  let faveList = StoryList.getFaveStories()
+  
+  markupStoryList(faveList, $faveStoriesList)
+  
+  $faveStoriesList.show()
+}
+
+function markupStoryList(list, location){
+  for (let story of list.stories) {
+    const $story = generateStoryMarkup(story);
+    location.append($story);
+    console.debug($story);
+  }
+}

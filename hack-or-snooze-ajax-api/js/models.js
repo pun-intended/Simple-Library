@@ -66,6 +66,16 @@ class StoryList {
     return new StoryList(stories);
   }
 
+  static getOwnStories(){
+    const ownStories = currentUser.ownStories.map(story => new Story(story))
+    return new StoryList(ownStories);
+  }
+
+  static getFaveStories(){
+    const faveStories = currentUser.favorites.map(story => new Story(story))
+    return new StoryList(faveStories);
+  }
+
   /** Adds story data to API, makes a Story instance, adds it to story list.
    * - user - the current instance of User who will post the story
    * - obj of {title, author, url}
@@ -74,7 +84,6 @@ class StoryList {
    */
 
   async addStory(user, newStory) {
-    // UNIMPLEMENTED: complete this function!
     // needs to post to api, return story object
     const result = await axios({
       url: `${BASE_URL}/stories`,
@@ -88,13 +97,17 @@ class StoryList {
         }
       }
     })
-    let resultStory = new Story(
-      result.data.story.storyId,
-      result.data.story.title,
-      result.data.story.author,
-      result.data.story.username,
-      result.data.story.createdAt,
-      );
+    const storyData = {
+      storyId: result.data.story.storyId,
+      title: result.data.story.title,
+      author: result.data.story.author,
+      username: result.data.story.username,
+      createdAt: result.data.story.createdAt
+    }
+    console.debug(result.data)
+    let resultStory = new Story(storyData);
+    console.debug(resultStory)
+    this.stories.unshift(resultStory);
     return resultStory;
   }
 }
@@ -214,36 +227,4 @@ class User {
       return null;
     }
   }
-}
-
-/*
-TODO
---clear submit form details on submission
---navigate back to stories page
-- 4  - Remove Story - remove from dom, post change to API
-
-- 5  - Restyle landing and login pages to match example
-*/
-
-// Helper function to clear posts made while testing
-// async function clearTests(){
-//   let list = await axios.get("https://hack-or-snooze-v3.herokuapp.com/stories")
-//   console.log(list)
-//   let storyList = list.data.stories
-//   for (let story of storyList){
-//     console.log(story.author)
-//     if (story.author == "Me"){
-//       console.log("attempting deletion")
-//       await deleteStory(story.storyId);
-//     }
-//   }
-// }
-
-async function deleteStory(storyId) {
-  const response = await axios({
-    url: `${BASE_URL}/stories/${storyId}`,
-    method: "delete",
-    params: { "token": currentUser.loginToken },
-  });
-  console.log(response)
 }

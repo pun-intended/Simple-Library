@@ -46,3 +46,17 @@ function navSubmitClick(){
   $signupForm.hide();
 }
 $navSubmit.on("click", navSubmitClick)
+
+$navFaves.on("click", () => {
+  hidePageComponents();
+  $myStoriesList.hide();
+  $allStoriesList.hide();
+  showFaveStories();
+})
+
+$navMyStories.on("click", () => {
+  hidePageComponents();
+  $allStoriesList.hide();
+  $faveStoriesList.hide();
+  showOwnStories();
+})
