@@ -24,6 +24,7 @@ class Story {
   /** Parses hostname out of URL and returns it. */
 
   getHostName() {
+    //TODO
     // UNIMPLEMENTED: complete this function!
     return "hostname.com";
   }
@@ -107,6 +108,7 @@ class StoryList {
     console.debug(result.data)
     let resultStory = new Story(storyData);
     console.debug(resultStory)
+    //use linked list instead for efficiency
     this.stories.unshift(resultStory);
     return resultStory;
   }
@@ -151,6 +153,7 @@ class User {
    */
 
   static async signup(username, password, name) {
+    // wrap axios calls in try catch 
     const response = await axios({
       url: `${BASE_URL}/signup`,
       method: "POST",
