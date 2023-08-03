@@ -10,7 +10,7 @@ from models import db, connect_db, User, Message
 CURR_USER_KEY = "curr_user"
 
 app = Flask(__name__)
-
+app.app_context().push()
 # Get DB_URI from environ variable (useful for production/testing) or,
 # if not set there, use development local db.
 app.config['SQLALCHEMY_DATABASE_URI'] = (
@@ -112,9 +112,9 @@ def login():
 @app.route('/logout')
 def logout():
     """Handle logout of user."""
-
-    # IMPLEMENT THIS
-
+    do_logout(g.user)
+    flash("Successfully Logged Out")
+    return redirect("/login")
 
 ##############################################################################
 # General user routes:
@@ -151,8 +151,7 @@ def users_show(user_id):
                 .limit(100)
                 .all())
     return render_template('users/show.html', user=user, messages=messages)
-
-
+    
 @app.route('/users/<int:user_id>/following')
 def show_following(user_id):
     """Show list of people this user is following."""
@@ -212,6 +211,9 @@ def profile():
     """Update profile for current user."""
 
     # IMPLEMENT THIS
+    # TODO
+    # To edit - Username, email, imageurl, header image url, bio, password (check if correct)
+
 
 
 @app.route('/users/delete', methods=["POST"])
