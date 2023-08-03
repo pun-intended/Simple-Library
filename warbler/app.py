@@ -224,7 +224,7 @@ def profile():
         user.username = form.username.data
         user.email = form.email.data
         user.image_url = form.image_url.data
-        user.header_image = form.header_image.data
+        user.header_image_url = form.header_image_url.data
         user.bio = form.bio.data
         db.session.commit()
         return redirect(f"/users/{g.user}")
@@ -234,13 +234,7 @@ def profile():
         form.image_url.data = user.image_url
         form.header_image.data = user.header_image
         form.bio.data = user.bio
-        return render_template("/users/edit.html", form=form)
-
-    # IMPLEMENT THIS
-    # TODO
-    # To edit - Username, email, imageurl, header image url, bio, password (check if correct)
-
-
+    return render_template("/users/edit.html", form=form)
 
 @app.route('/users/delete', methods=["POST"])
 def delete_user():
