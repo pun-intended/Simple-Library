@@ -227,12 +227,12 @@ def profile():
         user.header_image_url = form.header_image_url.data
         user.bio = form.bio.data
         db.session.commit()
-        return redirect(f"/users/{g.user}")
+        return redirect(f"/users/{g.user.id}")
     else:
         form.username.data = user.username
         form.email.data = user.email
         form.image_url.data = user.image_url
-        form.header_image.data = user.header_image
+        form.header_image_url.data = user.header_image_url
         form.bio.data = user.bio
     return render_template("/users/edit.html", form=form)
 
