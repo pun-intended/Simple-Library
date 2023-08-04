@@ -112,7 +112,7 @@ def login():
 @app.route('/logout')
 def logout():
     """Handle logout of user."""
-    do_logout(g.user)
+    do_logout()
     flash("Successfully Logged Out")
     return redirect("/login")
 
@@ -251,6 +251,20 @@ def delete_user():
 
     return redirect("/signup")
 
+@app.route('/users/add_like/<message_id>', methods=["POST"])
+def add_like(message_id):
+    user_id = g.user.id
+    likes = [like.message_id for like in (db.session.query(Likes).filter(Likes.user_id == g.user.id).all())]
+
+    # Toggle like
+    if int(message_id) in likes:
+        like = db.session.query(Likes).filter((Likes.user_id == g.user.id) & (Likes.message_id == message_id)).first()
+        db.session.delete(like)
+    else:
+        like = Likes(user_id=user_id, message_id=message_id)
+        db.session.add(like)
+    db.session.commit()
+    return redirect("/")
 
 ##############################################################################
 # Messages routes:
@@ -314,6 +328,7 @@ def homepage():
     """
 
     if g.user:
+        likes = [like.message_id for like in (db.session.query(Likes).filter(Likes.user_id == g.user.id).all())]
         follows = db.session.query(Follows.user_being_followed_id).filter(Follows.user_following_id == g.user.id)
         messages = (Message
                     .query
@@ -322,7 +337,7 @@ def homepage():
                     .limit(100)
                     .all())
 
-        return render_template('home.html', messages=messages)
+        return render_template('home.html', messages=messages, likes=likes)
 
     else:
         return render_template('home-anon.html')
