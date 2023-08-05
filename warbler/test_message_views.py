@@ -71,3 +71,16 @@ class MessageViewTestCase(TestCase):
 
             msg = Message.query.one()
             self.assertEqual(msg.text, "Hello")
+
+
+"""
+1. When you’re logged in, can you see the follower / following pages for any user?
+2. When you’re logged out, are you disallowed from visiting a user’s follower / following pages?
+3. When you’re logged in, can you add a message as yourself?
+4. When you’re logged in, can you delete a message as yourself?
+5. When you’re logged out, are you prohibited from adding messages?
+6. When you’re logged out, are you prohibited from deleting messages?
+7. When you’re logged in, are you prohibiting from adding a message as another user?
+8. When you’re logged in, are you prohibiting from deleting a message as another user?
+
+"""
