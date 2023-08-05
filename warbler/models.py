@@ -4,6 +4,7 @@ from datetime import datetime
 
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import exc
 
 bcrypt = Bcrypt()
 db = SQLAlchemy()
@@ -26,6 +27,8 @@ class Follows(db.Model):
         primary_key=True,
     )
 
+    def __repr__(self):
+        return f"<Following user - #{self.user_following_id} Followed user - {self.user_being_followed_id}>"
 
 class Likes(db.Model):
     """Mapping user likes to warbles."""
@@ -125,7 +128,7 @@ class User(db.Model):
         return len(found_user_list) == 1
 
     def is_following(self, other_user):
-        """Is this user following `other_use`?"""
+        """Is this user following `other_user`?"""
 
         found_user_list = [user for user in self.following if user == other_user]
         return len(found_user_list) == 1
@@ -136,17 +139,21 @@ class User(db.Model):
 
         Hashes password and adds user to system.
         """
-
+        if len(password) < 1:
+            return False
+        
         hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
 
+       
         user = User(
             username=username,
             email=email,
             password=hashed_pwd,
             image_url=image_url,
-        )
-
+            )
         db.session.add(user)
+
+         
         return user
 
     @classmethod
