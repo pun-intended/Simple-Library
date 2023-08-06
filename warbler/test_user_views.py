@@ -3,13 +3,34 @@ from unittest import TestCase
 
 from models import db, User, Message, Follows
 
+os.environ['DATABASE_URL'] = "postgresql:///warbler-test"
+
+from app import app, CURR_USER_KEY
+
+# Create DB
+db.create_all()
+
+# Disable CSRF for ease of testing
+app.config['WTF_CSRF_ENABLED'] = False
+
 
 class UserViewTest(TestCase):
     """Test views for user"""
 
     def setup(self):
         """Create test client, add sample data."""
-        return
+
+        User.query.delete()
+        Message.query.delete()
+
+        self.client = app.test_client()
+
+        self.testuser = User.signup(username="testuser",
+                                    email="test@test.com",
+                                    password="testuser",
+                                    image_url=None)
+
+        db.session.commit()
     
     def test_login(self):
          
@@ -116,88 +137,3 @@ class UserViewTest(TestCase):
         # Redirect on success
 
         # Like button changes class when toggled
-
-
-def test_signup(self):
-        # u = User.signup(
-        #     "username",
-        #     "email@test.com",
-        #     "password",
-        #     "img_url/img.jpeg"
-        # )
-
-        # db.session.commit()
-        
-        # # Test user was created with correct credentials
-        # self.assertTrue(u.id)
-        # self.assertEqual(u.username, "username")
-        # self.assertEqual(u.email, "email@test.com")
-        # self.assertEqual(u.image_url, "img_url/img.jpeg")
-
-        # Test failure condition - non-unique username
-        
-
-        #  **** ATTEMPT 1
-        self.assertFalse(User.signup( 
-                            username="testuser",
-                            email="email2@test.com",
-                            password="password",
-                            image_url="img_url/img.jpeg"))
-
-# ---------------------
-
-        #  **** ATTEMPT 2
-        # def signup_test():
-        #     return User.signup(
-                # "testuser",
-                # "email2@test.com",
-                # "password",
-                # "img_url/img.jpeg"
-        #     )
-        
-        # self.assertRaises(errors.UniqueViolation, signup_test)
-        # # tried with exc.IntegrityError with same results
-
-        # **** ATTEMPT 3
-
-        # with self.assertRaises(exc.IntegrityError):
-        #     User.signup("testuser",
-        #     "email2@test.com",
-        #     "password",
-        #     "img_url/img.jpeg")
-# ---------------------
-        # # Test failure condition - non-unique email
-        # u2 = User.signup(
-        #     "username2",
-        #     "test@test.com",
-        #     "password",
-        #     "img_url/img.jpeg"
-        # )
-        # self.assertFalse(u2, "Should reject non-unique email")
-
-        # # Test failure condition - null username
-        # u2 = User.signup(
-        #     "",
-        #     "email2@test.com",
-        #     "password",
-        #     "img_url/img.jpeg"
-        # )
-        # self.assertFalse(u2, "Should reject null username")
-
-        # # Test failure condition - null email
-        # u2 = User.signup(
-        #     "username2",
-        #     "",
-        #     "password",
-        #     "img_url/img.jpeg"
-        # )
-        # self.assertFalse(u2, "Should reject null email") 
-
-        # # Test failure condition - null password
-        # su2 = User.signup(
-        #     "username2",
-        #     "email2@test.com",
-        #     "",
-        #     "img_url/img.jpeg"
-        # )
-        # self.assertFalse(u2, "Should reject null password") 
