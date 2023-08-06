@@ -48,7 +48,12 @@ class MessageViewTestCase(TestCase):
                                     email="test@test.com",
                                     password="testuser",
                                     image_url=None)
-
+        
+        self.dummyuser = User.signup(username="dummyuser",
+                                    email="dummy@test.com",
+                                    password="testuser",
+                                    image_url=None)
+        
         db.session.commit()
 
     def test_add_message(self):
@@ -57,6 +62,12 @@ class MessageViewTestCase(TestCase):
         # Since we need to change the session to mimic logging in,
         # we need to use the changing-session trick:
 
+        # Cannot add message while not logged in
+
+        resp = self.client.post("/messages/new", follow_redirects=True, data={"text": "Hello"})
+        html = resp.get_data(as_text=True)
+        self.assertIn("Access unauthorized.", html)
+        
         with self.client as c:
             with c.session_transaction() as sess:
                 sess[CURR_USER_KEY] = self.testuser.id
@@ -71,16 +82,56 @@ class MessageViewTestCase(TestCase):
 
             msg = Message.query.one()
             self.assertEqual(msg.text, "Hello")
+    
+    def test_show_message(self):
+        """Can you view a message"""
+
+        self.testmessage = Message(text="test message",
+                                   user_id=self.testuser.id)
+
+        db.session.add(self.testmessage)
+        db.session.commit()
+
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess[CURR_USER_KEY] = self.testuser.id
+
+        # you can see a message on it's page
+        resp = c.get(f"/messages/{self.testmessage.id}")
+        html = resp.get_data(as_text=True)
+        self.assertIn("test message", html)
+
+        # you can see a message on your home page
+        resp = c.get(f"/users/{self.testuser.id}")
+        html = resp.get_data(as_text=True)
+        self.assertIn("test message", html)
+
+    def test_message_modification(self):
+        """Can messages be deleted"""
+        self.testmessage = Message(text="modification test message",
+                                   user_id=self.testuser.id)
+        db.session.add(self.testmessage)
+        db.session.commit()
+        
+        # Cannot delete message if not logged in
+        resp = self.client.post(f"/messages/{self.testmessage.id}/delete", follow_redirects=True)
+        html = resp.get_data(as_text=True)
+        self.assertIn("Access unauthorized.", html)
+        
+        # Cannot delete message if not owner
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess[CURR_USER_KEY] = self.dummyuser.id
+        resp = self.client.post(f"/messages/{self.testmessage.id}/delete", follow_redirects=True)
+        html = resp.get_data(as_text=True)
+        self.assertIn("Access unauthorized.", html)
 
 
-"""
-1. When you’re logged in, can you see the follower / following pages for any user?
-2. When you’re logged out, are you disallowed from visiting a user’s follower / following pages?
-3. When you’re logged in, can you add a message as yourself?
-4. When you’re logged in, can you delete a message as yourself?
-5. When you’re logged out, are you prohibited from adding messages?
-6. When you’re logged out, are you prohibited from deleting messages?
-7. When you’re logged in, are you prohibiting from adding a message as another user?
-8. When you’re logged in, are you prohibiting from deleting a message as another user?
+        # Can delete message if logged in as owner
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess[CURR_USER_KEY] = self.testuser.id
+        resp = self.client.post(f"/messages/{self.testmessage.id}/delete", follow_redirects=True)
+        html = resp.get_data(as_text=True)
+        self.assertNotIn("modification test message", html)
 
-"""
