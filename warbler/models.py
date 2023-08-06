@@ -139,22 +139,21 @@ class User(db.Model):
 
         Hashes password and adds user to system.
         """
-        if len(password) < 1:
-            return False
-        
+
         hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
 
-       
         user = User(
-            username=username,
-            email=email,
-            password=hashed_pwd,
-            image_url=image_url,
-            )
-        db.session.add(user)
+                username=username,
+                email=email,
+                password=hashed_pwd,
+                image_url=image_url,
+                )
 
-         
+        db.session.add(user)
         return user
+
+
+        
 
     @classmethod
     def authenticate(cls, username, password):
