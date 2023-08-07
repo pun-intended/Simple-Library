@@ -97,7 +97,7 @@ class User(db.Model):
         nullable=False,
     )
 
-    messages = db.relationship('Message')
+    messages = db.relationship('Message', backref="user", passive_deletes=True)
 
     followers = db.relationship(
         "User",
@@ -203,8 +203,6 @@ class Message(db.Model):
         nullable=False,
     )
 
-    user = db.relationship('User')
-
 
 def connect_db(app):
     """Connect this database to provided Flask app.
@@ -214,3 +212,6 @@ def connect_db(app):
 
     db.app = app
     db.init_app(app)
+
+
+# TODO - Fix cascade deletion on like, follow models
