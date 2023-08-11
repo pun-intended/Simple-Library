@@ -32,13 +32,11 @@ connect_db(app)
 @app.before_request
 def add_user_to_g():
     """If we're logged in, add curr user to Flask global."""
-
     if CURR_USER_KEY in session:
         g.user = User.query.get(session[CURR_USER_KEY])
-
+        
     else:
         g.user = None
-
 
 def do_login(user):
     """Log in user."""
@@ -51,6 +49,7 @@ def do_logout():
 
     if CURR_USER_KEY in session:
         del session[CURR_USER_KEY]
+    
 
 
 @app.route('/signup', methods=["GET", "POST"])
@@ -66,6 +65,7 @@ def signup():
     """
 
     form = UserAddForm()
+    
 
     if form.validate_on_submit():
         try:
@@ -79,6 +79,7 @@ def signup():
 
         except IntegrityError:
             flash("Username already taken", 'danger')
+            db.session.rollback()
             return render_template('users/signup.html', form=form)
 
         do_login(user)
@@ -135,7 +136,6 @@ def list_users():
 
     return render_template('users/index.html', users=users)
 
-
 @app.route('/users/<int:user_id>')
 def users_show(user_id):
     """Show user profile."""
@@ -156,38 +156,41 @@ def users_show(user_id):
 def show_following(user_id):
     """Show list of people this user is following."""
 
-    if not g.user:
+    if g.user == None:
+        print("failed - not g.user")
         flash("Access unauthorized.", "danger")
         return redirect("/")
 
-    user = User.query.get_or_404(user_id)
+    user = User.query.get_or_404(int(user_id))
     return render_template('users/following.html', user=user)
-
 
 @app.route('/users/<int:user_id>/followers')
 def users_followers(user_id):
     """Show list of followers of this user."""
 
-    if not g.user:
+    if g.user == None:
+        print("failed - not g.user")
         flash("Access unauthorized.", "danger")
         return redirect("/")
 
     user = User.query.get_or_404(user_id)
     return render_template('users/followers.html', user=user)
 
-
 @app.route('/users/follow/<int:follow_id>', methods=['POST'])
 def add_follow(follow_id):
     """Add a follow for the currently-logged-in user."""
 
-    if not g.user:
+    if g.user == None:
         flash("Access unauthorized.", "danger")
         return redirect("/")
 
-    followed_user = User.query.get_or_404(follow_id)
-    g.user.following.append(followed_user)
-    db.session.commit()
+    followed_user = User.query.get_or_404(int(follow_id))
 
+    try:
+        g.user.following.append(followed_user)
+        db.session.commit()
+    except:
+        db.session.rollback()
     return redirect(f"/users/{g.user.id}/following")
 
 
@@ -195,21 +198,24 @@ def add_follow(follow_id):
 def stop_following(follow_id):
     """Have currently-logged-in-user stop following this user."""
 
-    if not g.user:
+    if g.user == None:
+        print("failed - not g.user")
         flash("Access unauthorized.", "danger")
         return redirect("/")
 
-    followed_user = User.query.get_or_404(follow_id)
-    g.user.following.remove(followed_user)
-    db.session.commit()
+    followed_user = User.query.get_or_404(int(follow_id))
+    try:
+        g.user.following.remove(followed_user)
+        db.session.commit()
+    except:
+        db.session.rollback()
 
     return redirect(f"/users/{g.user.id}/following")
-
 
 @app.route('/users/profile', methods=["GET", "POST"])
 def profile():
     """Update profile for current user."""
-    if not g.user:
+    if g.user == None:
         flash("Access unauthorized.", "danger")
         return redirect("/")
     

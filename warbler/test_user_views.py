@@ -5,7 +5,7 @@ from models import db, User, Message, Follows
 
 os.environ['DATABASE_URL'] = "postgresql:///warbler-test"
 
-from app import app, CURR_USER_KEY, session
+from app import app, CURR_USER_KEY, session, g
 
 # Create DB
 db.create_all()
@@ -29,10 +29,16 @@ class UserViewTest(TestCase):
                                     email="test@test.com",
                                     password="testuser",
                                     image_url=None)
+        
+        self.dummyuser = User.signup(username="dummyuser",
+                                    email="dummy@test.com",
+                                    password="testuser",
+                                    image_url=None)
 
         db.session.commit()
     
     def test_login(self):
+        print(f"-------- TEST_LOGIN -------")
          
         # Form is shown on get request
         resp = self.client.get("/login")
@@ -61,17 +67,21 @@ class UserViewTest(TestCase):
 
 
     def test_logout(self):
+        print(f"-------- TEST_LOGOUT -------")
         
-        resp = self.client.get("/logout")
+        user = User.query.filter(User.username=="testuser").first()
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess[CURR_USER_KEY] = user.id
 
-        # CURR_USER_KEY removed from session on logout
-        # TODO - Fix - get session variable
+        resp = self.client.get("/logout")
 
         # Page redirects
         self.assertEqual(resp.status_code, 302)
 
 
     def test_signup(self):
+        print(f"-------- TEST_SIGNUP -------")
          
         # Form displayed on get method
         resp = self.client.get("/signup")
@@ -98,12 +108,11 @@ class UserViewTest(TestCase):
             "email": "fake@email.com",
             "image_url": "image.jpg"
             })
-        # TODO - Throwing 500 error, check in flask
-        print(new_resp.get_data(as_text=True))
 
-        # self.assertEqual(resp.status_code, 302)
+        self.assertEqual(new_resp.status_code, 302)
 
     def test_show_user(self):
+        print(f"-------- TEST_SHOW_USER -------")
 
         user = User.query.filter(User.username=="testuser").first() 
         
@@ -119,79 +128,209 @@ class UserViewTest(TestCase):
 
         self.assertIn(f"@{user.username}", html)
 
-    # def test_show_following(self):
-         
-        #  Returns 404 if user doesnt exist
 
-        # Disallow viewing if not logged in
+# ---------------------
+# test for valid responses and light html
+# ---------------------
+    def test_show_following(self):
+        print(f"-------- TEST_SHOW_FOLLOWING -------")
 
-        # Redirects if not logged in
+        user = User.query.filter(User.username=="testuser").first()
+        dummy = User.query.filter(User.username=="dummyuser").first()
+
+        # Disallow and redirect if not logged in
+        resp = self.client.get(f"/users/0/following")
+        self.assertEqual(resp.status_code, 302)
 
         # Displays following users if logged in
+        user = user = User.query.filter(User.username=="testuser").first()
+        user.following.append(dummy)
+        db.session.commit()
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess[CURR_USER_KEY] = user.id
+                resp = self.client.get(f"/users/{user.id}/following", follow_redirects=True, data={"user": user})
+                html = resp.get_data(as_text=True)
+                self.assertIn("dummyuser", html)
 
-    # def test_show_followers(self):
-         
-        #  Returns 404 if user doesnt exist
+        # Returns 404 if user doesnt exist
+        resp = self.client.get(f"/users/0/following")
 
-        # Disallow viewing if not logged in
+        self.assertEqual(resp.status_code, 404)
 
-        # Redirects if not logged in
+
+
+    def test_show_followers(self):
+        print(f"-------- TEST_SHOW_FOLLOWERS -------")
+
+        # Disallow and Redirect if not logged in
+        user = User.query.filter(User.username=="testuser").first()
+        resp = self.client.get(f"/users/{user.id}/followers")
+
+        self.assertEqual(resp.status_code, 302)
 
         # Displays follower users if logged in
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess[CURR_USER_KEY] = user.id
 
-    # def test_add_follow(self):
+                resp = self.client.get(f"/users/{user.id}/followers", follow_redirects=True)
+                html = resp.get_data(as_text=True)
+
+                # TODO - FIX: Redirecting to main page without flashing message
+                self.assertIn(f"<h4 id='sidebar-username'>@{user.username}</h4>", html)
         
-        # Disallow follow if not logged in
+                # Returns 404 if user doesnt exist
+                resp = self.client.get(f"/users/0/followers")
+                html = resp.get_data(as_text=True)
 
-        # Redirects if not logged in
+                self.assertEqual(resp.status_code, 404)
+
+
+    def test_add_follow(self):
+        print(f"-------- TEST_ADD_FOLLOW -------")
+
+        user = User.query.filter(User.username=="testuser").first()
+        dummy = User.query.filter(User.username=="dummyuser").first()        
+     # Disallow follow if not logged in
+        resp_no_login = self.client.post(f"/users/follow/{dummy.id}", follow_redirects=True)
+        html = resp_no_login.get_data(as_text=True)
+
+        # self.assertIn("Access unauthorized", html)
+
+    #   Redirects if not logged in
+        resp_no_login = self.client.post(f"/users/follow/{dummy.id}")
+        self.assertEqual(resp_no_login.status_code, 302)
         
-        # Returns 404 of user doesnt exist
+    #   Returns 404 if user doesnt exist
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess[CURR_USER_KEY] = user.id
+                resp_no_user = self.client.post("/users/follow/0")
+                
+# TODO - FIX - Returning redirect, not 404
+        self.assertEqual(resp_no_user.status_code, 404)
 
-        # Redirects on completion
+    #   Redirects on completion
+        resp_ok = self.client.post(f"/users/follow/{dummy.id}", follow_redirects=True)
+        html = resp_ok.get_data(as_text=True)
+        self.assertIn(f"<h4 id='sidebar-username'>@{user.username}</h4>", html)
 
-        # Followed user appears on following page
+    #   Followed user appears on following page
+        self.assertIn("dummyuser", html)
+        print(f"-------- {sess[CURR_USER_KEY]} -------")
 
-    # def test_stop_following(self):
+    def test_stop_following(self):
+        print(f"-------- TEST_STOP_FOLLOWING -------")
         
-        # Disallow if not logged in
+        user = User.query.filter(User.username=="testuser").first()
+        dummy = User.query.filter(User.username=="dummyuser").first()        
+   
+   #   Disallow follow if not logged in
+        resp_no_login = self.client.post(f"/users/stop-following/{dummy.id}", follow_redirects=True)
+        html = resp_no_login.get_data(as_text=True)
 
-        # Redirects if not logged in
+        self.assertIn("Access unauthorized", html)
+
+    #   Redirects if not logged in
+        resp_no_login = self.client.post(f"/users/stop-following/{dummy.id}")
+        self.assertEqual(resp_no_login.status_code, 302)
         
-        # Returns 404 of user doesnt exist
+    #   Returns 404 of user doesnt exist
+        user = user = User.query.filter(User.username=="testuser").first()
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess[CURR_USER_KEY] = user.id
+                resp_no_user = self.client.post(f"/users/stop-following/0")
+                
+                # TODO - FIX: redirecting instead of 404
+                self.assertEqual(resp_no_user.status_code, 404)
 
-        # Redirects on completion
+                # Redirects on completion
+                resp_ok = self.client.post(f"/users/stop-following/{dummy.id}", follow_redirects=True)
+                html = resp_ok.get_data(as_text=True)
+                self.assertIn(f"<h4 id='sidebar-username'>@{user.username}</h4>", html)
 
-        # User no longer appears on following page
+                # User no longer appears on following page
+                self.assertNotIn("dummyuser", html)
 
-    # def test_profile(self):
+    def test_profile(self):
+        print(f"-------- TEST_PROFILE -------")
          
         #  Disallow if not logged in
+        resp_no_login = self.client.get("/users/profile", follow_redirects=True)
+        html = resp_no_login.get_data(as_text=True)
 
-        # Show user data
+        self.assertIn("Access unauthorized", html)
 
-        # Disallow and redirect if credentials incorrect
+        # Shows form for data update
+        user = User.query.filter(User.username=="testuser").first()
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess[CURR_USER_KEY] = user.id
+
+                resp_ok = self.client.get("/users/profile", follow_redirects=True)
+                html = resp_ok.get_data(as_text=True)
+                self.assertIn("<form", html)
+
+        # Disallow if credentials incorrect
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess[CURR_USER_KEY] = user.id
+                print(f"-------- {sess[CURR_USER_KEY]} -------")
+                resp_wrong_pass = self.client.post("/users/profile", follow_redirects=True, 
+                                                   data={"username": "testuser", 
+                                                         "password": "pass", 
+                                                         "email": "test@test.com"})
+                html = resp_wrong_pass.get_data(as_text=True)
+
+                # TODO - FIX: Redirecting to main page without flashing message
+                self.assertIn("Invalid Password", html)
 
         # Apply changes and redirect if authenticated
+                resp_ok = self.client.post("/users/profile", follow_redirects=True, 
+                                                   data={"username": "updatedusername", 
+                                                         "password": "testuser", 
+                                                         "email": "test@test.com"})
+                html = resp_ok.get_data(as_text=True)
+
+                self.assertIn("updatedusername", html)
          
-    # def test_delete_user(self):
+    def test_delete_user(self):
+        print(f"-------- TEST_DELETE_PROFILE -------")
          
         #  Disallowed if not logged in
+        resp_no_login = self.client.post("/users/delete", follow_redirects=True)
+        html = resp_no_login.get_data(as_text=True)
+
+        self.assertIn("Access unauthorized", html)
 
         # User removed from database on deletion
+        user = User.query.filter(User.username=="testuser").first()
+        user_id = user.id
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess[CURR_USER_KEY] = user.id
 
-        # user logged out after deletion
+                resp = self.client.post("/users/delete")
+                self.assertEqual(resp.status_code, 302)
+         
+    def test_add_like(self):
+        print(f"-------- TEST_ADD_LIKE -------")
+         
+        #  Disallow if not logged in
+        resp_no_login = self.client.get("/users/profile", follow_redirects=True)
+        html = resp_no_login.get_data(as_text=True)
 
-        # Redirect on success
-         
-    # def test_add_like(self):
-         
-        #  Disallow and redirect if not logged in
+        self.assertIn("Access unauthorized", html)
 
         # If message currently not liked, add like
+        user = user = User.query.filter(User.username=="testuser").first()
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess[CURR_USER_KEY] = user.id
 
         # If message currently liked, remove from liked
-
-        # flash message, redirect if message doesn't exist
 
         # Redirect on success
 
