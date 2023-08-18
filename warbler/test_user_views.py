@@ -202,12 +202,22 @@ class UserViewTest(TestCase):
         resp_no_login = self.client.post(f"/users/follow/{dummy.id}")
         self.assertEqual(resp_no_login.status_code, 302)
         
+    def test_add_follow_no_user(self):
     #   Returns 404 if user doesnt exist
+        print(f"-------- TEST_ADD_FOLLOW_NO_USER -------")
+        user = User.query.filter(User.username=="testuser").first()
+        
         with self.client as c:
             with c.session_transaction() as sess:
                 sess[CURR_USER_KEY] = user.id
                 resp_no_user = self.client.post("/users/follow/0")
+
+                """
+                ---------<User #2070: testuser, test@test.com>
+                    ---------2070       
                 
+                """
+
 # TODO - FIX - Returning redirect, not 404
         self.assertEqual(resp_no_user.status_code, 404)
 
