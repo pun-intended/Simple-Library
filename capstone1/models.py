@@ -19,16 +19,24 @@ class User(db.Model):
     user_mon = db.relationship("UserMon", backref="user", cascade="all, delete")
 
     @classmethod
-    def register(cls, username, pwd, email, first_name, last_name):
+    def register(cls, username, pwd):
         hash = bcrypt.generate_password_hash(pwd)
         hash_decoded = hash.decode("utf8")
-        return cls(username=username, password=hash_decoded, email=email, first_name=first_name, last_name=last_name)
+        return cls(username=username, password=hash_decoded)
     
     @classmethod
     def authenticate(cls, username, pwd):
         user = User.query.filter_by(username=username).first()
         if user and bcrypt.check_password_hash(user.password, pwd):
             return user
+        else:
+            return False
+    
+    @classmethod
+    def user_exists(cls, username):
+        user = User.query.filter_by(username=username).first()
+        if user:
+            return True
         else:
             return False
 
@@ -38,6 +46,7 @@ class UserMon(db.Model):
     owns_id = db.Column(db.Integer, primary_key=True, nullable=False)
     pokemon_id = db.Column(db.Integer, nullable=False)
     user_id = db.Column(db.Integer, nullable=False)
+    cp = db.Column(db.Integer)
 
 class Pokemon(db.Model):
     __tablename__ = "pokemon"
