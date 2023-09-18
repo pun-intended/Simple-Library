@@ -13,6 +13,7 @@ class LoginForm(FlaskForm):
 
 class PokemonForm(FlaskForm):
     name = StringField("PokemonName", validators=[InputRequired(message="Must provide a username")])
+    cp = IntegerField("cp", validators=[InputRequired(message="Must include a CP")])
     atk = IntegerField("attack", validators=[NumberRange(min=0, max=15, message="IV must be between 0 and 15")])
     dfn = IntegerField("defense", validators=[NumberRange(min=0, max=15, message="IV must be between 0 and 15")])
     hp = IntegerField("hp", validators=[NumberRange(min=0, max=15, message="IV must be between 0 and 15")])
