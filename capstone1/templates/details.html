@@ -1,1 +1,24 @@
 <!-- show image, ivs, types , button to remove, button to edit-->
+
+{% extends 'base.html' %}
+
+{% body block %}
+<!-- Put in card -->
+<h1>{{mon.name}}</h1>
+<h2>{{mon.cp}}</h2>
+<!-- Picture here -->
+<table>
+    <tr>
+        <th>Attack</th>
+        <th>Defense</th>
+        <th>HP</th>
+    </tr>
+    <tr>
+        <td>{{mon.atk}}</td>
+        <td>{{mon.dfn}}</td>
+        <td>{{mon.hp}}</td>
+    </tr>
+</table>
+
+
+{% endblock %}
