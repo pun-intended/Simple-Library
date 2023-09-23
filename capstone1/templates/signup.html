@@ -1,1 +1,16 @@
 <!-- display signup form -->
+{% extends 'base.html' %}
+
+{% block body %}
+<form actions="/signup" method="POST">
+{{ form.hidden_tag() }}
+{% for field in form 
+    if field.widget.input_type != 'hidden' %}
+<p>
+    {{field.label}}
+    {{field}}
+</p>
+{% endfor %}
+<button type="submit">submit</button>
+</form>
+{% endblock %}

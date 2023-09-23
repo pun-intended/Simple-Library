@@ -17,3 +17,5 @@ class PokemonForm(FlaskForm):
     atk = IntegerField("attack", validators=[NumberRange(min=0, max=15, message="IV must be between 0 and 15")])
     dfn = IntegerField("defense", validators=[NumberRange(min=0, max=15, message="IV must be between 0 and 15")])
     hp = IntegerField("hp", validators=[NumberRange(min=0, max=15, message="IV must be between 0 and 15")])
+
+# addForm

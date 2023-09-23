@@ -20,15 +20,14 @@ connect_db(app)
 db.create_all()
 
 CURR_USER_KEY = "curr_user"
-ADDED = False
+ADDED = True
 URL = "https://pogoapi.net/api/v1/"
 tag = "pokemon_names.json"
 
 def add_user_to_g():
     """If we're logged in, add curr user to Flask global."""
     if CURR_USER_KEY in session:
-        g.user = User.query.get(session[CURR_USER_KEY])
-        
+        g.user = User.query.get(session[CURR_USER_KEY]) 
     else:
         g.user = None
 
@@ -51,36 +50,35 @@ def setup():
 @app.route('/')
 def landing_page():
     """redirect to user page, or login page"""
-    res = requests.get(f"{URL}{tag}")
-    data = res.json()
-    for item in data:
-        print(data[item])
-    return "done"
+    # fix this route
+    return "landed"
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
     """Display login page if no user is logged in"""
-    if session["username"]:
-        return redirect('/user')
+    # TODO Fix this - using curr_user
+    # if session[CURR_USER_KEY]:
+    #     return redirect('/user')
     form = LoginForm()
     if form.validate_on_submit():
+        # TODO - bcrypt
         username = form.username.data
         password = form.password.data
         user = User.authenticate(username, password)
         if user:
-            session['username'] = user.username
+            session[CURR_USER_KEY] = user.username
             return redirect('/user')
         else:
             form.username.errors = ['Invalid username or password']
-            return render_template('login.html', form)
+            return render_template('login.html', form=form)
     else:
-        return render_template("login.html")
+        return render_template("login.html", form=form)
 
 @app.route('/signup', methods=["GET", "POST"])
 def signup():
     """Display signup page"""
-    if session["username"]:
-        return redirect('/user')
+    # if session[CURR_USER_KEY]:
+    #     return redirect('/user')
     form = SignupForm()
     if form.validate_on_submit():
         username = form.username.data
@@ -88,14 +86,14 @@ def signup():
         user_exists = User.user_exists(username)
         if user_exists:
             form.username.errors = ['Username taken']
-            return render_template('signup.html', form)
+            return render_template('signup.html', form=form)
         else:
             # TODO - Check register method - storing in plaintext?
             user = User.register(username, password)
             session['username'] = user.username
             return redirect('/user')
     else:
-        return render_template("signup.html")
+        return render_template("signup.html", form=form)
     
 
 @app.route('/user/pokemon', methods=["GET"])
@@ -105,6 +103,12 @@ def display_user():
     user = g.user
     pokemon = UserMon.query.filter(user_id=user.id).all()
     return render_template("user.html", pokemon=pokemon)
+
+@app.route('/user/pokemon/<id>/details', methods=["GET"])
+def display_details(id):
+    """display details for specified pokemon"""
+    mon = UserMon.query.filter_by(owns_id=id)
+    return render_template("details.html", mon=mon)
 
 @app.route('/users/pokemon/<id>/edit', methods=["GET", "POST"])
 def edit_pokemon(id):
@@ -123,13 +127,13 @@ def edit_pokemon(id):
         return redirect("/pokemon")
     return render_template('edit.html', mon=mon)
 
-app.route('/user/pokemon/<id>/details', methods=["GET"])
-def display_details(id):
-    """display details for specified pokemon"""
-    mon = UserMon.query.filter_by(owns_id=id)
-    return render_template("details.html", mon=mon)
+@app.route('/pokemon', methods=["GET"])
+def display_all():
+    """Display all pokemon"""
+    list = Pokemon.query.all()
+    return render_template("pokemon.html", list=list)
 
-@app.route('/user/pokemon/add', methods=["POST"])
+@app.route('/user/pokemon/add', methods=["GET", "POST"])
 def add_pokemon():
     """display form for adding pokemon to user's inventory"""
     form = PokemonForm()
@@ -144,13 +148,10 @@ def add_pokemon():
         mon = UserMon(pokemon_id = id, cp = cp, user_id = user.id, atk = atk , dfn = dfn , hp = hp)
         db.session.add(mon)
         db.session.commit()
-    return redirect("/pokemon")
+        return redirect("/pokemon")
+    return render_template("edit.html", form=form)
 
-@app.route('/pokemon', methods=["GET"])
-def display_all():
-    """Display all pokemon"""
-    list = Pokemon.query.get()
-    return render_template("pokemon.html", list=list)
+
 
 
 
@@ -159,15 +160,13 @@ def display_all():
 TODO
 - set up basic views
 - set up login
-- set up database
-- retrieve data from API
 - set up templates
 - search functionality - mirror fruit search
-- sort by id/name/type (if implemented)
+
 
 -------
 Stretch
--- Add IVs
 -- Add types
 -- Add moves
+-- sort by id/name/type (if implemented)
 """
