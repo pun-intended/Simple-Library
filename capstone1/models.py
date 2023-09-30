@@ -50,7 +50,6 @@ class UserMon(db.Model):
     atk = db.Column(db.Integer)
     dfn = db.Column(db.Integer)
     hp = db.Column(db.Integer)
-    # Issues with join and foreign keys
     
 
 class Pokemon(db.Model):
@@ -58,3 +57,5 @@ class Pokemon(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     name = db.Column(db.String, nullable=False)
+
+    user_mon = db.relationship("UserMon", backref="pokemon", cascade="all, delete")
