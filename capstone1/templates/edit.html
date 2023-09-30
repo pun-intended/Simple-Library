@@ -1,7 +1,9 @@
 {% extends 'base.html'%}
 
-{% body block %}
+{% block body %}
+<form action="/user/pokemon/{{mon.owns_id}}/edit" method="POST">
 {{ form.hidden_tag() }}
+<h1>{{ mon.pokemon.name }}</h1>
 {% for field in form 
     if field.widget.input_type != 'hidden' %}
 <p>
@@ -9,4 +11,7 @@
     {{field}}
 </p>
 {% endfor %}
+<button type="submit">Apply Changes</button>
+</form>
+
 {% endblock %}
