@@ -2,6 +2,7 @@
 {% extends 'base.html'%}
 
 {% block body %}
+<form action="/login" method="POST">
 {{ form.hidden_tag() }}
 {% for field in form 
     if field.widget.input_type != 'hidden' %}
@@ -10,5 +11,7 @@
     {{field}}
 </p>
 {% endfor %}
+<button type="submit">Login</button>
+</form>
 <!-- submit button -->
 {% endblock %}
