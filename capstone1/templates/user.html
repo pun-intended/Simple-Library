@@ -1,8 +1,16 @@
 {% extends 'base.html'%}
 <!-- show username, link to add pokemon (
     REDIRECT TO ALL), all pokemon in user inventory-->
-{% block title %}{{user.name}}{% endblock %}
+{% block title %}{{user.username}}{% endblock %}
 
 {% block body %}
+<h1>{{user.username}}'s Pokemon</h1>
+{% for mon in pokemon %}
+<a href="/user/pokemon/{{mon.owns_id}}/details">{{mon.pokemon.name}} - {{mon.cp}}</a></br>
+{% endfor %}
+
+<form action="/user/pokemon/add" method="GET">
+    <button type="submit">Add Pokemon</button>
+</form>
 <!-- cards for each pokemon showing name, cp -->
 {% endblock %}
