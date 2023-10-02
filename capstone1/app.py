@@ -98,12 +98,11 @@ def signup():
     else:
         return render_template("signup.html", form=form)
     
-
 @app.route('/user/pokemon', methods=["GET"])
 def display_user():
     """Dispay all pokemon for logged in user"""
     user = g.user
-    pokemon = UserMon.query.filter_by(user_id=user.id).all()
+    pokemon = UserMon.query.filter_by(user_id=user.id).order_by(UserMon.cp.desc()).all()
     return render_template("user.html", pokemon=pokemon, user=user)
 
 @app.route('/user/pokemon/<id>/details', methods=["GET"])
@@ -125,13 +124,13 @@ def edit_pokemon(id):
         mon.hp = form.hp.data
         db.session.add(mon)
         db.session.commit()
-        return redirect("/pokemon")
+        return redirect("/user/pokemon")
     return render_template('edit.html', mon=mon, form=form)
 
 @app.route('/pokemon', methods=["GET"])
 def display_all():
     """Display all pokemon"""
-    list = Pokemon.query.all()
+    list = Pokemon.query.order_by(Pokemon.id.asc()).all()
     return render_template("pokemon.html", list=list)
 
 @app.route('/user/pokemon/add', methods=["GET", "POST"])
@@ -152,9 +151,18 @@ def add_pokemon():
         mon = UserMon(pokemon_id = id, cp = cp, user_id = user.id, atk = atk , dfn = dfn , hp = hp)
         db.session.add(mon)
         db.session.commit()
-        return redirect("/pokemon")
+        return redirect("/user/pokemon")
     return render_template("add.html", form=form)
 
+
+
+@app.route("/user/pokemon/<id>/delete", methods=["POST"])
+def delete_mon(id):
+    mon = UserMon.query.filter_by(owns_id = id).first()
+    db.session.delete(mon)
+    db.session.commit()
+    return redirect("/user/pokemon")
+    
 @app.route('/logout')
 def logout():
     """Handle logout of user."""
@@ -162,13 +170,31 @@ def logout():
     flash("Successfully Logged Out")
     return redirect("/login")
 
+@app.route('/user/pokemon/add/<id>', methods=["GET", "POST"])
+def add_pokemon_by_id(id):
+    """display form for adding pokemon to user's inventory"""
+    # TODO - cast to lower case
+    # Dropdown/autofill ala fruit search
+    pokemon = Pokemon.query.filter_by(id=id).first()
+    form = AddPokemonForm(obj=pokemon)
+    user = g.user
+    if form.validate_on_submit():
+        name = form.name.data
+        mon = Pokemon.query.filter_by(name=name).first()
+        id = mon.id
+        cp = form.cp.data
+        atk = form.atk.data
+        dfn = form.dfn.data
+        hp = form.hp.data
+        mon = UserMon(pokemon_id = id, cp = cp, user_id = user.id, atk = atk , dfn = dfn , hp = hp)
+        db.session.add(mon)
+        db.session.commit()
+        return redirect("/user/pokemon")
+    return render_template("add.html", form=form)
 
 
 """
 TODO
-- set up basic views
-- set up login
-- set up templates
 - search functionality - mirror fruit search
 
 
