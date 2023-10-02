@@ -2,9 +2,18 @@
 {% extends 'base.html'%}
 
 {% block body %}
-<ul>
+<div class="container-fluid">
+<div class="row">
+   
 {% for mon in list %}
-<li>{{mon.id}} - {{mon.name}}</li>
+<div class="col-2">
+<div class="card text-center" style="width: 9rem;">
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{{mon.id}}.png" alt="{{mon.name}}" class="card-img-top">
+    <div class="card-body">{{mon.name}}</div>
+    <a href="/user/pokemon/add/{{mon.id}}" class="btn btn-primary">Add</a>
+</div>
+</div>
 {% endfor %}
-</ul>
+</div>
+</div>
 {% endblock %}
