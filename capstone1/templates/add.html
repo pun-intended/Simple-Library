@@ -1,16 +1,19 @@
 {% extends 'base.html'%}
 
 {% block body %}
+<div class="container">
 <form action="/user/pokemon/add" method="POST">
 {{ form.hidden_tag() }}
 {% for field in form 
     if field.widget.input_type != 'hidden' %}
 <p>
+    <div class="form-group">
     {{field.label}}
-    {{field}}
+    {{field(class_="form-control")}}
+    </div>
 </p>
 {% endfor %}
 <button type="submit">Add</button>
 </form>
-
+</div>
 {% endblock %}
