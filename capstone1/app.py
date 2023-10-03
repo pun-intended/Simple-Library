@@ -136,8 +136,6 @@ def display_all():
 @app.route('/user/pokemon/add', methods=["GET", "POST"])
 def add_pokemon():
     """display form for adding pokemon to user's inventory"""
-    # TODO - cast to lower case
-    # Dropdown/autofill ala fruit search
     form = AddPokemonForm()
     user = g.user
     if form.validate_on_submit():
