@@ -2,6 +2,7 @@ from forms import LoginForm, SignupForm, AddPokemonForm, EditPokemonForm
 from flask import Flask, redirect, render_template, request, flash, session, g
 # from flask_debugtoolbar import DebugToolbarExtension
 import requests
+import os
 import helper
 
 from models import User, UserMon, Pokemon, db, connect_db
@@ -10,9 +11,9 @@ app = Flask(__name__)
 app.app_context().push()
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.config['SECRET_KEY'] = "supersecret"
-# debug = DebugToolbarExtension(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///pokemon'
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+    os.environ.get('DATABASE_URL', 'postgresql:///pokemon'))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 
@@ -26,9 +27,6 @@ tag = "pokemon_names.json"
 
 def add_user_to_g():
     """If we're logged in, add curr user to Flask global."""
-    # print(g.user)
-    # print(CURR_USER_KEY)
-    # print(session[CURR_USER_KEY])
     if CURR_USER_KEY in session:
         g.user = User.query.get(session[CURR_USER_KEY]) 
     else:
