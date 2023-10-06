@@ -9,13 +9,13 @@ from models import User, UserMon, Pokemon, db, connect_db
 
 app = Flask(__name__)
 app.app_context().push()
-app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-app.config['SECRET_KEY'] = "supersecret"
+app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "supersecret")
 
 app.config['SQLALCHEMY_DATABASE_URI'] = (
     os.environ.get('DATABASE_URL', 'postgresql:///pokemon'))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ECHO'] = True
+app.config['SQLALCHEMY_ECHO'] = False
 
 connect_db(app)
 db.create_all()
@@ -35,6 +35,7 @@ def add_user_to_g():
 def do_login(user):
     """Log in user."""
     session[CURR_USER_KEY] = user.id
+    print("Logged in")
 
 
 def do_logout():
@@ -66,6 +67,7 @@ def login():
         user = User.authenticate(username, password)
         if user:
             do_login(user)
+            print("redirecting to user page")
             return redirect('/user/pokemon')
         else:
             form.username.errors = ['Invalid username or password']
@@ -91,7 +93,7 @@ def signup():
             db.session.add(user)
             db.session.commit()
             do_login(user)
-            # Better to initialize account with adding pokemon
+            print("redirecting to user page")
             return redirect('/user/pokemon')
     else:
         return render_template("signup.html", form=form)
