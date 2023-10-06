@@ -9,6 +9,7 @@ from models import User, UserMon, Pokemon, db, connect_db
 
 app = Flask(__name__)
 app.app_context().push()
+app.debug = True
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "supersecret")
 
