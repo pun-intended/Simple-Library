@@ -10,6 +10,7 @@ from models import User, UserMon, Pokemon, db, connect_db
 app = Flask(__name__)
 app.app_context().push()
 app.debug = True
+app.handle_exception(Exception)
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "supersecret")
 
@@ -71,7 +72,8 @@ def login():
             print("redirecting to user page")
             return redirect('/user/pokemon')
         else:
-            form.username.errors = ['Invalid username or password']
+            print("invalid username or password")
+            # form.username.errors = ['Invalid username or password']
             return render_template('login.html', form=form)
     else:
         return render_template("login.html", form=form)
@@ -87,7 +89,8 @@ def signup():
         password = form.password.data
         user_exists = User.user_exists(username)
         if user_exists:
-            form.username.errors = ['Username taken']
+            # form.username.errors = ['Username taken']
+            print("User exists already")
             return render_template('signup.html', form=form)
         else:
             user = User.register(username, password)
