@@ -1,7 +1,7 @@
 from forms import LoginForm, SignupForm, AddPokemonForm, EditPokemonForm
-from flask import Flask, redirect, render_template, request, flash, session, g
-# from flask_debugtoolbar import DebugToolbarExtension
-import requests
+from flask import Flask, redirect, render_template, flash, session, g
+from seed import seed_users
+
 import os
 import helper
 
@@ -21,6 +21,8 @@ app.config['SQLALCHEMY_ECHO'] = False
 
 connect_db(app)
 db.create_all()
+
+seed_users()
 
 CURR_USER_KEY = "curr_user"
 ADDED = True
