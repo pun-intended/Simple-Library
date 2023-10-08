@@ -1,5 +1,4 @@
 from models import User, db
-from app import app
 
 def seed_users():
     print("seeding Users")
