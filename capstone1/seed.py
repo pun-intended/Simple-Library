@@ -13,4 +13,4 @@ def seed_users():
     db.session.add_all(allUsers)
     db.session.commit()
     user = User.query.filter_by(username="test1").first
-    print(user["username"])
+    print(user.username)
