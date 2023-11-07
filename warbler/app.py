@@ -21,7 +21,7 @@ app.config['SQLALCHEMY_ECHO'] = False
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
 # toolbar = DebugToolbarExtension(app)
-d
+
 connect_db(app)
 
 
@@ -32,10 +32,6 @@ connect_db(app)
 @app.before_request
 def add_user_to_g():
     """If we're logged in, add curr user to Flask global."""
-    print(f"--------------inside add_user_to_g")
-    if CURR_USER_KEY:
-        print(CURR_USER_KEY)
-        print(session)
     if CURR_USER_KEY in session:
         g.user = User.query.get(session[CURR_USER_KEY])
         

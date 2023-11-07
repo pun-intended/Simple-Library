@@ -1,11 +1,20 @@
-{% extends 'base.html' %}
+{% extends 'base.html'%}
 
-{% body block %}
+{% block body %}
+<div class="container">
+<form action="/user/pokemon/{{mon.owns_id}}/edit" method="POST">
 {{ form.hidden_tag() }}
-      {% for field in form if field.widget.input_type != 'hidden' %}
-        {% for error in field.errors %}
-          <span>{{ error }}</span>
-        {% endfor %}
-        {{ field.label.text }}{{field}}
-      {% endfor %}
+<h1>{{ mon.pokemon.name }}</h1>
+{% for field in form 
+    if field.widget.input_type != 'hidden' %}
+<p>
+    <div class="form-group">
+    <label class="form-label">{{field.label}}</label>
+    {{field(class_="form-control")}}
+    </div>
+</p>
+{% endfor %}
+<button type="submit" class="btn btn-primary">Apply Changes</button>
+</form>
+</div>
 {% endblock %}

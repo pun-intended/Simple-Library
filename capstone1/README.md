@@ -1,4 +1,22 @@
-https://pogoapi.net/
+Title:
+Poke-store
+
+URL:
+https://springboard-poke-store.onrender.com
+
+Details:
+A place to keep a record of Pokemon, their IV and CP for players of Pokemon GO.  When users log in, they can choose Pokemon from a list to add to their storage for future reference.  Later iterations will include search functions based on IV, move sets, types, and viability rating for online play.
+
+Flow:
+Users login, or sign up, and navigate to the "all pokemon" page.  From here they can "add" a pokemon to their storage, setting the IV and CP.  On the users home page, they are presented with a list of their pokemon, sorted in descending order by CP.  These can be edited or deleted.
+
+Technology Stack:
+- Python
+- WTForms
+- Jinja
+- Flask
+- Flask-SQLAlchemy
+- FLask-Bcrypt
 
 Capstone 1
 Pokemon Go Tool
