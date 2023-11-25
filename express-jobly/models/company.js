@@ -61,8 +61,12 @@ class Company {
     return companiesRes.rows;
   }
 
-  static async findFiltered(filter){
+  static async findFiltered(filter = {}){
     console.log(filter)
+    if (filter.length === 0){
+      return this.findAll()
+    }
+
     const queryStart = 
       `SELECT handle,
               name,
@@ -71,13 +75,14 @@ class Company {
               logo_url AS "logoUrl"
       FROM companies`
     const orderBy = `ORDER BY name`
-    if (!filter){
-      return this.findAll()
-    }
-    if(filter.minEmployees > filter.maxEmployees){
+    
+    const { minEmployees, maxEmployees, nameLike } = filter
+
+    console.log(`${minEmployees}, ${maxEmployees}, ${nameLike}`)
+
+    if(minEmployees > maxEmployees){
       throw new BadRequestError("minEmployees exceeds maxEmployees")
     }
-    const { minEmployees, maxEmployees, nameLike } = filter
     let filterStr = " WHERE "
     if(minEmployees){
       filterStr += `num_employees >= ${minEmployees} `

@@ -106,6 +106,72 @@ describe("GET /companies", function () {
         .set("authorization", `Bearer ${u1Token}`);
     expect(resp.statusCode).toEqual(500);
   });
+
+  test('filter: works', async function() {
+    // test validation of query
+    const GoodQueryStr = 'minEmployees=3&nameLike=c'
+    
+    const company = {companies: [{
+      handle: "c3",
+      name: "C3",
+      description: "Desc3",
+      numEmployees: 3,
+      logoUrl: "http://c3.img",
+    }, ]}
+  
+    const resp = await request(app).get(`/companies?${GoodQueryStr}`)
+    expect(resp.body).toEqual(company)
+  })
+
+    // test ignores invalid queries
+  test('filter: ignores invalid query params', async function() {
+    const invalidEntries = 'minEmployees=3&desc=desc500'
+    
+    const companies = {companies: [{
+      handle: "c3",
+      name: "C3",
+      description: "Desc3",
+      numEmployees: 3,
+      logoUrl: "http://c3.img",
+    }, ]}
+
+    const resp = await request(app).get(`/companies?${invalidEntries}`)
+    expect(resp.body).toEqual(companies)
+  })
+
+    // test ignores empty query string
+  test("filter: ignores empty query string", async function() {
+    const emptyStr = ''
+    
+    const companies = {companies: [
+      {
+        handle: "c1",
+        name: "C1",
+        description: "Desc1",
+        numEmployees: 1,
+        logoUrl: "http://c1.img",
+      },
+      {
+        handle: "c2",
+        name: "C2",
+        description: "Desc2",
+        numEmployees: 2,
+        logoUrl: "http://c2.img",
+      },
+      {
+        handle: "c3",
+        name: "C3",
+        description: "Desc3",
+        numEmployees: 3,
+        logoUrl: "http://c3.img",
+      },
+    ]
+      }
+
+    const resp = await request(app).get(`/companies?${emptyStr}`)
+    expect(resp.body).toEqual(companies)
+  })
+    
 });
 
 /************************************** GET /companies/:handle */
