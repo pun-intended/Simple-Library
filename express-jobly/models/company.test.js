@@ -87,6 +87,59 @@ describe("findAll", function () {
   });
 });
 
+/************************************** findAll */
+describe("findFiltered", function() {
+  test("works", async function() {
+    // find one record
+    const filter1 = {
+      minEmployees: 2,
+      maxEmployees: 2,
+      nameLike: "C"
+    }
+    const result1 = await Company.findFiltered(filter1)
+    expect(result1).toEqual([{
+      handle: "c2",
+      name: "C2",
+      description: "Desc2",
+      numEmployees: 2,
+      logoUrl: "http://c2.img",
+    },])
+    // find 2 records
+    const filter2 = {
+      minEmployees: 2
+    }
+    const result2 = await Company.findFiltered(filter2)
+    expect(result2).toEqual([{
+      handle: "c2",
+      name: "C2",
+      description: "Desc2",
+      numEmployees: 2,
+      logoUrl: "http://c2.img",
+    },
+    {
+      handle: "c3",
+      name: "C3",
+      description: "Desc3",
+      numEmployees: 3,
+      logoUrl: "http://c3.img",
+    },])
+  })
+  
+  test("Throws BadRequestError", async function() {
+    // put in different test
+    // throw BadRequestError
+    const badFilter = {
+      minEmployees: 3,
+      maxEmployees: 1
+    }
+    try{
+      await Company.findFiltered(badFilter)
+    } catch (err){
+      expect(err instanceof BadRequestError).toBeTruthy()
+    }
+  
+  })
+})
 /************************************** get */
 
 describe("get", function () {
