@@ -61,6 +61,47 @@ class Company {
     return companiesRes.rows;
   }
 
+  static async findFiltered(filter){
+    console.log(filter)
+    const queryStart = 
+      `SELECT handle,
+              name,
+              description,
+              num_employees AS "numEmployees",
+              logo_url AS "logoUrl"
+      FROM companies`
+    const orderBy = `ORDER BY name`
+    if (!filter){
+      return this.findAll()
+    }
+    if(filter.minEmployees > filter.maxEmployees){
+      throw new BadRequestError("minEmployees exceeds maxEmployees")
+    }
+    const { minEmployees, maxEmployees, nameLike } = filter
+    let filterStr = " WHERE "
+    if(minEmployees){
+      filterStr += `num_employees >= ${minEmployees} `
+      if (maxEmployees || nameLike){
+        filterStr += `AND `
+      }
+    }
+    if(maxEmployees){
+      filterStr += `num_employees <= ${maxEmployees} `
+      if ( nameLike ){
+        filterStr += `AND `
+      }
+    }
+    if(nameLike){
+      filterStr += `LOWER(name) LIKE '%${nameLike.toLowerCase()}%' `
+      }
+    
+    const queryStr = `${queryStart}${filterStr}${orderBy}`
+    console.log(queryStr)
+    const filteredComps = await db.query(queryStr)
+    return filteredComps.rows
+
+  }
+
   /** Given a company handle, return data about company.
    *
    * Returns { handle, name, description, numEmployees, logoUrl, jobs }
