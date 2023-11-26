@@ -12,6 +12,8 @@ const {
   commonAfterEach,
   commonAfterAll,
   u1Token,
+  u2Token,
+  adminToken,
 } = require("./_testCommon");
 
 beforeAll(commonBeforeAll);
@@ -24,7 +26,8 @@ afterAll(commonAfterAll);
 /************************************** POST /users */
 
 describe("POST /users", function () {
-  test("works for users: create non-admin", async function () {
+
+  test("works for admin: create non-admin", async function () {
     const resp = await request(app)
         .post("/users")
         .send({
@@ -35,7 +38,7 @@ describe("POST /users", function () {
           email: "new@email.com",
           isAdmin: false,
         })
-        .set("authorization", `Bearer ${u1Token}`);
+        .set("authorization", `Bearer ${adminToken}`);
     expect(resp.statusCode).toEqual(201);
     expect(resp.body).toEqual({
       user: {
@@ -48,7 +51,7 @@ describe("POST /users", function () {
     });
   });
 
-  test("works for users: create admin", async function () {
+  test("works for admin: create admin", async function () {
     const resp = await request(app)
         .post("/users")
         .send({
@@ -59,7 +62,7 @@ describe("POST /users", function () {
           email: "new@email.com",
           isAdmin: true,
         })
-        .set("authorization", `Bearer ${u1Token}`);
+        .set("authorization", `Bearer ${adminToken}`);
     expect(resp.statusCode).toEqual(201);
     expect(resp.body).toEqual({
       user: {
@@ -72,6 +75,7 @@ describe("POST /users", function () {
     });
   });
 
+  // TODO - Failing
   test("unauth for anon", async function () {
     const resp = await request(app)
         .post("/users")
@@ -86,13 +90,28 @@ describe("POST /users", function () {
     expect(resp.statusCode).toEqual(401);
   });
 
+  test("unauth for user", async function () {
+    const resp = await request(app)
+        .post("/users")
+        .send({
+          username: "u-new",
+          firstName: "First-new",
+          lastName: "Last-newL",
+          password: "password-new",
+          email: "new@email.com",
+          isAdmin: true,
+        })
+        .set("authorization", `Bearer ${u1Token}`);
+    expect(resp.statusCode).toEqual(401);
+  });
+
   test("bad request if missing data", async function () {
     const resp = await request(app)
         .post("/users")
         .send({
           username: "u-new",
         })
-        .set("authorization", `Bearer ${u1Token}`);
+        .set("authorization", `Bearer ${adminToken}`);
     expect(resp.statusCode).toEqual(400);
   });
 
@@ -107,18 +126,20 @@ describe("POST /users", function () {
           email: "not-an-email",
           isAdmin: true,
         })
-        .set("authorization", `Bearer ${u1Token}`);
+        .set("authorization", `Bearer ${adminToken}`);
     expect(resp.statusCode).toEqual(400);
   });
 });
 
-/************************************** GET /users */
 
+
+/************************************** GET /users */
+// TODO - add checks for auth changes - Admin only
 describe("GET /users", function () {
-  test("works for users", async function () {
+  test("works for admin", async function () {
     const resp = await request(app)
         .get("/users")
-        .set("authorization", `Bearer ${u1Token}`);
+        .set("authorization", `Bearer ${adminToken}`);
     expect(resp.body).toEqual({
       users: [
         {
@@ -146,6 +167,14 @@ describe("GET /users", function () {
     });
   });
 
+  test("unauth for user", async function () {
+    const resp = await request(app)
+        .get("/users")
+        .set("authorization", `Bearer ${u1Token}`);;
+    expect(resp.statusCode).toEqual(401);
+  });
+
+  // TODO - Failing
   test("unauth for anon", async function () {
     const resp = await request(app)
         .get("/users");
@@ -159,15 +188,15 @@ describe("GET /users", function () {
     await db.query("DROP TABLE users CASCADE");
     const resp = await request(app)
         .get("/users")
-        .set("authorization", `Bearer ${u1Token}`);
+        .set("authorization", `Bearer ${adminToken}`);
     expect(resp.statusCode).toEqual(500);
   });
 });
 
 /************************************** GET /users/:username */
-
+// TODO - add checks for auth changes - user or admin
 describe("GET /users/:username", function () {
-  test("works for users", async function () {
+  test("works for user", async function () {
     const resp = await request(app)
         .get(`/users/u1`)
         .set("authorization", `Bearer ${u1Token}`);
@@ -182,6 +211,28 @@ describe("GET /users/:username", function () {
     });
   });
 
+  test("works for admin", async function () {
+    const resp = await request(app)
+        .get(`/users/u1`)
+        .set("authorization", `Bearer ${adminToken}`);
+    expect(resp.body).toEqual({
+      user: {
+        username: "u1",
+        firstName: "U1F",
+        lastName: "U1L",
+        email: "user1@user.com",
+        isAdmin: false,
+      },
+    });
+  });
+
+  test("unauth for wrong user", async function () {
+    const resp = await request(app)
+        .get(`/users/u1`)
+        .set("authorization", `Bearer ${u2Token}`);;
+    expect(resp.statusCode).toEqual(401);
+  });
+// TODO - Failing
   test("unauth for anon", async function () {
     const resp = await request(app)
         .get(`/users/u1`);
@@ -191,15 +242,15 @@ describe("GET /users/:username", function () {
   test("not found if user not found", async function () {
     const resp = await request(app)
         .get(`/users/nope`)
-        .set("authorization", `Bearer ${u1Token}`);
+        .set("authorization", `Bearer ${adminToken}`);
     expect(resp.statusCode).toEqual(404);
   });
 });
 
 /************************************** PATCH /users/:username */
-
+// TODO - add checks for auth changes - user or admin
 describe("PATCH /users/:username", () => {
-  test("works for users", async function () {
+  test("works for user", async function () {
     const resp = await request(app)
         .patch(`/users/u1`)
         .send({
@@ -217,6 +268,34 @@ describe("PATCH /users/:username", () => {
     });
   });
 
+  test("works for admin", async function () {
+    const resp = await request(app)
+        .patch(`/users/u1`)
+        .send({
+          firstName: "New",
+        })
+        .set("authorization", `Bearer ${adminToken}`);
+    expect(resp.body).toEqual({
+      user: {
+        username: "u1",
+        firstName: "New",
+        lastName: "U1L",
+        email: "user1@user.com",
+        isAdmin: false,
+      },
+    });
+  });
+
+  test("unauth for wrong user", async function () {
+    const resp = await request(app)
+        .patch(`/users/u1`)
+        .send({
+          firstName: "New",
+        })
+        .set("authorization", `Bearer ${u2Token}`);
+    expect(resp.statusCode).toEqual(401);
+  });
+// TODO - Failing
   test("unauth for anon", async function () {
     const resp = await request(app)
         .patch(`/users/u1`)
@@ -232,7 +311,7 @@ describe("PATCH /users/:username", () => {
         .send({
           firstName: "Nope",
         })
-        .set("authorization", `Bearer ${u1Token}`);
+        .set("authorization", `Bearer ${adminToken}`);
     expect(resp.statusCode).toEqual(404);
   });
 
@@ -268,15 +347,29 @@ describe("PATCH /users/:username", () => {
 });
 
 /************************************** DELETE /users/:username */
-
+// TODO - add checks for auth changes - user or admin
 describe("DELETE /users/:username", function () {
-  test("works for users", async function () {
+  test("works for user", async function () {
     const resp = await request(app)
         .delete(`/users/u1`)
         .set("authorization", `Bearer ${u1Token}`);
     expect(resp.body).toEqual({ deleted: "u1" });
   });
 
+  test("works for admin", async function () {
+    const resp = await request(app)
+        .delete(`/users/u1`)
+        .set("authorization", `Bearer ${adminToken}`);
+    expect(resp.body).toEqual({ deleted: "u1" });
+  });
+
+  test("unauth for wrong user", async function () {
+    const resp = await request(app)
+        .delete(`/users/u1`)
+        .set("authorization", `Bearer ${u2Token}`);
+    expect(resp.statusCode).toEqual(401);
+  });
+// TODO - Failing
   test("unauth for anon", async function () {
     const resp = await request(app)
         .delete(`/users/u1`);
@@ -286,7 +379,7 @@ describe("DELETE /users/:username", function () {
   test("not found if user missing", async function () {
     const resp = await request(app)
         .delete(`/users/nope`)
-        .set("authorization", `Bearer ${u1Token}`);
+        .set("authorization", `Bearer ${adminToken}`);
     expect(resp.statusCode).toEqual(404);
   });
 });
