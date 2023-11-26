@@ -47,9 +47,8 @@ function ensureLoggedIn(req, res, next) {
  * If not, raises Unauthorized.
  */
 function ensureAdmin(req, res, next) {
-  console.log(res.locals)
   try {
-    if (!res.locals.user.is_admin) throw new UnauthorizedError();
+    if (!res.locals.user || !res.locals.user.isAdmin) throw new UnauthorizedError();
     return next();
   } catch (err) {
     return next(err);
@@ -61,11 +60,13 @@ function ensureAdmin(req, res, next) {
  * If not, raises Unauthorized.
  */
 function ensurePermission(req, res, next) {
+  if(!res.locals.user) throw new UnauthorizedError();
   const correctUser = (req.params.username === res.locals.user.username)
   try {
-    if (!(res.locals.user.is_admin || correctUser)) throw new UnauthorizedError();
+    if (!(correctUser || res.locals.user.isAdmin )) throw new UnauthorizedError();
     return next();
   } catch (err) {
+    console.log(err.stack)
     return next(err);
   }
 }
