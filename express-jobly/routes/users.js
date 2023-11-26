@@ -26,7 +26,7 @@ const router = express.Router();
  *
  * Authorization required: login
  **/
-
+// TODO - Change auth to admin onlu
 router.post("/", ensureLoggedIn, async function (req, res, next) {
   try {
     const validator = jsonschema.validate(req.body, userNewSchema);
@@ -50,7 +50,7 @@ router.post("/", ensureLoggedIn, async function (req, res, next) {
  *
  * Authorization required: login
  **/
-
+// TODO - Change auth to admin only
 router.get("/", ensureLoggedIn, async function (req, res, next) {
   try {
     const users = await User.findAll();
@@ -87,7 +87,7 @@ router.get("/:username", ensureLoggedIn, async function (req, res, next) {
  *
  * Authorization required: login
  **/
-
+// TODO - Change auth to said user and admin only
 router.patch("/:username", ensureLoggedIn, async function (req, res, next) {
   try {
     const validator = jsonschema.validate(req.body, userUpdateSchema);

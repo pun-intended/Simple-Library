@@ -42,6 +42,7 @@ function ensureLoggedIn(req, res, next) {
   }
 }
 
+//TODO - Add ensure admin check (how to use middelware for this?)
 
 module.exports = {
   authenticateJWT,
