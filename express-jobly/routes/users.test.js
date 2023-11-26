@@ -21,10 +21,8 @@ beforeEach(commonBeforeEach);
 afterEach(commonAfterEach);
 afterAll(commonAfterAll);
 
-// TODO - add checks for auth changes
 
 /************************************** POST /users */
-
 describe("POST /users", function () {
 
   test("works for admin: create non-admin", async function () {
@@ -75,7 +73,6 @@ describe("POST /users", function () {
     });
   });
 
-  // TODO - Failing
   test("unauth for anon", async function () {
     const resp = await request(app)
         .post("/users")
@@ -134,7 +131,6 @@ describe("POST /users", function () {
 
 
 /************************************** GET /users */
-// TODO - add checks for auth changes - Admin only
 describe("GET /users", function () {
   test("works for admin", async function () {
     const resp = await request(app)
@@ -174,7 +170,6 @@ describe("GET /users", function () {
     expect(resp.statusCode).toEqual(401);
   });
 
-  // TODO - Failing
   test("unauth for anon", async function () {
     const resp = await request(app)
         .get("/users");
@@ -194,7 +189,6 @@ describe("GET /users", function () {
 });
 
 /************************************** GET /users/:username */
-// TODO - add checks for auth changes - user or admin
 describe("GET /users/:username", function () {
   test("works for user", async function () {
     const resp = await request(app)
@@ -232,7 +226,7 @@ describe("GET /users/:username", function () {
         .set("authorization", `Bearer ${u2Token}`);;
     expect(resp.statusCode).toEqual(401);
   });
-// TODO - Failing
+
   test("unauth for anon", async function () {
     const resp = await request(app)
         .get(`/users/u1`);
@@ -248,7 +242,6 @@ describe("GET /users/:username", function () {
 });
 
 /************************************** PATCH /users/:username */
-// TODO - add checks for auth changes - user or admin
 describe("PATCH /users/:username", () => {
   test("works for user", async function () {
     const resp = await request(app)
@@ -295,7 +288,7 @@ describe("PATCH /users/:username", () => {
         .set("authorization", `Bearer ${u2Token}`);
     expect(resp.statusCode).toEqual(401);
   });
-// TODO - Failing
+
   test("unauth for anon", async function () {
     const resp = await request(app)
         .patch(`/users/u1`)
@@ -347,7 +340,6 @@ describe("PATCH /users/:username", () => {
 });
 
 /************************************** DELETE /users/:username */
-// TODO - add checks for auth changes - user or admin
 describe("DELETE /users/:username", function () {
   test("works for user", async function () {
     const resp = await request(app)
@@ -369,7 +361,7 @@ describe("DELETE /users/:username", function () {
         .set("authorization", `Bearer ${u2Token}`);
     expect(resp.statusCode).toEqual(401);
   });
-// TODO - Failing
+
   test("unauth for anon", async function () {
     const resp = await request(app)
         .delete(`/users/u1`);

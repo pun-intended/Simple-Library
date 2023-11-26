@@ -83,6 +83,7 @@ router.get("/:handle", async function (req, res, next) {
   } catch (err) {
     return next(err);
   }
+  // TODO - add jobs to result
 });
 
 /** PATCH /[handle] { fld1, fld2, ... } => { company }
