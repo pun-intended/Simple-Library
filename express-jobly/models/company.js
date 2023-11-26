@@ -62,7 +62,6 @@ class Company {
   }
 
   static async findFiltered(filter = {}){
-    console.log(filter)
     if (filter.length === 0){
       return this.findAll()
     }
@@ -77,8 +76,6 @@ class Company {
     const orderBy = `ORDER BY name`
     
     const { minEmployees, maxEmployees, nameLike } = filter
-
-    console.log(`${minEmployees}, ${maxEmployees}, ${nameLike}`)
 
     if(minEmployees > maxEmployees){
       throw new BadRequestError("minEmployees exceeds maxEmployees")
@@ -101,7 +98,6 @@ class Company {
       }
     
     const queryStr = `${queryStart}${filterStr}${orderBy}`
-    console.log(queryStr)
     const filteredComps = await db.query(queryStr)
     return filteredComps.rows
 
