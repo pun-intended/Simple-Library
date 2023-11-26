@@ -42,9 +42,37 @@ function ensureLoggedIn(req, res, next) {
   }
 }
 
-//TODO - Add ensure admin check (how to use middelware for this?)
+/** Middleware to to ensure user has admin access.
+ *
+ * If not, raises Unauthorized.
+ */
+function ensureAdmin(req, res, next) {
+  console.log(res.locals)
+  try {
+    if (!res.locals.user.is_admin) throw new UnauthorizedError();
+    return next();
+  } catch (err) {
+    return next(err);
+  }
+}
+
+/** Middleware to ensure user is either the requested user or has admin access
+ *
+ * If not, raises Unauthorized.
+ */
+function ensurePermission(req, res, next) {
+  const correctUser = (req.params.username === res.locals.user.username)
+  try {
+    if (!(res.locals.user.is_admin || correctUser)) throw new UnauthorizedError();
+    return next();
+  } catch (err) {
+    return next(err);
+  }
+}
 
 module.exports = {
   authenticateJWT,
   ensureLoggedIn,
+  ensureAdmin,
+  ensurePermission
 };

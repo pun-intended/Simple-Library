@@ -26,7 +26,7 @@ const router = express.Router();
  *
  * Authorization required: login
  **/
-// TODO - Change auth to admin onlu
+// TODO - Change auth to admin only
 router.post("/", ensureLoggedIn, async function (req, res, next) {
   try {
     const validator = jsonschema.validate(req.body, userNewSchema);

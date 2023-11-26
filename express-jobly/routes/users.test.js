@@ -19,6 +19,8 @@ beforeEach(commonBeforeEach);
 afterEach(commonAfterEach);
 afterAll(commonAfterAll);
 
+// TODO - add checks for auth changes
+
 /************************************** POST /users */
 
 describe("POST /users", function () {
