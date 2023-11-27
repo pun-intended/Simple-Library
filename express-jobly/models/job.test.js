@@ -15,17 +15,8 @@ beforeEach(commonBeforeEach);
 afterEach(commonAfterEach);
 afterAll(commonAfterAll);
 
-/**
- * jobs table
- * id - serial, pprimary key
- * title - text, nn
- * salary - int
- * equity - numeric
- * company_handle - varchar, nn, fk
- */
-// create
 describe("test create", function() {
-     // works
+
     const newJob = {
         title: 'new job',
         salary: 50000,
@@ -38,7 +29,7 @@ describe("test create", function() {
         expect(job).toMatchObject({
             id: expect.any(Number),
             ...newJob});
-
+            
         // Confirm in db
         const result = await db.query(
         `SELECT title, salary, equity, company_handle
@@ -56,9 +47,9 @@ describe("test create", function() {
     })
 })
 
-// findAll  
+
 describe("test findAll", function() {
-     // works: no filter
+
     test("works: no filter", async function() {
         const jobs = await Job.findAll();
 
@@ -112,9 +103,9 @@ describe("test findAll", function() {
     })
 })
        
-// get
+
 describe("get", function () {
-    // works
+
     test("works", async function() {
         const newJob = await db.query(`
         INSERT INTO jobs (title, salary, equity, company_handle)
@@ -134,7 +125,7 @@ describe("get", function () {
             }
         )
     })
-        // returns notFound
+
     test("returns notFound error", async function() {
         try{
             await Job.get(0);
@@ -146,11 +137,7 @@ describe("get", function () {
     })
 })
  
-// TODO - Test following Methods
-// update
 describe("update", function () {
-    
-    // works
     test("works", async function() {
         const updateJob = await Job.create({
             title: 'update', 
@@ -173,7 +160,6 @@ describe("update", function () {
             ...updateData
         })
     })
-    // works partial data
     test("works: partial data", async function() {
         const updateJob = await Job.create({
             title: 'update', 
@@ -196,7 +182,6 @@ describe("update", function () {
             company_handle: 'c1'
         })
     })
-    // returns notFound
     test("returns notFound error", async function() {
         const updateData = {
             title: 'new', 
@@ -213,9 +198,7 @@ describe("update", function () {
     })
 })
         
-// remove
 describe("remove", function () {
-    // works
     test("works", async function() {
         const allIds = await db.query(`
         SELECT id
@@ -238,7 +221,7 @@ describe("remove", function () {
 
 
     })
-    // returns notFound
+
     test("returns notFound error", async function() {
         try{
             const missing = await Job.remove(0)
