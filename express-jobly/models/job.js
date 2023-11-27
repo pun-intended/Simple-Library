@@ -1,16 +1,7 @@
 const db = require("../db");
 const { BadRequestError, NotFoundError } = require("../expressError");
 const { sqlForPartialUpdate } = require("../helpers/sql");
-/**
- * jobs table
- * id - serial, primary key
- * title - text, nn
- * salary - int
- * equity - numeric
- * company_handle - varchar, nn, fk
- */
 
-//class
 class Job {
 
     /**

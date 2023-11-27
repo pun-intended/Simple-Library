@@ -206,7 +206,6 @@ describe("remove", function () {
         `)
 
         const deleteId = allIds.rows[0].id
-        console.log(`----- ID->  ${deleteId}`)
         const result = await Job.remove(deleteId)
 
         expect(result).toEqual({message: "Deleted"})
