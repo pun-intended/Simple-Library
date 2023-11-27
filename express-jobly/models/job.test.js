@@ -137,7 +137,7 @@ describe("get", function () {
         // returns notFound
     test("returns notFound error", async function() {
         try{
-            await Job.get(1000);
+            await Job.get(0);
             fail()
         } catch (err) {
             expect(err instanceof NotFoundError).toBeTruthy()
@@ -152,15 +152,64 @@ describe("update", function () {
     
     // works
     test("works", async function() {
-        
+        const updateJob = await Job.create({
+            title: 'update', 
+            salary: 1000, 
+            equity: 0.01, 
+            company_handle: 'c1'})
+        const updateId = updateJob.id
+        console.log(`UPDATE ID ----- ${updateId}`)
+
+        const updateData = {
+            title: 'new', 
+            salary: 7000, 
+            equity: '0.05', 
+            company_handle: 'c2'}
+
+        const job = await Job.update(updateId, updateData)
+
+        expect(job).toEqual({
+            id: updateId,
+            ...updateData
+        })
     })
     // works partial data
     test("works: partial data", async function() {
-        
+        const updateJob = await Job.create({
+            title: 'update', 
+            salary: 1000, 
+            equity: 0.01, 
+            company_handle: 'c1'})
+        const updateId = updateJob.id
+        console.log(`UPDATE ID ----- ${updateId}`)
+
+        const updateData = {
+            title: 'new'}
+
+        const job = await Job.update(updateId, updateData)
+
+        expect(job).toEqual({
+            id: updateId,
+            title: 'new', 
+            salary: 1000, 
+            equity: '0.01', 
+            company_handle: 'c1'
+        })
     })
     // returns notFound
     test("returns notFound error", async function() {
-        
+        const updateData = {
+            title: 'new', 
+            salary: 7000, 
+            equity: '0.05', 
+            company_handle: 'c2'}
+
+        try{
+            const result = await Job.update(0, updateData)
+            fail()
+        } catch (err) {
+            expect(err instanceof NotFoundError).toBeTruthy()
+        }
     })
 })
         
@@ -168,11 +217,35 @@ describe("update", function () {
 describe("remove", function () {
     // works
     test("works", async function() {
+        const allIds = await db.query(`
+        SELECT id
+        FROM jobs
+        `)
+
+        const deleteId = allIds.rows[0].id
+        console.log(`----- ID->  ${deleteId}`)
+        const result = await Job.remove(deleteId)
+
+        expect(result).toEqual({message: "Deleted"})
         
+        // Check db for deletion
+        try{
+            const job = await Job.get(deleteId)
+            fail()
+        } catch (err) {
+            expect(err instanceof NotFoundError).toBeTruthy()
+        }
+
+
     })
     // returns notFound
     test("returns notFound error", async function() {
-
+        try{
+            const missing = await Job.remove(0)
+            fail()
+        } catch (err) {
+            expect(err instanceof NotFoundError).toBeTruthy()
+        }
     })
 })
         
