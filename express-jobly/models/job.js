@@ -42,7 +42,6 @@ class Job {
         if(!job) throw new NotFoundError(`No job id:${id}`)
         return(job)
     }
-    // TODO - Implement following methods
     static async update(id, data){
         const {setCols, values} = sqlForPartialUpdate(data, {})
 
