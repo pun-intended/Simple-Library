@@ -21,7 +21,7 @@ beforeEach(commonBeforeEach);
 afterEach(commonAfterEach);
 afterAll(commonAfterAll);
 
-    // post - admin
+
 describe("/POST jobs", function () {
         const newJob = {
             title: "new job",
