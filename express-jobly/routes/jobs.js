@@ -14,18 +14,16 @@ const jobUpdateSchema = require("../schemas/jobUpdate.json");
 
 const router = new express.Router();
 
-// TODO Complete routes
+
 router.post('/', ensureAdmin, async function(req, res, next) {
     try{
         const validator = jsonschema.validate(req.body, jobNewSchema)
-        console.log(validator.valid)
         if (!validator.valid){
             const errs = validator.errors.map(e => e.stack)
             throw new BadRequestError(errs)
         }
 
         const job = await Job.create(req.body)
-        console.log("-----Job created")
         return res.status(201).json({job})
     }catch (err) {
         return next(err)
@@ -33,15 +31,37 @@ router.post('/', ensureAdmin, async function(req, res, next) {
 })
 
 router.get('/',ensureLoggedIn, async function(req, res, next) {
+    try{
+        const jobs = await Job.findAll();
+        return res.json({ jobs })
+    } catch (err){
+        return next(err)
+    }
 
 })
 
 router.patch('/:id',ensureAdmin, async function(req, res, next) {
-
+    try{
+        const validator = jsonschema.validate(req.body, jobUpdateSchema)
+        if (!validator.valid){
+            const errs = validator.errors.map(e => e.stack)
+            throw new BadRequestError(errs)
+        }
+        const job = await Job.update(req.params.id, req.body)
+        return res.json({job})
+    }catch (err) {
+        console.log(err)
+        return next(err)
+    }
 })
 
 router.delete('/:id', ensureAdmin, async function(req, res, next) {
-
+    try{
+        const result = await Job.remove(req.params.id);
+        return res.json(result)
+    } catch (err){
+        return next(err)
+    }
 })
 
 module.exports = router
