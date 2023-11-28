@@ -23,7 +23,6 @@ const router = new express.Router();
  *
  * Authorization required: Admin
  */
-// TODO - change auth - admin only
 router.post("/", ensureAdmin, async function (req, res, next) {
   try {
     const validator = jsonschema.validate(req.body, companyNewSchema);
