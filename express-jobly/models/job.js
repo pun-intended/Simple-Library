@@ -31,7 +31,7 @@ class Job {
     }
 
     static async findFiltered(filter = {}){
-
+        console.log(filter)
     
         const queryStart = 
           `SELECT   id,
