@@ -96,8 +96,6 @@ describe("test findAll", function() {
 })
 
 describe("test findFiltered", function () {
-// TODO - Add tests
-
 
     test("works", async function() {
         const filter1 = {
