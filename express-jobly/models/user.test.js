@@ -209,6 +209,23 @@ describe("update", function () {
   });
 });
 
+/************************************** update */
+
+describe("apply", function () {
+  test("works", async function () {
+    const job = await db.query(`
+      SELECT id
+      FROM jobs
+      WHERE title = 'j3'
+    `)
+    const jobId = job.rows[0].id
+
+    const result = await User.apply('u1', jobId)
+
+    expect(result).toEqual({applied: jobId})
+  })
+})
+
 /************************************** remove */
 
 describe("remove", function () {

@@ -190,6 +190,17 @@ class User {
     return user;
   }
 
+  static async apply(username, jobId){
+    let result = await db.query(`
+      INSERT INTO applications(username, job_id)
+      VALUES ($1, $2)
+      RETURNING job_id
+    `,
+    [username, jobId])
+
+    return ({applied: result.rows[0].job_id})
+  }
+
   /** Delete given user from database; returns undefined. */
 
   static async remove(username) {
