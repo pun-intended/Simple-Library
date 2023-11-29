@@ -117,5 +117,16 @@ class Job {
 
         return({message: "Deleted"})
     }
+    static async getCompany(handle){
+        const result = await db.query(`
+          SELECT id, title, salary, equity, company_handle
+          FROM jobs
+          WHERE company_handle = $1
+        `,
+        [handle])
+
+        return result.rows
+    }
 }
+
 module.exports = Job;
