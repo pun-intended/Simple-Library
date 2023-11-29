@@ -31,6 +31,14 @@ router.post('/', ensureAdmin, async function(req, res, next) {
 })
 
 router.get('/',ensureLoggedIn, async function(req, res, next) {
+    // try filter
+    if(Object.keys(req.query).length > 0){
+        try{
+        const jobs = await Job.findFiltered(req.query)
+        return res.json({ jobs });
+        } catch(err) {
+          return next(err)
+        }}
     try{
         const jobs = await Job.findAll();
         return res.json({ jobs })
