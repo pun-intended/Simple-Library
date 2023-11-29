@@ -117,6 +117,34 @@ describe("/GET jobs", function () {
 
         expect(resp.statusCode).toBe(401)
     })
+// TODO - Write tests
+    test("works: filter", async function () {
+        const filterStr = "minSalary=2000&hasEquity=true"
+        
+        const resp = await request(app)
+        .get(`/jobs?${filterStr}`)
+        .set("authorization", `Bearer ${u1Token}`)
+
+        expect(resp.statusCode).toBe(200)
+        expect(resp.body).toMatchObject({
+            jobs: [
+                {
+                    id: expect.any(Number),
+                    title: "test2",
+                    salary: 2000,
+                    equity: "0.01",
+                    company_handle: "c2"
+                },
+                {
+                    id: expect.any(Number),
+                    title: "test3",
+                    salary: 3000,
+                    equity: "0.03",
+                    company_handle: "c3"
+                },
+            ]
+        })
+    })
 })
 
 describe("/PATCH jobs", function () {
