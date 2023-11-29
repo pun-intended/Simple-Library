@@ -117,7 +117,7 @@ describe("/GET jobs", function () {
 
         expect(resp.statusCode).toBe(401)
     })
-// TODO - Write tests
+
     test("works: filter", async function () {
         const filterStr = "minSalary=2000&hasEquity=true"
         
