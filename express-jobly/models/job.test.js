@@ -93,15 +93,95 @@ describe("test findAll", function() {
         ])
         
     })
+})
 
-    test("works: filter", async function() {
+describe("test findFiltered", function () {
+// TODO - Add tests
 
+
+    test("works", async function() {
+        const filter1 = {
+            title: "j3"
+        }
+        
+       // Single Param
+        const jobList1 = await Job.findFiltered(filter1)
+        expect(jobList1).toMatchObject([{
+            id: expect.any(Number),
+            title: "j3",
+            salary: 30000,
+            equity: "0.0",
+            company_handle: "c2"
+        }])
+        
+        const filter2 = {
+            hasEquity: true
+        }
+        const jobList2 = await Job.findFiltered(filter2)
+        expect(jobList2).toMatchObject([{
+            id: expect.any(Number),
+            title: "j1",
+            salary: 10000,
+            equity: "0.1",
+            company_handle: "c1"
+        },
+        {
+            id: expect.any(Number),
+            title: "j1",
+            salary: 20000,
+            equity: "0.1",
+            company_handle: "c2"
+        },
+        {
+            id: expect.any(Number),
+            title: "j4",
+            salary: 40000,
+            equity: "0.4",
+            company_handle: "c2"
+        }])
+
+        // Multiple Params
+        const filter3 = {
+            title: "J1",
+            minSalary: 20000,
+            hasEquity: true
+        }
+        const jobList3 = await Job.findFiltered(filter3)
+        expect(jobList3).toMatchObject([{
+            id: expect.any(Number),
+            title: "j1",
+            salary: 20000,
+            equity: "0.1",
+            company_handle: "c2"
+        }])
     })
 
     test("ignores invalid params", async function () {
-        
+        // Multiple Params
+        const filter = {
+            title: "j1",
+            hasEquity: true,
+            company_handle: "c2"
+        }
+        const jobList = await Job.findFiltered(filter)
+        console.log(jobList)
+        expect(jobList).toMatchObject([{
+            id: expect.any(Number),
+            title: "j1",
+            salary: 10000,
+            equity: "0.1",
+            company_handle: "c1"
+        },
+        {
+            id: expect.any(Number),
+            title: "j1",
+            salary: 20000,
+            equity: "0.1",
+            company_handle: "c2"
+        }])
     })
 })
+
        
 
 describe("get", function () {
@@ -145,7 +225,6 @@ describe("update", function () {
             equity: 0.01, 
             company_handle: 'c1'})
         const updateId = updateJob.id
-        console.log(`UPDATE ID ----- ${updateId}`)
 
         const updateData = {
             title: 'new', 
@@ -167,7 +246,6 @@ describe("update", function () {
             equity: 0.01, 
             company_handle: 'c1'})
         const updateId = updateJob.id
-        console.log(`UPDATE ID ----- ${updateId}`)
 
         const updateData = {
             title: 'new'}

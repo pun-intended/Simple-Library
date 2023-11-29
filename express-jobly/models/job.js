@@ -9,7 +9,7 @@ class Job {
      * 
      * Data should be {title, salary, equity, company_handle}
      */
-    // create
+   
     static async create({title, salary, equity, company_handle}){
         const result = await db.query(`
             INSERT INTO jobs (title, salary, equity, company_handle)
@@ -20,7 +20,7 @@ class Job {
         const job = result.rows[0];
         return(job);
     }
-    // findAll
+   
     static async findAll(){
         const jobsRes = await db.query(`
         SELECT id, title, salary, equity, company_handle
@@ -29,8 +29,48 @@ class Job {
         `);
         return jobsRes.rows;
     }
-    // get
-    static async get(id) {
+
+    static async findFiltered(filter = {}){
+
+    
+        const queryStart = 
+          `SELECT   id,
+                    title,
+                    salary,
+                    equity,
+                    company_handle
+          FROM jobs`
+        const orderBy = `ORDER BY title`
+        
+        const { title, minSalary, hasEquity } = filter
+        if (!title && !minSalary && !hasEquity) return Job.findAll()
+    
+        let filterStr = " WHERE "
+        if(title){
+            filterStr += `LOWER(title) LIKE '%${title.toLowerCase()}%' `
+          if (minSalary || hasEquity){
+            filterStr += `AND `
+          }
+        }
+        if(minSalary){
+          filterStr += `salary >= ${minSalary} `
+          if ( hasEquity ){
+            filterStr += `AND `
+          }
+        }
+        if(hasEquity){
+          filterStr += `equity > 0 `
+          }
+        
+        const queryStr = `${queryStart}${filterStr}${orderBy}`
+
+        console.log(queryStr)
+        const filteredComps = await db.query(queryStr)
+        return filteredComps.rows
+    
+      }
+
+      static async get(id) {
         const jobResult = await db.query(
             `SELECT id, title, salary, equity, company_handle
             FROM jobs
