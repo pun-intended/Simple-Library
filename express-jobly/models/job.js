@@ -21,6 +21,11 @@ class Job {
         return(job);
     }
    
+    /**
+     * Return array of all jobs
+     * 
+     * @returns [{id, title, salary, equity, company_handle}, ...]
+     */
     static async findAll(){
         const jobsRes = await db.query(`
         SELECT id, title, salary, equity, company_handle
@@ -30,6 +35,13 @@ class Job {
         return jobsRes.rows;
     }
 
+    /**
+     * Return list of jobs that meet the filter criteria of 'title', 'minSalary', 
+     * 'hasEquity'
+     * 
+     * @param {*} filter 
+     * @returns [{id, title, salary, equity, company_handle}, ...]
+     */
     static async findFiltered(filter = {}){
         console.log(filter)
     
@@ -68,8 +80,14 @@ class Job {
         const filteredComps = await db.query(queryStr)
         return filteredComps.rows
     
-      }
+    }
 
+    /**
+     * Return job with given id.  Throws NotFoundError if job id does not exist
+     * 
+     * @param {*} id 
+     * @returns {id, title, salary, equity, company_handle}
+     */
       static async get(id) {
         const jobResult = await db.query(
             `SELECT id, title, salary, equity, company_handle
@@ -82,6 +100,15 @@ class Job {
         if(!job) throw new NotFoundError(`No job id:${id}`)
         return(job)
     }
+
+    /**
+     * Update job with new criteria passed as argument.
+     * Throws NotFoundError if job id does not exist
+     * 
+     * @param {*} id 
+     * @param {*} data 
+     * @returns {id, title, salary, equity, company_handle}
+     */
     static async update(id, data){
         const {setCols, values} = sqlForPartialUpdate(data, {})
 
@@ -101,6 +128,13 @@ class Job {
         return(job)
     }
     
+    /**
+     * Delete a record from the db corresponding to id passed as argument
+     * Throws NotFoundError if job id does not exist
+     * 
+     * @param {*} id 
+     * @returns {message: "Deleted"}
+     */
     static async remove(id){
 
         const result = await db.query(`
@@ -117,6 +151,14 @@ class Job {
 
         return({message: "Deleted"})
     }
+
+    /**
+     * Returns list of jobs associated with company handle passed as argument
+     * Throws NotFoundError if job id does not exist
+     * 
+     * @param {*} handle 
+     * @returns [{id, title, salary, equity, company_handle}, ...]
+     */
     static async getCompany(handle){
         const result = await db.query(`
           SELECT id, title, salary, equity, company_handle

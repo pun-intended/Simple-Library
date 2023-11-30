@@ -61,6 +61,17 @@ class Company {
     return companiesRes.rows;
   }
 
+  /** Return filtered list of companies.
+   *
+   * returns array of companies meeting filter criteria passed as argument
+   * 
+   * possible filters:
+   *  - minEmployees
+   *  - maxEmployees
+   *  - nameLike
+   * 
+   * Returns [{ handle, name, description, numEmployees, logoUrl }, ...]
+   * */
   static async findFiltered(filter = {}){
     if (filter.length === 0){
       return this.findAll()

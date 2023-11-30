@@ -132,7 +132,6 @@ describe("GET /companies", function () {
     expect(resp.body).toEqual(company)
   })
 
-    // test ignores invalid queries
   test('filter: ignores invalid query params', async function() {
     const invalidEntries = 'minEmployees=3&desc=desc500'
     
@@ -148,7 +147,6 @@ describe("GET /companies", function () {
     expect(resp.body).toEqual(companies)
   })
 
-    // test ignores empty query string
   test("filter: ignores empty query string", async function() {
     const emptyStr = ''
     
@@ -184,27 +182,6 @@ describe("GET /companies", function () {
 });
 
 /************************************** GET /companies/:handle */
-
-/**
- *   await Job.create({
-    title:"test1",
-    salary:1000,  
-    equity:0.4,
-    company_handle:"c1",
-  })
-  await Job.create({
-    title:"test2",
-    salary:2000,  
-    equity:0.01,
-    company_handle:"c2",
-  })
-  await Job.create({
-    title:"test3",
-    salary: 3000,  
-    equity:0.03,
-    company_handle:"c3",
-  })
- */
 
 describe("GET /companies/:handle", function () {
   test("works for anon", async function () {

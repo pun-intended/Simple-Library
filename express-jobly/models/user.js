@@ -190,6 +190,15 @@ class User {
     return user;
   }
 
+  /** Allow user to apply for a job
+   * 
+   * Creates 'application' using username and job id
+   * 
+   * @param {*} username 
+   * @param {*} jobId 
+   * @returns { applied: jobId}
+   */
+
   static async apply(username, jobId){
     let result = await db.query(`
       INSERT INTO applications(username, job_id)
