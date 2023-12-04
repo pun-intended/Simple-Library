@@ -29,7 +29,7 @@ router.post("/", ensureAdmin, async function (req, res, next) {
     const validator = jsonschema.validate(req.body, companyNewSchema);
     if (!validator.valid) {
       const errs = validator.errors.map(e => e.stack);
-      throw new BadRequestError(errs);
+      throw new BadRequestError(errs, 401);
     }
 
     const company = await Company.create(req.body);
