@@ -1,39 +1,34 @@
-// ***/ :*** Homepage — just a simple welcome message
+import './App.css';
+import "jwt-decode"
+// import RouteList from './RouteList';
+import JobList from './jobs/JobList';
+import CompanyList from './companies/CompanyList';
+import LoginForm from './user/LoginForm';
+import SignupForm from './user/SignupForm';
+import UserProfile from './user/UserProfile';
+import Landing from './Landing';
+import React from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 
-// ***/companies :*** List all companies
+function RouteList({login, signup, patchUser, currentUser}) {
 
-// ***/companies/apple :*** View details of this company
-
-// ***/jobs :*** List all jobs
-
-// ***/login :*** Login/signup
-
-// ***/signup :*** Signup form
-
-// ***/profile :*** Edit profile page
-import React, { useState }from 'react'
-import { Route, Routes, Navigate } from 'react-router-dom';
-
-function RouteList() {
-    
-    const INITIAL_STATE = []
-
-    const func = (data) => {
-        const newColor = {name: data.name, rgb: data.color}
-        setColors([...colors, newColor])
-    }
-
-    const [colors, setColors] = useState(INITIAL_STATE)
+  const navigate = useNavigate()
+  
+  async function logout() {
+    // setToken([])
+    navigate("/")
+  }
 
     return (
         <Routes>
-            <Route exact path="/companies/:handle" element={<JobList handle={handle}/>} />
-            <Route exact path="/companies" element={<CompanyList companies={companies}/>} />
-            <Route exact path="/jobs" element={<JobList />} />
-            <Route exact path="/login" element={<LoginForm />} />
-            <Route exact path="/signup" element={<SignupForm />} />
-            <Route exact path="/profile" element={<Profile />} />
-            <Route exact path="/" element={<Landing />} />
+              <Route exact path="/companies/:handle" element={<JobList />} />
+              <Route exact path="/companies" element={<CompanyList />} />
+              <Route exact path="/jobs" element={<JobList />} />
+              <Route exact path="/login" element={<LoginForm login={login} />} />
+              <Route exact path="/signup" element={<SignupForm signup={signup} />} />
+              <Route exact path="/profile" element={<UserProfile user={currentUser} patchUser={patchUser}/>} />
+              <Route exact path="/logout" render={() => logout()} />
+              <Route exact path="/" element={<Landing />} />
         </Routes>
     );
 }
