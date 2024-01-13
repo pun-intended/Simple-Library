@@ -5,6 +5,7 @@ import JoblyApi from "../api.js"
 function CompanyList() {
     
     const [companies, setCompanies] = useState([])
+    const [query, setQuery] = useState([])
 
     useEffect(() => {
         async function initializeCompanies() {
@@ -15,8 +16,14 @@ function CompanyList() {
     }, [])
 
 
-    async function search(queryString) {
-        const result = await JoblyApi.getCompany(queryString)
+    const handleChange = (evt) => {
+        const {name, value} = evt.target
+        console.log(`QUERY --- ${name}: ${value}`)
+        setQuery(value)
+    }
+    const handleSearch = async (evt) => {
+        evt.preventDefault()
+        const result = await JoblyApi.getCompany(query)
         setCompanies(result)
     }
     return(
@@ -32,8 +39,13 @@ function CompanyList() {
 
            
             <div>
-                <form onSubmit={search}>
-                    <input type="text" className="search-bar" placeholder="Search"></input>
+                <form onSubmit={handleSearch}>
+                    <input 
+                    id = "searchTerm" 
+                    type="text" 
+                    className="search-bar" 
+                    placeholder="Search"
+                    onChange={handleChange}></input>
                     <button className="submit">Search</button>
                 </form>
             </div>
