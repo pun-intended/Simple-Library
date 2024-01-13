@@ -4,9 +4,10 @@ import {Form, FormGroup, Label, Input, Button} from "reactstrap"
 
 function UserProfile({user, patchUser}) {
     
+    console.log(user)
     const INITIAL_STATE = user
 
-    const[formData, setFormData] = useState(user)
+    const[formData, setFormData] = useState(INITIAL_STATE)
 
     const handleSubmit = (evt) => {
         evt.preventDefault()
@@ -40,7 +41,7 @@ function UserProfile({user, patchUser}) {
             <Input 
                 id="first_name"
                 name="firstName"
-                value={`${formData.first_name}`}
+                value={`${formData.firstName}`}
                 type="text"
                 onChange={handleChange}
             />
@@ -50,7 +51,7 @@ function UserProfile({user, patchUser}) {
             <Input 
                 id="last_name"
                 name="lastName"
-                value={`${formData.last_name}`}
+                value={`${formData.lastName}`}
                 type="text"
                 onChange={handleChange}
             />

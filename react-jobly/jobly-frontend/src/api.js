@@ -18,11 +18,14 @@ class JoblyApi {
   static async request(endpoint, data = {}, method = "get") {
     console.debug("API Call:", endpoint, data, method);
     // try{
-    //   this.token = localStorage.getItem("token")
+    //   this.token = localStorage.getItem('token')
+
+    //   console.log(`Token in API - ${this.token}`)
     // } catch(e) {
     //   return e
     // }
     
+
     //there are multiple ways to pass an authorization token, this is how you pass it in the header.
     //this has been provided to show you another way to pass the token. you are only expected to read this code for this project.
     const url = `${BASE_URL}/${endpoint}`;
@@ -88,9 +91,7 @@ class JoblyApi {
 
   /** Login */ 
   static async login(data){
-    console.log("----------Login called")
     let res = await this.request('auth/token', data, "post");
-    console.log(`token -- ${res.token}`)
     return res.token
   }
 
@@ -103,7 +104,6 @@ class JoblyApi {
 
   /** Get current user */
   static async getUser(username){
-    console.log("----------getuser called")
     let res = await this.request(`users/${username}`);
     return res.user;
   }

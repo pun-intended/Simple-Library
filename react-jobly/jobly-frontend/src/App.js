@@ -1,5 +1,4 @@
 import './App.css';
-import "jwt-decode"
 import RouteList from './RouteList';
 import React, {useEffect} from 'react';
 import { BrowserRouter, Routes } from 'react-router-dom';
@@ -13,12 +12,13 @@ import UserContext from './UserContext';
 function App() {
 
 
-  const [token, setToken] = useLocalStorage("token", "")
-  const [currentUser, setCurrentUser] = useLocalStorage("currentUser", "")
+  const [token, setToken] = useLocalStorage('token', '')
+  const [currentUser, setCurrentUser] = useLocalStorage('currentUser', '')
 
       
   async function login(data) {
     const newToken = await JoblyApi.login(data);
+    // localStorage.setItem('token', newToken)
     setToken(newToken)
   }
   async function signup(data) {
@@ -31,16 +31,21 @@ function App() {
   }
 
 
-  useEffect( function updateUser() {
+  useEffect(() => {
+    async function updateUser() {
     if(token.length > 0){
+      
       try{
         const decodedToken = jwtDecode(token)
         const username = decodedToken.username
-        const user = JoblyApi.getUser(username)
+        console.log(`${username}`)
+        const user = await JoblyApi.getUser(username)
+        console.log("-----Setting currentuser")
         setCurrentUser(user)
       } catch (e) {
         console.log(`Token Error: ${e}`)
-      }}
+      }}}
+    updateUser()
     
   },[token])
 
