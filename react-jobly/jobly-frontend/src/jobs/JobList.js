@@ -1,24 +1,31 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom"
 import JobCard from "./JobCard.js";
 import JoblyApi from "../api.js"
 
 function JobList() {
     const params = useParams()
-    
-    const allJobs = params.handle ? JoblyApi.getCompanyJobs(params.handle) : JoblyApi.getJobs();
-    console.log(allJobs)
+    const [jobs, setJobs] = useState([])
 
-    
-
-    const [jobs, setJobs] = useState(allJobs)
+    useEffect(() => {
+        async function initializeJobs() {
+            const allJobs = params.handle ? 
+            await JoblyApi.getCompanyJobs(params.handle) : 
+            await JoblyApi.getAllJobs();
+            setJobs(allJobs)
+            console.log("SETTING JOBS")
+        }
+        
+        initializeJobs()
+    }, [])
 
     async function search(queryString) {
         const result = await JoblyApi.getJobs(queryString)
-        setJobs(result)
+        setJobs([...result])
     }
     return(
         <div className="JobList">
+            // TODO add UUID to each element
             {/* <search bar> 
                 add state for company list
                 add state for filter
@@ -38,7 +45,8 @@ function JobList() {
 
             <div className="JobList companies">
                 {jobs.map((job) => {
-                    return( 
+                    return(
+                        // <h1>{`${job.title}`}</h1> 
                         <JobCard job={job} />
                     )
                 })}

@@ -44,7 +44,7 @@ function SignupForm({signup}) {
             <Label for="first_name" ></Label>
             <Input 
                 id="first_name"
-                name="first_name"
+                name="firstName"
                 placeholder="First Name"
                 type="text"
                 onChange={handleChange}
@@ -54,7 +54,7 @@ function SignupForm({signup}) {
             <Label for="last_name" ></Label>
             <Input 
                 id="last_name"
-                name="last_name"
+                name="lastName"
                 placeholder="Last Name"
                 type="text"
                 onChange={handleChange}

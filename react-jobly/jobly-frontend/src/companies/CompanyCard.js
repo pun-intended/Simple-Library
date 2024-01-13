@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardBody, CardTitle, CardText } from "reactstrap";
 
-function CompanyCard(company) {
+function CompanyCard({company}) {
     return(
         <Card >
             <CardBody >

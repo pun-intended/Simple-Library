@@ -39,7 +39,7 @@ function UserProfile({user, patchUser}) {
             <Label for="first_name" ></Label>
             <Input 
                 id="first_name"
-                name="first_name"
+                name="firstName"
                 value={`${formData.first_name}`}
                 type="text"
                 onChange={handleChange}
@@ -49,7 +49,7 @@ function UserProfile({user, patchUser}) {
             <Label for="last_name" ></Label>
             <Input 
                 id="last_name"
-                name="last_name"
+                name="lastName"
                 value={`${formData.last_name}`}
                 type="text"
                 onChange={handleChange}

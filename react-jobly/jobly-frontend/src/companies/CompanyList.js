@@ -1,16 +1,26 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import CompanyCard from "./CompanyCard.js";
 import JoblyApi from "../api.js"
 
 function CompanyList() {
-    const allCompanies = JoblyApi.getAllCompanies()
-    const [companies, setCompanies] = useState(allCompanies)
+    
+    const [companies, setCompanies] = useState([])
+
+    useEffect(() => {
+        async function initializeCompanies() {
+            const allCompanies = await JoblyApi.getAllCompanies()
+            setCompanies(allCompanies)
+        }
+        initializeCompanies()
+    }, [])
+
 
     async function search(queryString) {
         const result = await JoblyApi.getCompany(queryString)
         setCompanies(result)
     }
     return(
+        // TODO add UUID to each element
         <div className="CompanyList">
             {/* <search bar> 
                 add state for company list
