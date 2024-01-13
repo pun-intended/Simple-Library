@@ -7,6 +7,7 @@ function JobList() {
     const params = useParams()
     
     const allJobs = params.handle ? JoblyApi.getCompanyJobs(params.handle) : JoblyApi.getJobs();
+    console.log(allJobs)
 
     
 

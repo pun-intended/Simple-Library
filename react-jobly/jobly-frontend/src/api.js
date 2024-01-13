@@ -9,7 +9,7 @@ const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001";
  * be any API-aware stuff elsewhere in the frontend.
  *
  */
-
+ 
 class JoblyApi {
   // the token for interactive with the API will be stored here.
   static token;
@@ -51,7 +51,7 @@ class JoblyApi {
 
   /** Get all jobs. */
   static async getAllJobs(){
-    let res = await this.request(`/jobs`);
+    let res = await this.request(`/jobs?`);
     return res.jobs
   }
 
