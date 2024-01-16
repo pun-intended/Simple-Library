@@ -1,5 +1,5 @@
 import {React, useState} from "react";
-
+import {useNavigate} from "react-router-dom"
 import {Form, FormGroup, Label, Input, Button} from "reactstrap"
 
 
@@ -8,13 +8,19 @@ function LoginForm({login}) {
         username: "",
         password: ""
     }
+    const navigate = useNavigate()
 
-    const[formData, setFormData] = useState()
+    const[formData, setFormData] = useState(INITIAL_STATE)
 
     const handleSubmit = (evt) => {
         evt.preventDefault()
-        login(formData)
-        setFormData(INITIAL_STATE)
+        try{
+            login(formData)
+            setFormData(INITIAL_STATE)
+            navigate("/")
+        } catch(e){
+            console.log(e)
+        }
     }
 
     const handleChange = evt => {
@@ -34,6 +40,7 @@ function LoginForm({login}) {
                 placeholder="Username"
                 type="text"
                 onChange={handleChange}
+                value={formData.username}
             />
         </FormGroup> 
         <FormGroup>
@@ -44,6 +51,7 @@ function LoginForm({login}) {
                 placeholder="Password"
                 type="password"
                 onChange={handleChange}
+                value={formData.password}
             />
         </FormGroup> 
         <Button 

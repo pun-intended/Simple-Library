@@ -17,19 +17,17 @@ class JoblyApi {
 
   static async request(endpoint, data = {}, method = "get") {
     console.debug("API Call:", endpoint, data, method);
-    // try{
-    //   this.token = localStorage.getItem('token')
-
-    //   console.log(`Token in API - ${this.token}`)
-    // } catch(e) {
-    //   return e
-    // }
+    try{
+      this.token = JSON.parse(localStorage.getItem('token'))
+    } catch(e) {
+      console.log(e)
+    }
     
 
     //there are multiple ways to pass an authorization token, this is how you pass it in the header.
     //this has been provided to show you another way to pass the token. you are only expected to read this code for this project.
     const url = `${BASE_URL}/${endpoint}`;
-    const headers = { Authorization: `Bearer ${JoblyApi.token}` };
+    const headers = { Authorization: `Bearer ${this.token}` };
     const params = (method === "get")
         ? data
         : {};
@@ -73,7 +71,7 @@ class JoblyApi {
 
   /** Apply for job */
   static async applyForJob(username, jobId){
-    let res = await this.request(`${username}/jobs/${jobId}`, "post");
+    let res = await this.request(`users/${username}/jobs/${jobId}`, {}, "post");
     return res
   }
 
@@ -117,8 +115,8 @@ class JoblyApi {
 }
 
 // for now, put token ("testuser" / "password" on class)
-JoblyApi.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZ" +
-    "SI6InRlc3R1c2VyIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTU5ODE1OTI1OX0." +
-    "FtrMwBQwe6Ue-glIFgz_Nf8XxRT2YecFCiSpYL0fCXc";
+// JoblyApi.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZ" +
+//     "SI6InRlc3R1c2VyIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTU5ODE1OTI1OX0." +
+//     "FtrMwBQwe6Ue-glIFgz_Nf8XxRT2YecFCiSpYL0fCXc";
 
     export default JoblyApi

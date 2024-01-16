@@ -7,16 +7,19 @@ import LoginForm from './user/LoginForm';
 import SignupForm from './user/SignupForm';
 import UserProfile from './user/UserProfile';
 import Landing from './Landing';
-import React from 'react';
+import LogOut from './user/LogOut';
+import React, { useContext } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
+import UserContext from './UserContext';
 
-function RouteList({login, signup, patchUser, currentUser}) {
+function RouteList({login, signup, patchUser, setToken, setCurrentUser}) {
 
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
+  const currentUser = useContext(UserContext)
   
-  async function logout() {
-    // setToken([])
-    navigate("/")
+  function logout() {
+    setToken("")
+    setCurrentUser("")
   }
 
     return (
@@ -27,7 +30,7 @@ function RouteList({login, signup, patchUser, currentUser}) {
               <Route exact path="/login" element={<LoginForm login={login} />} />
               <Route exact path="/signup" element={<SignupForm signup={signup} />} />
               <Route exact path="/profile" element={<UserProfile user={currentUser} patchUser={patchUser}/>} />
-              <Route exact path="/logout" render={() => logout()} />
+              <Route exact path="/logout" element={<LogOut logout={logout} />} />
               <Route exact path="/" element={<Landing />} />
         </Routes>
     );

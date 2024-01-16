@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./NavBar.css";
 import { NavLink } from "react-router-dom";
 import { Navbar, Nav, NavItem } from "reactstrap";
+import UserContext from "./UserContext";
 
 function NavBar() {
 
+  const currentUser = useContext(UserContext);
+  
   return (
     <div>
       <Navbar expand="md">
@@ -26,6 +29,12 @@ function NavBar() {
             <NavLink to="/signup">Signup</NavLink>
           </NavItem>
         </Nav>
+        {currentUser && <NavLink to="/profile" className="navbar-brand">
+          {`${currentUser.username}`}
+        </NavLink>}
+        {currentUser && <NavLink exact to="/logout" className="navbar-brand">
+          Logout
+        </NavLink>}
       </Navbar>
     </div>
   );
