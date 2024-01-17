@@ -30,6 +30,7 @@ CREATE TABLE books (
     stage INTEGER NOT NULL,
     set INTEGER NOT NULL,
     school_id INTEGER NOT NULL,
+    available BOOLEAN NOT NULL,
     condition VARCHAR(10) NOT NULL
 )
 
@@ -40,7 +41,8 @@ CREATE TABLE borrow_record (
         REFERENCES students ON DELETE CASCADE, 
     book_id INTEGER NOT NULL
         REFERENCES books ON DELETE CASCADE,
-    date DATE NOT NULL
+    borrow_date DATE NOT NULL,
+    return_date DATE
 )
 
 -- table for schools
