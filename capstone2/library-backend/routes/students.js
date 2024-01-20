@@ -52,3 +52,5 @@ router.get("/:id/unread", async function (req, res, next) {
         return next(e);
     }
 })
+
+module.exports = router;
