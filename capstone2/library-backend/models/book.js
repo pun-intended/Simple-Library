@@ -54,17 +54,18 @@ class Book {
      * Get all book data given the ID
      * 
      * {book_id} => {book_id, isbn, title, stage, condition, borrowing}
-     *  where borrowing is {student_id, first_name, last_name, level}
+     *  where borrowing is {student_id, first_name, last_name, level, borrow_date}
      */
     // ADVICE could this be done better with a join?
     static async getBook(bookId){
         const bookRes = await db.query(
-            `SELECT id AS book_id,
-                    isbn,
-                    title,
-                    stage,
-                    condition
-            FROM books
+            `SELECT B.id AS book_id,
+                    B.isbn,
+                    B.title,
+                    B.stage,
+                    B.condition
+            FROM books B
+
             WHERE id = $1`,
             [bookId]);
 
@@ -73,36 +74,24 @@ class Book {
         if (!book) throw new NotFoundError(`No book with ID ${bookId}`)
 
         const borrowRes = await db.query(
-            `SELECT id,
-                    book_id,
-                    student_id,
-                    borrow_date
-                    
-            FROM borrow_record
-            WHERE book_id = $1 AND return_date = NULL`,
+            `SELECT S.id,
+                    S.first_name,
+                    S.last_name,
+                    S.level,
+                    rec.borrow_date
+            FROM borrow_record rec
+            JOIN students S ON S.id = rec.student_id
+            WHERE book_id = $1 AND return_date IS NULL`,
             [bookId]
         )
 
-        const record = borrowRes.rows[0]
+        const borrowing = borrowRes.rows[0]
 
-        if(record){
-            const studentRes = await db.query(
-                `SELECT id AS student_id,
-                        first_name,
-                        last_name,
-                        level
-                FROM students
-                WHERE student_id = $1`,
-                [record.student_id]
-            )
-            const student = studentRes.rows[0]
-
-            book.student = student;
+        if(borrowing){
+            book.student = borrowing;
         }
 
         return book;
-
-
     }
 
     /**
