@@ -1,23 +1,23 @@
--- CREATE TABLE schools (
---     id INTEGER PRIMARY KEY,
---     name VARCHAR(25) NOT NULL,
---     location TEXT NOT NULL
--- );
+CREATE TABLE schools (
+    id INTEGER PRIMARY KEY,
+    name VARCHAR(25) NOT NULL,
+    address TEXT NOT NULL
+);
 
--- CREATE TABLE classes (
---     id INTEGER PRIMARY KEY,
---     name VARCHAR(20) NOT NULL,
---     school_id INTEGER NOT NULL,
--- );
+CREATE TABLE classes (
+    id INTEGER PRIMARY KEY,
+    name VARCHAR(20) NOT NULL,
+    school_id INTEGER NOT NULL
+);
 
 CREATE TABLE users (
     id INTEGER PRIMARY KEY,
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
-    -- class_id INTEGER
-    --     REFERENCES classes ON DELETE SET NULL,
-    -- school_id INTEGER
-    --     REFERENCES schools ON DELETE SET NULL,
+    class_id INTEGER
+        REFERENCES classes ON DELETE SET NULL,
+    school_id INTEGER
+        REFERENCES schools ON DELETE SET NULL,
     password TEXT NOT NULL,
     is_admin BOOLEAN NOT NULL DEFAULT FALSE
 );
@@ -26,10 +26,10 @@ CREATE TABLE students (
     id INTEGER PRIMARY KEY,
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
-    -- school_id INTEGER
-    --     REFERENCES schools ON DELETE SET NULL,
-    -- class_id INTEGER
-    --     REFERENCES classes ON DELETE SET NULL,
+    school_id INTEGER
+        REFERENCES schools ON DELETE SET NULL,
+    class_id INTEGER
+        REFERENCES classes ON DELETE SET NULL,
     level TEXT NOT NULL
 );
 
@@ -39,7 +39,7 @@ CREATE TABLE books (
     title TEXT NOT NULL,
     stage INTEGER NOT NULL,
     set INTEGER,
-    -- school_id INTEGER,
+    school_id INTEGER,
     condition VARCHAR(10) NOT NULL
 );
 
