@@ -112,6 +112,26 @@ class Book {
     }
 
     /**
+     * Get all outstanding books
+     * 
+     * Returns [{id, isbn, title, stage, condition, borrow_date}, ...]
+     */
+    static async getOutstanding(){
+        const books = await db.query(
+            `SELECT B.id,
+                    B.isbn,
+                    B.title,
+                    B.stage,
+                    B.condition,
+                    rec.borrow_date
+            FROM books B
+            JOIN borrow_record rec ON B.id = rec.book_id
+            WHERE rec.return_date IS NULL`
+        )
+        return books.rows
+    }
+
+    /**
      * Get all books in a given stage
      * {stage} => [{id, isbn, title, stage, condition}, ...]
      */
@@ -121,3 +141,5 @@ class Book {
     // static async replace(){}
 
 }
+
+module.exports = Book;
