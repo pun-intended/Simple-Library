@@ -68,6 +68,16 @@ class User {
         return user;
     }
 
+    static async getAll(){
+        const res = await db.query(`
+        SELECT id, first_name, last_name, isAdmin
+        FROM users`);
+
+        const users = res.rows;
+        
+        return users;
+    }
+
     /**
      * Delete a given user
      * 
