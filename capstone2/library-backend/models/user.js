@@ -159,3 +159,5 @@ class User {
         throw new UnauthorizedError("Invalid id/password");
     }
 }
+
+module.exports = User

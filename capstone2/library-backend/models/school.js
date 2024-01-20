@@ -9,3 +9,5 @@ class School {
 
     // What methods does the school need?
 }
+
+module.exports = School;

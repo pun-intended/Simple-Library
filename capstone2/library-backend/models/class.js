@@ -27,3 +27,5 @@ class Class {
      */
     static async patchClass(){}
 }
+
+module.exports = Class;
