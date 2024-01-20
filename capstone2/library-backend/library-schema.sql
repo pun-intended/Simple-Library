@@ -49,6 +49,10 @@ CREATE TABLE borrow_record (
         REFERENCES students ON DELETE CASCADE, 
     book_id INTEGER NOT NULL
         REFERENCES books ON DELETE CASCADE,
+        -- This will be a problem for record keeping. How to replace with generic code?
+        -- TRIGGER? MasterBooks table? Normalization could complicate function calls
     borrow_date DATE NOT NULL,
     return_date DATE
+    -- returned_by INTEGER 
+        -- REFERENCES users ON DELETE SET NULL
 );
