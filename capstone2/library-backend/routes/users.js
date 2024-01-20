@@ -1,5 +1,7 @@
 "use strict";
-
+// TODO - add definitions
+// TODO - add validation
+// TODO - add authorization
 /** Routes for users. */
 
 // const jsonschema = require("jsonschema");
