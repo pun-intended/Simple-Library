@@ -1,4 +1,5 @@
 "use strict"
+const { NotFoundError } = require('../expressError.js')
 
 const db = require('../db')
 // Error handlers
@@ -10,17 +11,20 @@ class Book {
      * Given a student ID and book ID, create a borrow record, and 
      * return the data.
      * 
-     *  {book_id, student_id} => {borrowed: borrowRecord}
+     *  {data} => {borrowed: {id, book_id, student_id, borrow_date}}
+     * Data should be {book_id, student_id, date}
      * 
      * Throws NotFoundError if student or book is not found
      */
-    static async checkOut(bookId, studentId, date){
+    static async checkOut(data){
         const res = await db.query(
             `INSERT INTO borrow_record
             (book_id, student_id, borrow_date)
             VALUES ($1, $2, $3)
             RETURNING id, book_id, student_id, borrow_date`,
-            [bookId, studentId, date]
+            [data.bookId, 
+            data.studentId, 
+            data.date]
         )
         const borrowRecord = res.rows[0]
 
@@ -32,34 +36,36 @@ class Book {
     /**
      * Given a book ID, check the book in
      * 
-     * {book_id} => {Returned: bookId}
+     * {data} => {Returned: {id, return_date}}
+     * 
+     * {data} should be {bookId, date}
      */
-    static async checkIn(bookId, date){
+    static async checkIn(data){
         const res = await db.query(
             `UPDATE borrow_record
             SET return_date = $1
             WHERE book_id = $2 AND return_date = NULL
-            RETURNING id
+            RETURNING id, return_date
             `,
-            [date, bookId]
+            [data.date, 
+            data.bookId]
         )
         const checkIn = res.rows[0]
 
-        if (!checkIn) throw new NotFoundError(`No outstanding record found for book id ${bookId}`)
+        if (!checkIn) throw new NotFoundError(`No outstanding record found for book id ${data.bookId}`)
 
-        return {Returned: bookId};
+        return {Returned: checkIn};
     }
 
     /**
      * Get all book data given the ID
      * 
-     * {book_id} => {book_id, isbn, title, stage, condition, borrowing}
-     *  where borrowing is {student_id, first_name, last_name, level, borrow_date}
+     * {book_id} => {bookId, isbn, title, stage, condition, borrowing}
+     *  where borrowing is {student_id, first_name, last_name, level, borrowDate}
      */
-    // ADVICE could this be done better with a join?
     static async getBook(bookId){
         const bookRes = await db.query(
-            `SELECT B.id AS book_id,
+            `SELECT B.id AS bookId,
                     B.isbn,
                     B.title,
                     B.stage,
@@ -75,10 +81,10 @@ class Book {
 
         const borrowRes = await db.query(
             `SELECT S.id,
-                    S.first_name,
-                    S.last_name,
+                    S.first_name AS firstName,
+                    S.last_name AS lastName,
                     S.level,
-                    rec.borrow_date
+                    rec.borrow_date AS borrowDate
             FROM borrow_record rec
             JOIN students S ON S.id = rec.student_id
             WHERE book_id = $1 AND return_date IS NULL`,
@@ -114,18 +120,22 @@ class Book {
     /**
      * Get all outstanding books
      * 
-     * Returns [{id, isbn, title, stage, condition, borrow_date}, ...]
+     * Returns [{bookId, isbn, title, stage, condition, studentId, firstName, lastName, borrowDate}, ...]
      */
     static async getOutstanding(){
         const books = await db.query(
-            `SELECT B.id,
+            `SELECT B.id AS bookId,
                     B.isbn,
                     B.title,
                     B.stage,
                     B.condition,
-                    rec.borrow_date
+                    S.id AS studentId
+                    S.first_name AS firstName,
+                    S.last_name AS lastName,
+                    rec.borrow_date AS borrowDate
             FROM books B
             JOIN borrow_record rec ON B.id = rec.book_id
+            JOIN students S on S.id = rec.student_id
             WHERE rec.return_date IS NULL`
         )
         return books.rows
