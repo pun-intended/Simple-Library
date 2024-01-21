@@ -19,5 +19,5 @@ async function commonAfterAll() {
 module.exports = {
     commonBeforeEach,
     commonAfterEach,
-    commonAfterAll,
+    commonAfterAll
 };
