@@ -1,11 +1,11 @@
 CREATE TABLE schools (
-    id INTEGER PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     name VARCHAR(25) NOT NULL,
     address TEXT NOT NULL
 );
 
 CREATE TABLE classes (
-    id INTEGER PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     name VARCHAR(20) NOT NULL,
     school_id INTEGER NOT NULL
 );
@@ -23,7 +23,7 @@ CREATE TABLE users (
 );
 
 CREATE TABLE students (
-    id INTEGER PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
     school_id INTEGER
@@ -34,7 +34,7 @@ CREATE TABLE students (
 );
 
 CREATE TABLE books (
-    id INTEGER PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     isbn TEXT NOT NULL,
     title TEXT NOT NULL,
     stage INTEGER NOT NULL,
