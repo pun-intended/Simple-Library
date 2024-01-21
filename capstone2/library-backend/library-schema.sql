@@ -43,6 +43,7 @@ CREATE TABLE books (
     condition VARCHAR(10) NOT NULL
 );
 
+-- // TODO - fix dateTime formatting
 CREATE TABLE borrow_record (
     id SERIAL PRIMARY KEY, 
     student_id INTEGER NOT NULL
@@ -51,8 +52,8 @@ CREATE TABLE borrow_record (
         REFERENCES books ON DELETE CASCADE,
         -- This will be a problem for record keeping. How to replace with generic code?
         -- TRIGGER? MasterBooks table? Normalization could complicate function calls
-    borrow_date DATE NOT NULL,
-    return_date DATE
+    borrow_date VARCHAR(12) NOT NULL,
+    return_date VARCHAR(12)
     -- returned_by INTEGER 
         -- REFERENCES users ON DELETE SET NULL
 );
