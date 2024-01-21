@@ -41,7 +41,7 @@ router.get("/", async function (req, res, next) {
 /** Get user by ID */
 router.get("/:id", async function (req, res, next) {
     try{
-        const user = await User.get(req.params.id);
+        const user = await User.getUser(req.params.id);
         return res.json({user})
     } catch (e) {
         return next(e)
@@ -52,7 +52,7 @@ router.get("/:id", async function (req, res, next) {
 router.patch("/:id", async function (req, res, next) {
     try{
         // Add validation
-        const user = await User.update(req.params.id, req.body);
+        const user = await User.updateUser(req.params.id, req.body);
         return res.json({user})
     } catch (e) {
         return next(e)
