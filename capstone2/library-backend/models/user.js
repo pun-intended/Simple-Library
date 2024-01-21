@@ -1,9 +1,12 @@
 "use strict"
 
 const db = require('../db');
-const { NotFoundError, UnauthorizedError } = require('../expressError');
+const bcrypt = require('bcrypt')
+const { sqlForPartialUpdate } = require("../helpers/sql")
+const { BadRequestError, NotFoundError, UnauthorizedError } = require('../expressError');
+
+const { BCRYPT_WORK_FACTOR } = require("../config.js");
 // Error handlers
-// sql for partial update method
 
 // ----- After completion
 class User {
@@ -11,26 +14,28 @@ class User {
     /**
      * Create a new user with the given data
      * 
-     * {id, first_name, last_name, password, isAdmin} => 
+     *  { data }=> 
      *      {id, first_name, last_name, isAdmin}
      * 
-     * Throws NotFoundError if id not found
+     * Data should be {id, first_name, last_name, password, isAdmin}
+     * 
+     * Throws BadRequestError if id found
      */
-    static async create({id, first_name, last_name, password, isAdmin}){
+    static async create(data){
         const duplicateCheck = await db.query(
             `SELECT id
             FROM users
             WHERE id = $1`,
-            [id]
+            [data.id]
         );
 
         if (duplicateCheck.rows[0]) {
-            throw new BadRequestError(`Duplicate user ID: ${id}`);
+            throw new BadRequestError(`Duplicate user ID: ${data.id}`);
         }
         
-        const hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
-        
-        const res = db.query(`
+        const hashedPassword = await bcrypt.hash(data.password, BCRYPT_WORK_FACTOR);
+
+        const res = await db.query(`
         INSERT INTO users 
             (id,
             first_name,
@@ -39,7 +44,7 @@ class User {
             is_admin)
         VALUES ($1, $2, $3, $4, $5)
         RETURNING id, first_name, last_name, is_admin`,
-        [id, first_name, last_name, hashedPassword, isAdmin]);
+        [data.id, data.first_name, data.last_name, hashedPassword, data.isAdmin]);
 
         const user = res.rows[0];
 
@@ -56,7 +61,7 @@ class User {
 
     static async getUser(id){
         const res = await db.query(`
-        SELECT id, first_name, last_name, isAdmin
+        SELECT id, first_name, last_name, is_admin
         FROM users
         WHERE id = $1`,
         [id]);
@@ -70,7 +75,7 @@ class User {
 // TODO - DOCUMENTATION
     static async getAll(){
         const res = await db.query(`
-        SELECT id, first_name, last_name, isAdmin
+        SELECT id, first_name, last_name, is_admin
         FROM users`);
 
         const users = res.rows;
@@ -109,28 +114,23 @@ class User {
      * Throws NotFoundError if id not found
      */
     // TODO - Check all instances of first_name etc for naming conventions
+    // QUESTION - Why does jobly update method throw BadRequestError?
     static async updateUser(id, data) {
         if (data.password) {
           data.password = await bcrypt.hash(data.password, BCRYPT_WORK_FACTOR);
         }
     
         const { setCols, values } = sqlForPartialUpdate(
-            data,
-            {
-              firstName: "first_name",
-              lastName: "last_name",
-              isAdmin: "is_admin",
-            });
+            data, {});
         const userIdVarIdx = "$" + (values.length + 1);
     
         const querySql = `UPDATE users 
                           SET ${setCols} 
                           WHERE id = ${userIdVarIdx} 
                           RETURNING id,
-                                    first_name AS "firstName",
-                                    last_name AS "lastName",
-                                    email,
-                                    is_admin AS "isAdmin"`;
+                                    first_name,
+                                    last_name,
+                                    is_admin`;
         const result = await db.query(querySql, [...values, id]);
         const user = result.rows[0];
     
@@ -143,20 +143,22 @@ class User {
     /**
      * Authenticate username and Password
      * 
-     * {user_id, password} => {id, first_name, last_name, is_admin}
+     * {id, password} => {id, first_name, last_name, is_admin}
+     * 
+     * Throws UnauthorizedError if user id or password is incorrect
      */
     static async authenticate(id, password){
         const result = await db.query(`
         SELECT  id, 
                 password, 
-                first_name AS "firstName",
-                last_name AS "lastName",
-                is_admin AS "isAdmin"
+                first_name,
+                last_name,
+                is_admin
         FROM users
         WHERE id = $1`,
         [id]);
 
-        const user = res.rows[0];
+        const user = result.rows[0];
 
         if(user){
             const isValid = await bcrypt.compare(password, user.password);
