@@ -9,13 +9,18 @@ class Student {
     /**
      * Create new student record
      * 
-     * {first_name, last_name, level} = {created: {id, first_name, last_name, level}}
+     * {data} = {created: {id, first_name, last_name, level}}
+     * 
+     * Data should be {first_name, last_name, level}
      */
-    static async create({first_name, last_name, level}){
+    static async create(data){
         const res = await db.query(
-            `INSERT INTO student (first_name, last_name, level)
-            VALUES $1, $2, $3`,
-            [first_name, last_name, level]
+            `INSERT INTO students (id, first_name, last_name, level)
+            VALUES (DEFAULT, $1, $2, $3)
+            RETURNING id, first_name, last_name, level`,
+                [data.first_name, 
+                data.last_name, 
+                data.level]
         )
         return {created: res.rows[0]}
     }
@@ -30,8 +35,8 @@ class Student {
         // TODO - Add class filter
         const students = await db.query(`
         SELECT  id,
-                first_name AS firstName,
-                last_name AS last_name;
+                first_name,
+                last_name,
                 level
         FROM students
         `)
@@ -62,6 +67,30 @@ class Student {
     }
 
     /**
+     * Return array of book that have not been read by a given student
+     * 
+     * {id} => [{id, isbn, title, stage, condition}, ...]
+     */
+    static async getUnreadBooks(studentId){
+        const unread = await db.query(
+            `SELECT id, isbn, title, stage, condition
+            FROM books
+            WHERE id NOT IN
+                (SELECT book_id
+                    FROM borrow_record
+                    WHERE student_id = $1)`,
+            [studentId]
+        )
+        return unread.rows;
+    }
+
+    //TODO - STRETCH
+    /**
+     * Set students class
+     */
+    static async setClass(studentId, classId){}
+
+        /**
      * Return an array with book IDs for books student has read.
      * 
      * {id} => [{id, isbn, title, stage, condition}, ...] 
@@ -80,30 +109,6 @@ class Student {
 
         return booksRead;
     }
-
-    /**
-     * Return array of book that have not been read by a given student
-     * 
-     * {id} => [{id, isbn, title, stage, condition}, ...]
-     */
-    static async getUnreadBooks(studentId){
-        const unread = await db.query(
-            `SELECT id, isbn, title, stage, condition
-            FROM books
-            WHERE id NOT IN
-                (SELECT book_id
-                    FROM borrow_record
-                    WHERE student_id = $1)`,
-            [studentId]
-        )
-        return unread;
-    }
-
-    //TODO - STRETCH
-    /**
-     * Set students class
-     */
-    static async setClass(studentId, classId){}
     
 }
 
