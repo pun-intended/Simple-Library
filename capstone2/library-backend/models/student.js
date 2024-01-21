@@ -68,7 +68,6 @@ class Student {
      * @param {} studentId 
      */
     static async getReadBooks(studentId){
-        // Join on book Id
         const booksRead = await db.query(
             `SELECT books.id, books.isbn, books.title, books.stage, books.condition
             FROM books
