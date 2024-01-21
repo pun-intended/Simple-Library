@@ -1,9 +1,9 @@
 INSERT INTO users (id, first_name, last_name, password, is_admin) 
 VALUES 
     ('10001', 'test', 'user', 
-    '$2a$04$xFzPKDfXTbO2bzBAzoCw9.RBJiX3vxiQpd/22I6w6P1alg1TTKK6K', FALSE),
+    '$2a$12$OnF1/U4/4QB4ccWdS5R4b.RLfGptno1kP4rGt8pPdAN24p8TULRnS', FALSE),
     ('10002', 'test', 'user2', 
-    '$2a$04$xFzPKDfXTbO2bzBAzoCw9.RBJiX3vxiQpd/22I6w6P1alg1TTKK6K', TRUE);
+    '$2a$12$OnF1/U4/4QB4ccWdS5R4b.RLfGptno1kP4rGt8pPdAN24p8TULRnS', TRUE);
 
 INSERT INTO students (id, first_name, last_name, level)
 VALUES 
