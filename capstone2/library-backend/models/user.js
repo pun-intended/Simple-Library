@@ -54,7 +54,7 @@ class User {
      * Throws NotFoundError if user id not found
      */
 
-    static async get(id){
+    static async getUser(id){
         const res = await db.query(`
         SELECT id, first_name, last_name, isAdmin
         FROM users
@@ -67,7 +67,7 @@ class User {
 
         return user;
     }
-
+// TODO - DOCUMENTATION
     static async getAll(){
         const res = await db.query(`
         SELECT id, first_name, last_name, isAdmin
@@ -109,7 +109,7 @@ class User {
      * Throws NotFoundError if id not found
      */
     // TODO - Check all instances of first_name etc for naming conventions
-    static async update(id, data) {
+    static async updateUser(id, data) {
         if (data.password) {
           data.password = await bcrypt.hash(data.password, BCRYPT_WORK_FACTOR);
         }
