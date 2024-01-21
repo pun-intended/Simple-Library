@@ -4,6 +4,7 @@
 
 // TODO - add routes
 // TODO - add detailed documentation
+// TODO - add schema
 
 // const jsonschema = require("jsonschema");
 const express = require("express");
@@ -15,6 +16,10 @@ const User = require("../models/user");
 // const schema = require("../schemas/schema.json");
 
 const router = new express.Router();
+
+/** Register */
+
+/** Token */
 
 
 
