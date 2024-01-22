@@ -22,7 +22,7 @@ class Student {
                 data.last_name, 
                 data.level]
         )
-        return {created: res.rows[0]}
+        return res.rows[0]
     }
     
     /**
@@ -40,7 +40,7 @@ class Student {
                 level
         FROM students
         `)
-        return {students: students.rows}
+        return students.rows;
     }
 
     /**
@@ -81,7 +81,7 @@ class Student {
                     WHERE student_id = $1)`,
             [studentId]
         )
-        return {books: unread.rows};
+        return unread.rows;
     }
 
     //TODO - STRETCH

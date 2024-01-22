@@ -9,7 +9,7 @@ class Book {
      * Given a student ID and book ID, create a borrow record, and 
      * return the data.
      * 
-     *  {data} => {borrowed: {id, book_id, student_id, borrow_date}}
+     *  {data} => {id, book_id, student_id, borrow_date}
      * Data should be {book_id, student_id, date}
      * 
      * Throws NotFoundError if student or book is not found
@@ -43,13 +43,13 @@ class Book {
         )
         const borrowRecord = res.rows[0]
 
-        return {borrowed: borrowRecord}
+        return borrowRecord
     }
 
     /**
      * Given a book ID, check the book in
      * 
-     * {data} => {Returned: {id, return_date}}
+     * {data} => {id, return_date}
      * 
      * {data} should be {book_id, date}
      */
@@ -67,7 +67,7 @@ class Book {
 
         if (!checkIn) throw new NotFoundError(`No outstanding record found for book id ${data.book_id}`)
 
-        return {returned: checkIn};
+        return checkIn;
     }
 
     /**
@@ -129,7 +129,7 @@ class Book {
                     condition
             FROM books`
         )
-        return {books: books.rows}
+        return books.rows
     }
 
     /**
@@ -153,7 +153,7 @@ class Book {
             JOIN students AS S on S.id = rec.student_id
             WHERE rec.return_date IS NULL`
         )
-        return {books: books.rows}
+        return books.rows
     }
 
     /**

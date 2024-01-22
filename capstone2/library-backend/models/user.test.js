@@ -23,7 +23,7 @@ describe("create", function(){
         first_name: "test", 
         last_name: "user", 
         password: "password", 
-        isAdmin: false
+        is_admin: false
     }
 
     test("works", async function(){

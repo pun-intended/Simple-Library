@@ -27,12 +27,11 @@ describe("checkOut", function () {
     test("works", async function () {
         let checkedOut = await Book.checkOut(checkOutItem);
         expect(checkedOut).toEqual({
-            borrowed: {
                 book_id: 112,
                 student_id: 1008,
                 borrow_date: '12-12-2023',
                 id: expect.any(Number)
-        }});
+        });
     });
 
     let wrongBook = {
@@ -84,11 +83,9 @@ describe("checkin", function() {
 
         let returned = await Book.checkIn(returnData)
         expect(returned).toEqual({
-            Returned: {
                 id: expect.any(Number),
                 return_date:'12-13-2023'
-            }
-        });
+            });
     });
     test("throws error if book not found", async function() {
         let returnData = {

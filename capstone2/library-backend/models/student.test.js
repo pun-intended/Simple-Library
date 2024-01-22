@@ -24,12 +24,10 @@ describe("create", function() {
     test("works", async function(){
         let student = await Student.create(newStudent);
         expect(student).toEqual({
-            created:{
             first_name: "test",
             last_name: "student",
             level: "k2",
             id: expect.any(Number)
-            }
         });
     });
 });

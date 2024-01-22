@@ -80,7 +80,7 @@ class User {
         SELECT id, first_name, last_name, is_admin
         FROM users`);
         
-        return {users: res.rows};
+        return res.rows;
     }
 
     /**
@@ -101,7 +101,7 @@ class User {
 
         if (!user) throw new NotFoundError(`No user found with ID ${id}`);
 
-        return {deleted: user};
+        return user;
     }
 
     /**
@@ -137,7 +137,7 @@ class User {
         if (!user) throw new NotFoundError(`No user: ${id}`);
     
         delete user.password;
-        return {updated: user};
+        return user;
       }
 
     /**
