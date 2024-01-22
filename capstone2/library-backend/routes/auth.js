@@ -2,8 +2,6 @@
 
 /** Routes for auth. */
 
-// TODO - add routes
-// TODO - add detailed documentation
 // TODO - add schema
 
 // const jsonschema = require("jsonschema");
@@ -17,7 +15,14 @@ const User = require("../models/user");
 
 const router = new express.Router();
 
-/** Register */
+/** POST /auth/register { user } => { token }
+ * 
+ * user should be {id, first_name, last_name, password}
+ * 
+ * Returns JWT for the user
+ * 
+ * Auth: none
+ */
 router.post("/register", async function(req, res, next){
     // TODO - add validation
     
@@ -32,7 +37,12 @@ router.post("/register", async function(req, res, next){
     };
 });
 
-/** Token */
+/** POST /auth/token { id, password } => { token }
+ * 
+ * Returns JWT for user
+ * 
+ * Auth: none
+ */
 router.post("/token", async function(req, res, next){
     // TODO - Add validation
     try{

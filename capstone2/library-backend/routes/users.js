@@ -1,5 +1,4 @@
 "use strict";
-// TODO - add definitions
 // TODO - add validation
 // TODO - add authorization
 /** Routes for users. */
@@ -16,7 +15,14 @@ const { createToken } = require("../helpers/tokens");
 
 const router = new express.Router();
 
-/** Add user */
+/** POST / {user} => {user, token}
+ * 
+ * user should be {id, first_name, last_name, password, is_admin}
+ * 
+ * Returns JWT for user
+ * 
+ * Auth: admin
+ */
 router.post("/", async function (req, res, next) {
     // Add Validation
     try{
@@ -28,7 +34,12 @@ router.post("/", async function (req, res, next) {
     }
 })
 
-/** Get all users */
+/** GET / => {users: [{user}...]}
+ * 
+ * user is {id, first_name, last_name, is_admin}
+ * 
+ * Auth: login
+ */
 router.get("/", async function (req, res, next) {
     try{
         const users = await User.getAll();
@@ -38,7 +49,12 @@ router.get("/", async function (req, res, next) {
     }
 });
 
-/** Get user by ID */
+/** GET /[id] => {user}
+ * 
+ * user is {id, first_name, last_name, is_admin}
+ * 
+ * Auth: admin, or same user
+ */
 router.get("/:id", async function (req, res, next) {
     try{
         const user = await User.getUser(req.params.id);
@@ -48,7 +64,14 @@ router.get("/:id", async function (req, res, next) {
     }
 })
 
-/** Update user */
+/** PATCH /[id] {data} => {user} 
+ * 
+ * data can include {firstName, lastName, password, is_admin}
+ * 
+ * Returns {updated: {id, first_name, last_name, is_admin}}
+ * 
+ * Auth: admin or same user
+ */
 router.patch("/:id", async function (req, res, next) {
     try{
         // Add validation
@@ -59,11 +82,16 @@ router.patch("/:id", async function (req, res, next) {
     }
 })
 
-/** Delete user */
+/** DELETE /[id] => {deleted: id}
+ * 
+ * Delete user
+ * 
+ * Auth: admin or same user
+ */
 router.delete("/:id", async function (req, res, next) {
     try{
-        await User.delete(req.params.id);
-        return res.json({deleted: req.params.id})
+        const deleted = await User.delete(req.params.id);
+        return res.json({deleted})
     } catch (e) {
         return next(e)
     }

@@ -16,17 +16,25 @@ const Book = require("../models/book");
 const router = new express.Router();
 
 
-/**
- * Get all books
+/** GET / {books: [{id, isbn, title, stage, condition}...]}
+ * 
+ * Returns all books in library
+ * 
+ * Auth: login
  */
+
+// TODO - STRETCH - add stage filter
 router.get("/", async function (req, res, next) {
     const books = await Book.getAllBooks();
 
     return res.json({ books });
 })
 
-/**
- * Get book
+/** GET /[id] => {book}
+ * 
+ * Returns {id, isbn, title, stage, condition}
+ * 
+ * Auth: login
  */
 router.get("/:id", async function (req, res, next) {
     try {
@@ -38,8 +46,11 @@ router.get("/:id", async function (req, res, next) {
     }
 })
 
-/**
- * Get outstanding books
+/** GET /outstanding => {books: [{id, isbn, title, stage, condition}, ...]}
+ * 
+ * Returns all books that are still outstanding
+ * 
+ * Auth: login
  */
 router.get("/outstanding", async function(rec, res, next) {
     // TODO - Class filter
@@ -48,8 +59,12 @@ router.get("/outstanding", async function(rec, res, next) {
     return res.json({ books });
 })
 
-/**
- * Check out book to student
+/** POST /[id]/checkout {book_id, student_id, date}
+ *                  => {borrowed: {id, book_id, student_id, borrow_date}}
+ * 
+ * Returns borrow_record object for book
+ * 
+ * Auth: login
  */
 router.post("/:id/checkout", async function (req, res, next) {
     // TODO - add validation
@@ -61,8 +76,11 @@ router.post("/:id/checkout", async function (req, res, next) {
     }
 })
 
-/**
- * Check in outstanding book
+/** POST /[id]/checkin {book_id, date} => {Returned: {id, return_date}}
+ * 
+ * Returns {Returned: {id, return_date}}
+ * 
+ * Auth: login
  */
 router.post("/:id/checkin", async function (req, res, next) {
     // TODO - add validation
@@ -79,15 +97,21 @@ router.post("/:id/checkin", async function (req, res, next) {
 
 /**
  * Add book
+ * 
+ * Auth: admin
  */
 
 /**
  * Delete book
+ * 
+ * Auth: admin
  */
 
 
 /**
  * Update book 
+ * 
+ * Auth: login
  */
 router.patch("/:id/update", async function (req, res, next) {
     

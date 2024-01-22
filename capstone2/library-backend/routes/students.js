@@ -16,9 +16,13 @@ const Student = require("../models/student");
 
 const router = new express.Router();
 
-/**
- * Get all students
+/** GET / => {students: [{id, first_name, last_name, level}]}
+ * 
+ * Returns {id, first_name, last_name, level} for all students
+ * 
+ * Auth: login
  */
+// TODO - STRETCH - Refine search to school/class
 router.get("/", async function (req, res, next) {
     try{
         const students = await Student.getAllStudents();
@@ -28,9 +32,11 @@ router.get("/", async function (req, res, next) {
     }
 })
 
-/**
- * Get student for a given student ID
+/** GET /[id] => {id, first_name, last_name, level}
  * 
+ * Returns {id, first_name, last_name, level}
+ * 
+ * Auth: login
  */
 router.get("/:id", async function (req, res, next) {
     try{
@@ -41,11 +47,17 @@ router.get("/:id", async function (req, res, next) {
     }
 })
 
-/**
- * Get unread books for a given student
+/** GET /[id]/unread => {books: {books...}}
+ * 
+ * Returns {id, isbn, title, stage, condition} For all books 
+ * not read by student
+ * 
+ * Auth: login
  */
 router.get("/:id/unread", async function (req, res, next) {
     try{
+        // fail fast if no student
+        const student = await Student.getStudent(req.params.id);
         const unread = await Student.getUnreadBooks(req.params.id);
         return res.json({unread});
     }catch(e){
