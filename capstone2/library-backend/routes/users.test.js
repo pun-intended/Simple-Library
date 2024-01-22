@@ -20,12 +20,56 @@ beforeEach(commonBeforeEach);
 afterEach(commonAfterEach);
 afterAll(commonAfterAll);
 
-describe("POST /users/", function() {})
+describe("POST /users/", function() {
+    test("works for anon", async function(){})
 
-describe("GET /users/", function() {})
+    test("bad request with missing fields", async function(){})
 
-describe("GET /users/:id", function() {})
+    // TODO - after validation
+    // test("bad request with invalid data", async function(){})
+})
 
-describe("PATCH /user/:id", function() {})
+describe("GET /users/", function() {
+    test("Works for users", async function(){})
 
-describe("DELETE /users/:id", function() {})
+    test("unauth for anon", async function(){})
+})
+
+describe("GET /users/:id", function() {
+    test("works for admin", async function(){})
+
+    test("works for same user", async function(){})
+
+    test("unauth for other users", async function(){})
+
+    test("unauth for anon", async function(){})
+
+    test("not found if user not found", async function(){})
+})
+
+describe("PATCH /user/:id", function() {
+    test("works for admin", async function(){})
+
+    test("works for same user", async function(){})
+
+    test("unauth for other users", async function(){})
+
+    test("unauth for anon", async function(){})
+
+    test("not found if user not found", async function(){})
+
+    // TODO - after validation
+    // test("bad request with invalid data", async function(){})
+})
+
+describe("DELETE /users/:id", function() {
+    test("works for admin", async function(){})
+
+    test("works for same user", async function(){})
+
+    test("unauth for other users", async function(){})
+
+    test("unauth for anon", async function(){})
+
+    test("not found if user not found", async function(){})
+})
