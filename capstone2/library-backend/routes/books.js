@@ -15,6 +15,16 @@ const Book = require("../models/book");
 
 const router = new express.Router();
 
+
+/**
+ * Get all books
+ */
+router.get("/", async function (req, res, next) {
+    const books = await Book.getAllBooks();
+
+    return res.json({ books });
+})
+
 /**
  * Get book
  */
@@ -26,15 +36,6 @@ router.get("/:id", async function (req, res, next) {
     } catch (e) {
         return next(e);
     }
-})
-
-/**
- * Get all books
- */
-router.get("/", async function (req, res, next) {
-    const books = await Book.getAllBooks();
-
-    return res.json({ books });
 })
 
 /**
