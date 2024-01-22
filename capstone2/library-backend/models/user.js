@@ -6,9 +6,7 @@ const { sqlForPartialUpdate } = require("../helpers/sql")
 const { BadRequestError, NotFoundError, UnauthorizedError } = require('../expressError');
 
 const { BCRYPT_WORK_FACTOR } = require("../config.js");
-// Error handlers
 
-// ----- After completion
 class User {
 
     /**
@@ -17,7 +15,7 @@ class User {
      *  { data }=> 
      *      {id, first_name, last_name, isAdmin}
      * 
-     * Data should be {id, first_name, last_name, password, isAdmin}
+     * Data should be {id, first_name, last_name, password, is_admin}
      * 
      * Throws BadRequestError if id found
      */
@@ -44,7 +42,7 @@ class User {
             is_admin)
         VALUES ($1, $2, $3, $4, $5)
         RETURNING id, first_name, last_name, is_admin`,
-        [data.id, data.first_name, data.last_name, hashedPassword, data.isAdmin]);
+        [data.id, data.first_name, data.last_name, hashedPassword, data.is_admin]);
 
         const user = res.rows[0];
 
@@ -58,7 +56,6 @@ class User {
      * 
      * Throws NotFoundError if user id not found
      */
-
     static async getUser(id){
         const res = await db.query(`
         SELECT id, first_name, last_name, is_admin
@@ -72,15 +69,18 @@ class User {
 
         return user;
     }
-// TODO - DOCUMENTATION
+
+    /**
+     * Get all users
+     * 
+     * Returns {users: [{id, first_name, last_name, is_admin}, ...]}
+     */
     static async getAll(){
         const res = await db.query(`
         SELECT id, first_name, last_name, is_admin
         FROM users`);
-
-        const users = res.rows;
         
-        return users;
+        return {users: res.rows};
     }
 
     /**
@@ -107,9 +107,9 @@ class User {
     /**
      * Update user data
      * 
-     * {data} => {updated: id, first_name, last_name}
+     * {data} => {updated: {id, first_name, last_name, is_admin}}
      * 
-     * Data can include {firstName, lastName, password, isAdmin}
+     * Data can include {firstName, lastName, password, isdmin}
      * 
      * Throws NotFoundError if id not found
      */
@@ -137,7 +137,7 @@ class User {
         if (!user) throw new NotFoundError(`No user: ${id}`);
     
         delete user.password;
-        return user;
+        return {updated: user};
       }
 
     /**

@@ -67,7 +67,7 @@ class Book {
 
         if (!checkIn) throw new NotFoundError(`No outstanding record found for book id ${data.book_id}`)
 
-        return {Returned: checkIn};
+        return {returned: checkIn};
     }
 
     /**
@@ -118,6 +118,8 @@ class Book {
      * 
      * Returns [{id, isbn, title, stage, condition}, ...] 
      */
+
+// TODO - STRETCH - add stage filter
     static async getAllBooks(){
         const books = await db.query(
             `SELECT id,
@@ -127,7 +129,7 @@ class Book {
                     condition
             FROM books`
         )
-        return books.rows
+        return {books: books.rows}
     }
 
     /**
@@ -151,7 +153,7 @@ class Book {
             JOIN students AS S on S.id = rec.student_id
             WHERE rec.return_date IS NULL`
         )
-        return books.rows
+        return {books: books.rows}
     }
 
     /**

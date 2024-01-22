@@ -28,7 +28,7 @@ class Student {
     /**
      * Get all students in class
      * 
-     * Returns [{id, first_name, last_name, level}, ...]
+     * Returns {students: [{id, first_name, last_name, level}, ...]}
      */
     static async getAllStudents(){
 
@@ -40,7 +40,7 @@ class Student {
                 level
         FROM students
         `)
-        return students.rows
+        return {students: students.rows}
     }
 
     /**
@@ -81,7 +81,7 @@ class Student {
                     WHERE student_id = $1)`,
             [studentId]
         )
-        return unread.rows;
+        return {books: unread.rows};
     }
 
     //TODO - STRETCH
