@@ -2,6 +2,9 @@
 
 /** Express app for library */
 
+// TODO - disallow books from being double borrowed
+// TODO - disallow students from borrowing more than one book
+
 const express = require("express");
 // QUESTION - what does this do?
 const cors = require("cors");
