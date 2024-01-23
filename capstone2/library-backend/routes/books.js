@@ -66,27 +66,29 @@ router.get("/outstanding", async function(rec, res, next) {
  * 
  * Auth: login
  */
-router.post("/:id/checkout", async function (req, res, next) {
+// QUESTION - Would these two better without the url params? send the ID in the post request?
+router.post("/checkout", async function (req, res, next) {
     // TODO - add validation
     try{
-        const record = await Book.checkOut(req.params.id, req.body);
-        return res.status(201).json({ record });
+        const borrowed = await Book.checkOut(req.body.book_id, req.body.student_id, req.body.date);
+        return res.status(201).json({ borrowed });
     } catch (e) {
         return next(e);
     }
 })
 
-/** POST /[id]/checkin {book_id, date} => {Returned: {id, return_date}}
+/** POST /[id]/checkin {book_id, date} => {returned: {id, return_date}}
  * 
  * Returns {Returned: {id, return_date}}
  * 
  * Auth: login
  */
-router.post("/:id/checkin", async function (req, res, next) {
+// QUESTION - Would these two better without the url params? send the ID in the post request?
+router.post("/checkin", async function (req, res, next) {
     // TODO - add validation
     try{
-        const checkin = await Book.checkIn(req.params.id, req.body);
-        return res.status(201).json({checkin});
+        const checkin = await Book.checkIn(req.body.id, req.body.date);
+        return res.status(201).json({ returned });
     }catch(e){
         return next(e);
     }

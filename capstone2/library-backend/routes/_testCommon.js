@@ -36,8 +36,8 @@ async function commonBeforeEach() {
     await db.end();
 }
 
-const u1Token = createToken({ id: "1", isAdmin: false });
-const u2Token = createToken({ id: "2", isAdmin: false });
+const u1Token = createToken({ id: "10001", isAdmin: false });
+const u2Token = createToken({ id: "10002", isAdmin: false });
 const adminToken = createToken({ id: "3", isAdmin: true });
 
 
