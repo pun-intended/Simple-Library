@@ -66,17 +66,18 @@ router.get("/:id", async function (req, res, next) {
 
 /** PATCH /[id] {data} => {user} 
  * 
- * data can include {firstName, lastName, password, is_admin}
+ * data can include {first_name, last_name, password, is_admin}
  * 
  * Returns {updated: {id, first_name, last_name, is_admin}}
  * 
  * Auth: admin or same user
  */
+// QUESTION - Best way to prevent someone from changing admins status
 router.patch("/:id", async function (req, res, next) {
     try{
         // Add validation
-        const user = await User.updateUser(req.params.id, req.body);
-        return res.json({user})
+        const updated = await User.updateUser(req.params.id, req.body);
+        return res.json({updated})
     } catch (e) {
         return next(e)
     }
