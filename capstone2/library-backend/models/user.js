@@ -147,7 +147,7 @@ class User {
      * 
      * Throws UnauthorizedError if user id or password is incorrect
      */
-    static async authenticate(id, password){
+    static async authenticate({data}){
         const result = await db.query(`
         SELECT  id, 
                 password, 
@@ -156,12 +156,12 @@ class User {
                 is_admin
         FROM users
         WHERE id = $1`,
-        [id]);
+        [data.id]);
 
         const user = result.rows[0];
 
         if(user){
-            const isValid = await bcrypt.compare(password, user.password);
+            const isValid = await bcrypt.compare(data.password, user.password);
             if(isValid){
                 delete user.password;
                 return user;

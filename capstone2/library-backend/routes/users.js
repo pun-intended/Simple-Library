@@ -7,7 +7,7 @@
 const express = require("express");
 
 const { BadRequestError } = require("../expressError");
-// const { ensureAdmin } = require("../middleware/auth");
+const { ensureAdmin, ensureCorrectUserOrAdmin, ensureLoggedIn } = require("../middleware/auth");
 const User = require("../models/user");
 const { createToken } = require("../helpers/tokens");
 
@@ -23,7 +23,7 @@ const router = new express.Router();
  * 
  * Auth: admin
  */
-router.post("/", async function (req, res, next) {
+router.post("/", ensureAdmin, async function (req, res, next) {
     // Add Validation
     try{
         const user = await User.create(req.body)
@@ -40,7 +40,7 @@ router.post("/", async function (req, res, next) {
  * 
  * Auth: login
  */
-router.get("/", async function (req, res, next) {
+router.get("/", ensureLoggedIn, async function (req, res, next) {
     try{
         const users = await User.getAll();
         return res.json({users})
@@ -55,7 +55,7 @@ router.get("/", async function (req, res, next) {
  * 
  * Auth: admin, or same user
  */
-router.get("/:id", async function (req, res, next) {
+router.get("/:id", ensureCorrectUserOrAdmin, async function (req, res, next) {
     try{
         const user = await User.getUser(req.params.id);
         return res.json({user})
@@ -73,7 +73,7 @@ router.get("/:id", async function (req, res, next) {
  * Auth: admin or same user
  */
 // QUESTION - Best way to prevent someone from changing admins status
-router.patch("/:id", async function (req, res, next) {
+router.patch("/:id", ensureCorrectUserOrAdmin, async function (req, res, next) {
     try{
         // Add validation
         const updated = await User.updateUser(req.params.id, req.body);
@@ -89,7 +89,7 @@ router.patch("/:id", async function (req, res, next) {
  * 
  * Auth: admin or same user
  */
-router.delete("/:id", async function (req, res, next) {
+router.delete("/:id", ensureCorrectUserOrAdmin, async function (req, res, next) {
     try{
         const deleted = await User.delete(req.params.id);
         return res.json({deleted})

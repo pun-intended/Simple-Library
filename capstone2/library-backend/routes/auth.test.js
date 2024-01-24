@@ -90,8 +90,8 @@ describe("POST /auth/token", function(){
         const resp = await request(app)
             .post("/auth/token")
             .send({
-                id: 0,
-                password: "password"
+                id: 1,
+                password: "wrong"
             });
         
         expect(resp.statusCode).toEqual(400)

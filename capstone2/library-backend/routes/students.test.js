@@ -54,11 +54,12 @@ describe("GET /students/:id", function() {
             .set("authorization", `Bearer ${u1Token}`)
 
         expect(resp.body).toEqual({
+            student: {
             id: 1001, 
             first_name: 'Charlie', 
             last_name: 'Kelly', 
             level: 'K1'
-        })
+    }})
     })
 
     test("unauth for anon", async function(){
@@ -83,9 +84,9 @@ describe("GET /students/:id/unread", function() {
             .get("/students/1001/unread")
             .set("authorization", `Bearer ${u1Token}`)
 
-        const books = resp.body.books
-        expect(books.length).toEqual(10)
-        expect(books[0]).toEqual({
+        const unread = resp.body.unread
+        expect(unread.length).toEqual(10)
+        expect(unread[0]).toEqual({
             id: 101, 
             isbn: '978-0-7653-2635-5',
             title: 'The Way of Kings', 

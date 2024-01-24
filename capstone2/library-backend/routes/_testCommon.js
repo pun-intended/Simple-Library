@@ -5,15 +5,17 @@ const Student = require("../models/student");
 const { createToken } = require("../helpers/tokens");
 
 
+// TODO- ADD COMMON TEST INFO, DELETE LIBRARY TEST
+
 async function commonBeforeAll() {
-    await User.register({
+    await User.create({
         id: "1",
         first_name: "U1F",
         last_name: "U1L",
         password: "password1",
         is_admin: false,
       });
-      await User.register({
+      await User.create({
         id: "2",
         first_name: "U2F",
         last_name: "U2L",
@@ -33,6 +35,8 @@ async function commonBeforeEach() {
 }
   
   async function commonAfterAll() {
+    await User.remove(1)
+    await User.remove(2)
     await db.end();
 }
 

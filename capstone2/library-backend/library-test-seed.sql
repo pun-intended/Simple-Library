@@ -3,6 +3,8 @@ VALUES
     ('10001', 'test', 'user', 
     '$2a$04$xFzPKDfXTbO2bzBAzoCw9.RBJiX3vxiQpd/22I6w6P1alg1TTKK6K', FALSE),
     ('10002', 'test', 'user2', 
+    '$2a$04$xFzPKDfXTbO2bzBAzoCw9.RBJiX3vxiQpd/22I6w6P1alg1TTKK6K', FALSE);
+    ('10003', 'admin', 'user2', 
     '$2a$04$xFzPKDfXTbO2bzBAzoCw9.RBJiX3vxiQpd/22I6w6P1alg1TTKK6K', TRUE);
 
 INSERT INTO students (id, first_name, last_name, level)

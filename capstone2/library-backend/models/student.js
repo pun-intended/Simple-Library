@@ -1,8 +1,10 @@
 "use strict"
 
+
 const db = require('../db')
 // Error handlers
 // sql for partial update method
+const { NotFoundError } = require('../expressError');
 
 class Student {
 
@@ -51,19 +53,18 @@ class Student {
      * throws NotFoundError if student ID doesn't exist
      */
     static async getStudent(studentId){
+
         const res = await db.query(
             `SELECT id, first_name, last_name, level
             FROM students
             WHERE id = $1`,
             [studentId]
         );
-        
-        const student = res.rows[0];
 
-        if (!student) throw new 
-            NotFoundError(`No student found with id ${studentId}`);
-        
-        return student;
+        if (!res.rows[0]) {
+            throw new NotFoundError(`No student found with id ${studentId}`);
+        }
+        return res.rows[0];
     }
 
     /**

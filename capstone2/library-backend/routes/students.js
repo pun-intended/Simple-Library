@@ -1,7 +1,6 @@
 "use strict";
-// TODO - add detailed definitions
-// TODO - add authorization
 // TODO - add validation
+// TODO - add student method (admin)
 
 /** Routes for companies. */
 
@@ -9,7 +8,7 @@
 const express = require("express");
 
 const { BadRequestError } = require("../expressError");
-// const { ensureAdmin } = require("../middleware/auth");
+const { ensureLoggedIn } = require("../middleware/auth");
 const Student = require("../models/student");
 
 // const schema = require("../schemas/schema.json");
@@ -23,7 +22,7 @@ const router = new express.Router();
  * Auth: login
  */
 // TODO - STRETCH - Refine search to school/class
-router.get("/", async function (req, res, next) {
+router.get("/", ensureLoggedIn, async function (req, res, next) {
     try{
         const students = await Student.getAllStudents();
         return res.json({students});
@@ -38,7 +37,7 @@ router.get("/", async function (req, res, next) {
  * 
  * Auth: login
  */
-router.get("/:id", async function (req, res, next) {
+router.get("/:id", ensureLoggedIn, async function (req, res, next) {
     try{
         const student = await Student.getStudent(req.params.id);
         return res.json({student});
@@ -54,7 +53,7 @@ router.get("/:id", async function (req, res, next) {
  * 
  * Auth: login
  */
-router.get("/:id/unread", async function (req, res, next) {
+router.get("/:id/unread", ensureLoggedIn, async function (req, res, next) {
     try{
         // fail fast if no student
         const student = await Student.getStudent(req.params.id);

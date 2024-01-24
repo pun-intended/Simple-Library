@@ -2,13 +2,11 @@
 
 /** Routes for books. */
 
-// TODO - add detailed documentation
-
 // const jsonschema = require("jsonschema");
 const express = require("express");
 
 const { BadRequestError } = require("../expressError");
-// const { ensureAdmin } = require("../middleware/auth");
+const { ensureLoggedIn } = require("../middleware/auth");
 const Book = require("../models/book");
 
 // const schema = require("../schemas/schema.json");
@@ -24,7 +22,7 @@ const router = new express.Router();
  */
 
 // TODO - STRETCH - add stage filter
-router.get("/", async function (req, res, next) {
+router.get("/", ensureLoggedIn, async function (req, res, next) {
     const books = await Book.getAllBooks();
 
     return res.json({ books });
@@ -36,7 +34,7 @@ router.get("/", async function (req, res, next) {
  * 
  * Auth: login
  */
-router.get("/:id", async function (req, res, next) {
+router.get("/:id", ensureLoggedIn, async function (req, res, next) {
     try {
         // validate schema
         const book = await Book.getBook(req.params.id);
@@ -52,7 +50,7 @@ router.get("/:id", async function (req, res, next) {
  * 
  * Auth: login
  */
-router.get("/outstanding", async function(rec, res, next) {
+router.get("/outstanding", ensureLoggedIn, async function(rec, res, next) {
     // TODO - Class filter
     const books = await Book.getOutstanding();
 
@@ -67,10 +65,11 @@ router.get("/outstanding", async function(rec, res, next) {
  * Auth: login
  */
 // QUESTION - Would these two better without the url params? send the ID in the post request?
-router.post("/checkout", async function (req, res, next) {
+router.post("/checkout", ensureLoggedIn, async function (req, res, next) {
     // TODO - add validation
     try{
-        const borrowed = await Book.checkOut(req.body.book_id, req.body.student_id, req.body.date);
+        const data = req.body
+        const borrowed = await Book.checkOut(req.body);
         return res.status(201).json({ borrowed });
     } catch (e) {
         return next(e);
@@ -84,10 +83,10 @@ router.post("/checkout", async function (req, res, next) {
  * Auth: login
  */
 // QUESTION - Would these two better without the url params? send the ID in the post request?
-router.post("/checkin", async function (req, res, next) {
+router.post("/checkin", ensureLoggedIn, async function (req, res, next) {
     // TODO - add validation
     try{
-        const checkin = await Book.checkIn(req.body.id, req.body.date);
+        const returned = await Book.checkIn(req.body);
         return res.status(201).json({ returned });
     }catch(e){
         return next(e);

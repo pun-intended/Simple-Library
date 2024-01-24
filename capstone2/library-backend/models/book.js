@@ -28,6 +28,13 @@ class Book {
             [data.student_id]
         )
 
+        if(!checkBookExists.rows[0]){
+            console.log(`no book found ${data.book_id}`)
+        }
+        if(!checkStudentExists.rows[0]){
+            console.log(`no student found ${data.student_id}`)
+        }
+
         if(!checkBookExists.rows[0] || !checkStudentExists.rows[0]){
             throw new NotFoundError("Error in book id or Student id");
         }
@@ -65,7 +72,9 @@ class Book {
         )
         const checkIn = res.rows[0]
 
-        if (!checkIn) throw new NotFoundError(`No outstanding record found for book id ${data.book_id}`)
+        if (!checkIn) {
+            throw new NotFoundError(`No outstanding record found for book id ${data.book_id}`)
+        }
 
         return checkIn;
     }
