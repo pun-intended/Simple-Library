@@ -87,7 +87,7 @@ describe("getUser", function(){
 describe("getAll", function(){
     test("works", async function(){
         let users = await User.getAll();
-        expect(users.length).toEqual(2)
+        expect(users.length).toEqual(3)
         expect(users[0]).toEqual({
             id: 10001, 
             first_name: "test", 
@@ -160,7 +160,11 @@ describe("updateUser", function(){
 // authenticate
 describe("authenticate", function(){
     test("works", async function(){
-        let user = await User.authenticate(10001, "password");
+        const data = {
+            id: 10001,
+            password: "password"
+        }
+        let user = await User.authenticate(data);
         expect(user).toEqual({
             id: 10001,
             first_name: "test",
@@ -171,7 +175,11 @@ describe("authenticate", function(){
 
     test("throws error for invalid password", async function(){
         try{
-            await User.authenticate(10001, "wrong");
+            const data = {
+                id: 10001,
+                password: "wrong"
+            }
+            await User.authenticate(data);
             fail();
         } catch(e) {
             expect(e instanceof UnauthorizedError).toBeTruthy()

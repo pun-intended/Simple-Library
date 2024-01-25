@@ -20,7 +20,7 @@ afterAll(commonAfterAll);
 describe("checkOut", function () {
     let checkOutItem = {
         book_id: 112,
-        student_id: 1008,
+        student_id: 1002,
         date: '12-12-2023'
     };
 
@@ -28,7 +28,7 @@ describe("checkOut", function () {
         let checkedOut = await Book.checkOut(checkOutItem);
         expect(checkedOut).toEqual({
                 book_id: 112,
-                student_id: 1008,
+                student_id: 1002,
                 borrow_date: '12-12-2023',
                 id: expect.any(Number)
         });
@@ -36,7 +36,7 @@ describe("checkOut", function () {
 
     let wrongBook = {
         book_id: 1120,
-        student_id: 1008,
+        student_id: 1002,
         date: '12-12-2023'
     };
     test("throws NotFoundError on incorrect book", async function() {
@@ -69,7 +69,7 @@ describe("checkOut", function () {
 describe("checkin", function() {
     let borrowedBook = {
         book_id: 112,
-        student_id: 1008,
+        student_id: 1002,
         date: '12-12-2023'
     };
 
@@ -105,14 +105,14 @@ describe("checkin", function() {
 // getBook
 describe("getBook", function() {
     test("works", async function() {
-        let book = await Book.getBook('110');
+        let book = await Book.getBook('103');
 
         expect(book).toEqual({
-            book_id: 110, 
-            isbn: '978-0-316-33474-7', 
-            title: 'Babylon\'s Ashes', 
-            stage: 4, 
-            condition: 'poor'
+            book_id: 103, 
+            isbn: '978-0-7653-2637-9', 
+            title: 'Oathbringer', 
+            stage: 2, 
+            condition: 'good'
         });
     });
 
@@ -149,7 +149,7 @@ describe("getAllBooks", function() {
     test("works", async function() {
         let books = await Book.getAllBooks();
 
-        expect(books.length).toEqual(13);
+        expect(books.length).toEqual(7);
 
         expect(books[0]).toEqual({
             id: 101, 

@@ -36,7 +36,7 @@ describe("getAllStudents", function(){
     test("works", async function(){
         let students = await Student.getAllStudents();
 
-        expect(students.length).toEqual(10)
+        expect(students.length).toEqual(6)
         expect(students[0]).toEqual({
             id: 1001, 
             first_name: 'Charlie', 
@@ -48,13 +48,13 @@ describe("getAllStudents", function(){
 
 describe("getStudent", function(){
     test("works", async function(){
-        let student = await Student.getStudent(1010)
+        let student = await Student.getStudent(1001)
 
         expect(student).toEqual({
-            id: 1010, 
-            first_name: 'Luther', 
-            last_name: 'McDonald', 
-            level: 'K2'
+            id: 1001, 
+            first_name: 'Charlie', 
+            last_name: 'Kelly', 
+            level: 'K1'
         });
     });
 
@@ -72,7 +72,7 @@ describe("getUnread", function(){
     test("works", async function(){
         let unread = await Student.getUnreadBooks(1001);
 
-        expect(unread.length).toBe(10)
+        expect(unread.length).toBe(4)
         expect(unread[0]).toEqual({
             id: 101, 
             isbn: '978-0-7653-2635-5', 

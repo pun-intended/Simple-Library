@@ -147,7 +147,7 @@ class User {
      * 
      * Throws UnauthorizedError if user id or password is incorrect
      */
-    static async authenticate({data}){
+    static async authenticate(data){
         const result = await db.query(`
         SELECT  id, 
                 password, 
@@ -167,8 +167,10 @@ class User {
                 return user;
             }
         }
-
         throw new UnauthorizedError("Invalid id/password");
+        
+
+        
     }
 }
 

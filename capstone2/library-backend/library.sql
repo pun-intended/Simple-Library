@@ -16,4 +16,3 @@ CREATE DATABASE library_test;
 \connect library_test
 
 \i library-schema.sql
-\i library-test-seed.sql

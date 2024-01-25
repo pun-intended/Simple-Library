@@ -28,7 +28,7 @@ describe("GET /students/", function() {
         
         const students = resp.body.students
         expect(resp.statusCode).toEqual(200);
-        expect(students.length).toEqual(10);
+        expect(students.length).toEqual(6);
         expect(students[0]).toEqual({
             id: 1001, 
             first_name: 'Charlie', 
@@ -85,7 +85,7 @@ describe("GET /students/:id/unread", function() {
             .set("authorization", `Bearer ${u1Token}`)
 
         const unread = resp.body.unread
-        expect(unread.length).toEqual(10)
+        expect(unread.length).toEqual(4)
         expect(unread[0]).toEqual({
             id: 101, 
             isbn: '978-0-7653-2635-5',

@@ -41,7 +41,7 @@ describe("POST /users/", function() {
                 last_name: "last",
                 is_admin: true
             },
-            token: expect.any(Number)
+            token: expect.any(String)
         });
     });
 
@@ -121,6 +121,11 @@ describe("GET /users/", function() {
                 {id: 10002, 
                 first_name: 'test', 
                 last_name: 'user2',
+                is_admin: false},
+                
+                {id: 10003, 
+                first_name: 'admin', 
+                last_name: 'user',
                 is_admin: true}]
             });
     });
@@ -140,11 +145,12 @@ describe("GET /users/:id", function() {
             .set("authorization", `Bearer ${adminToken}`);
 
         expect(resp.body).toEqual({
+            user: {
                 id: 10001,
                 first_name:'test', 
                 last_name: 'user', 
                 is_admin: false
-            });
+            }});
     });
 
     test("works for same user", async function(){
@@ -153,11 +159,12 @@ describe("GET /users/:id", function() {
             .set("authorization", `Bearer ${u1Token}`);
 
         expect(resp.body).toEqual({
+                user: {
                 id: 10001,
                 first_name:'test', 
                 last_name: 'user', 
                 is_admin: false
-            });
+            }});
     });
 
     test("unauth for other users", async function(){
@@ -199,7 +206,8 @@ describe("PATCH /users/:id", function() {
             updated: {
                 id: 10001,
                 first_name: "newName",
-                last_name: "newLast"
+                last_name: "newLast",
+                is_admin: false
             }
         });
     });
@@ -218,7 +226,8 @@ describe("PATCH /users/:id", function() {
             updated: {
                 id: 10001,
                 first_name: "newName",
-                last_name: "newLast"
+                last_name: "newLast",
+                is_admin: false
             }
         });
     });
@@ -269,7 +278,7 @@ describe("DELETE /users/:id", function() {
             .delete("/users/10001")
             .set("authorization", `Bearer ${adminToken}`);
 
-        expect(resp.body).toEqual({deleted: 10001});
+        expect(resp.body).toEqual({deleted: {id:10001}});
     });
 
     test("works for same user", async function(){
@@ -277,7 +286,7 @@ describe("DELETE /users/:id", function() {
             .delete("/users/10001")
             .set("authorization", `Bearer ${u1Token}`);
 
-        expect(resp.body).toEqual({deleted: 10001});
+        expect(resp.body).toEqual({deleted: {id:10001}});
     });
 
     test("unauth for other users", async function(){

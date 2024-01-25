@@ -30,7 +30,7 @@ describe("GET /books/", function() {
         
         const allBooks = resp.body.books;
 
-        expect(allBooks.length).toEqual(13);
+        expect(allBooks.length).toEqual(7);
         expect(allBooks[0]).toEqual({
             id: 101, 
             isbn: '978-0-7653-2635-5',
@@ -85,20 +85,25 @@ describe("GET /books/:id", function() {
 describe("GET /books/outstanding", function() {
     test("works for users", async function(){
         const resp = await request(app)
-            .get("/books/outstanding")
-            .set("authorization", `Bearer ${u1Token}`);
+        .get("/books/outstanding")
+        .set("authorization", `Bearer ${u1Token}`);
         
         expect(resp.statusCode).toEqual(200);
 
-        expect(resp.body.length).toEqual(5);
-        expect(resp.body[0]).toEqual({
-            books: {
+        const books = resp.body.books
+
+        expect(books.length).toEqual(5);
+        expect(books[0]).toEqual({
             book_id: 104, 
             isbn: '978-0765326386', 
             title: 'Rhythms of War', 
             stage: 3, 
-            condition: 'good'
-            }});
+            condition: 'good',
+            student_id: 1001,
+            first_name: "Charlie",
+            last_name: "Kelly",
+            borrow_date: "2023-10-24"
+            });
     });
 
         // TODO - After middleware added
@@ -205,7 +210,7 @@ describe("POST /books/checkin", function() {
         const resp = await request(app)
             .post("/books/checkin")
             .send({
-                book_id: 104,
+                book_id: '104',
                 date: "12-12-2024"
             })
             .set("authorization", `Bearer ${u1Token}`);

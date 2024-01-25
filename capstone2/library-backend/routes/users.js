@@ -91,7 +91,7 @@ router.patch("/:id", ensureCorrectUserOrAdmin, async function (req, res, next) {
  */
 router.delete("/:id", ensureCorrectUserOrAdmin, async function (req, res, next) {
     try{
-        const deleted = await User.delete(req.params.id);
+        const deleted = await User.remove(req.params.id);
         return res.json({deleted})
     } catch (e) {
         return next(e)

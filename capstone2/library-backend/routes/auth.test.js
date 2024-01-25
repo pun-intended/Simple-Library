@@ -83,18 +83,18 @@ describe("POST /auth/token", function(){
                 password: "password"
             });
         
-        expect(resp.statusCode).toEqual(400)
+        expect(resp.statusCode).toEqual(401)
     });
 
     test("unauth with invalid password", async function(){
         const resp = await request(app)
             .post("/auth/token")
             .send({
-                id: 1,
+                id: 10001,
                 password: "wrong"
             });
         
-        expect(resp.statusCode).toEqual(400)
+        expect(resp.statusCode).toEqual(401)
     })
 
     test("bad request with missing data", async function(){

@@ -28,21 +28,7 @@ router.get("/", ensureLoggedIn, async function (req, res, next) {
     return res.json({ books });
 })
 
-/** GET /[id] => {book}
- * 
- * Returns {id, isbn, title, stage, condition}
- * 
- * Auth: login
- */
-router.get("/:id", ensureLoggedIn, async function (req, res, next) {
-    try {
-        // validate schema
-        const book = await Book.getBook(req.params.id);
-        return res.json({ book });
-    } catch (e) {
-        return next(e);
-    }
-})
+
 
 /** GET /outstanding => {books: [{id, isbn, title, stage, condition}, ...]}
  * 
@@ -50,8 +36,7 @@ router.get("/:id", ensureLoggedIn, async function (req, res, next) {
  * 
  * Auth: login
  */
-router.get("/outstanding", ensureLoggedIn, async function(rec, res, next) {
-    // TODO - Class filter
+router.get("/outstanding", ensureLoggedIn, async function (req, res, next) {
     const books = await Book.getOutstanding();
 
     return res.json({ books });
@@ -93,6 +78,21 @@ router.post("/checkin", ensureLoggedIn, async function (req, res, next) {
     }
 })
 
+/** GET /[id] => {book}
+ * 
+ * Returns {id, isbn, title, stage, condition}
+ * 
+ * Auth: login
+ */
+router.get("/:id", ensureLoggedIn, async function (req, res, next) {
+    try {
+        // validate schema
+        const book = await Book.getBook(req.params.id);
+        return res.json({ book });
+    } catch (e) {
+        return next(e);
+    }
+})
 
 // TODO ---- STRETCH 
 

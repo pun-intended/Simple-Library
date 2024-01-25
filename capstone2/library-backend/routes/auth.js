@@ -46,9 +46,8 @@ router.post("/register", async function(req, res, next){
 router.post("/token", async function(req, res, next){
     // TODO - Add validation
     try{
-        const { id, password } = req.body;
-        const user = User.authenticate({id, password});
-
+        // const { id, password } = req.body;
+        const user = await User.authenticate(req.body);
         const token = createToken(user);
         return res.json({token});
     } catch (e) {
