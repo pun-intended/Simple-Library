@@ -88,7 +88,7 @@ describe("GET /books/outstanding", function() {
             .get("/books/outstanding")
             .set("authorization", `Bearer ${u1Token}`);
         
-        // expect(resp.statusCode).toEqual(200);
+        expect(resp.statusCode).toEqual(200);
 
         expect(resp.body.length).toEqual(5);
         expect(resp.body[0]).toEqual({

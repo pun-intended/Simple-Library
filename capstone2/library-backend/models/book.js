@@ -158,7 +158,7 @@ class Book {
                     S.last_name,
                     rec.borrow_date
             FROM books B
-            JOIN borrow_record AS rec ON B.id = rec.book_id
+            JOIN borrow_record AS rec ON book_id = rec.book_id
             JOIN students AS S on S.id = rec.student_id
             WHERE rec.return_date IS NULL`
         )
