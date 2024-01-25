@@ -15,10 +15,6 @@ VALUES
     ('1004', 'Deandra', 'Reynolds', 'K3'),
     ('1005', 'Frank', 'Reynolds', 'K3'),
     ('1006', 'Matty', 'Mara', 'K1'),
-    ('1007', 'Liam', 'McPoyle', 'K1'),
-    ('1008', 'Ryan', 'McPoyle', 'K2'),
-    ('1009', 'Frank', 'Kelly', 'K2'),
-    ('1010', 'Luther', 'McDonald', 'K2');
 
 INSERT INTO books (id, isbn, title, stage, condition)
 VALUES
@@ -26,12 +22,6 @@ VALUES
     ('102', '978-0-7653-2636-2', 'Words of Radiance', 2, 'great'),
     ('103', '978-0-7653-2637-9', 'Oathbringer', 2, 'good'),
     ('104', '978-0765326386', 'Rhythms of War', 3, 'good'),
-    ('105', '978-0-316-12908-4', 'Leviathan Wakes', 3, 'great'),
-    ('106', '978-0-316-12906-0', 'Caliban''s War', 3, 'good'),
-    ('107', '978-0-316-12907-7', 'Abaddon''s Gate', 1, 'poor'),
-    ('108', '978-0-316-21762-0', 'Cibola Burn', 1, 'great'),
-    ('109', '978-0-316-21758-3', 'Nemesis Games', 1, 'poor'),
-    ('110', '978-0-316-33474-7', 'Babylon''s Ashes', 4, 'poor'),
     ('111', '978-0-316-33283-5', 'Persepolis Rising', 4, 'good'),
     ('112', '978-0-316-33286-6', 'Tiamat''s Wrath', 1, 'great'),
     ('113', '978-0-316-33291-0', 'Leviathan Falls', 2, 'poor');

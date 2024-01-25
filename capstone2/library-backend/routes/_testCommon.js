@@ -6,8 +6,11 @@ const { createToken } = require("../helpers/tokens");
 
 
 // TODO- ADD COMMON TEST INFO, DELETE LIBRARY TEST
+// TODO - Rerun tests, correct data reference errors
 
 async function commonBeforeAll() {
+    
+    // Correct Users
     await User.create({
         id: "1",
         first_name: "U1F",
@@ -22,6 +25,14 @@ async function commonBeforeAll() {
         password: "password2",
         is_admin: false,
       });
+
+      // Add students
+
+      // Add books
+
+      // Add records
+
+
 
     }
     
