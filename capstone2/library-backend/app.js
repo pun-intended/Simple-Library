@@ -30,6 +30,10 @@ app.use("/books", booksRoutes);
 app.use("/users", usersRoutes);
 app.use("/students", studentsRoutes);
 
+app.get("/test", (req, res, next) => {
+    res.send({result: "connected"})
+})
+
 /** Handle 404 errors */
 app.use(function (req, res, next) {
     return next(new NotFoundError());

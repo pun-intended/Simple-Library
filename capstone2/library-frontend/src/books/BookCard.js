@@ -3,12 +3,22 @@
 // OnClick function pass
 import React from "react"
 
-const BookCard = ({book, func}) => {
+const BookCard = ({book}) => {
+    async function checkIn(){
+        console.log("Check in")
+    }
+    async function checkOut(){
+        console.log("Check out")
+    }
     return(
         <div className="BookCard">
-            <img className="BookCard bookCover" src="" alt={`${book.title}`} />
+            <img className="BookCard bookCover" 
+                src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-m.jpg`} 
+                alt={`${book.title}`} />
             <p className="BookCard bookTitle">{`${book.title}`}</p>
-            {!book.available && <p>{book.borrower}s</p>}
+            {book.borrow_date && <p>{book.student_id} - {book.last_name}, {book.first_name}</p>}
+            {book.borrow_date && <button onClick={checkIn}> "Check-in"</button>}
+            {!book.borrow_date && <button onClick={checkOut}> "Check-out"</button>}
         </div>
     )
 }

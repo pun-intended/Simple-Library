@@ -18,7 +18,6 @@ function CompanyList() {
 
     const handleChange = (evt) => {
         const {name, value} = evt.target
-        console.log(`QUERY --- ${name}: ${value}`)
         setQuery(value)
     }
     const handleSearch = async (evt) => {

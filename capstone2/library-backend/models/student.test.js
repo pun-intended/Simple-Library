@@ -41,7 +41,11 @@ describe("getAllStudents", function(){
             id: 1001, 
             first_name: 'Charlie', 
             last_name: 'Kelly', 
-            level: 'K1'
+            level: 'K1',
+            title: "Rhythms of War",
+            isbn: "978-0765326386",
+            book_id: 104,
+            borrow_date: "2023-10-24"
         });
     });
 });

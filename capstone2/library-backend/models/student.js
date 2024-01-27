@@ -1,9 +1,8 @@
 "use strict"
 
+// TODO - rerun tests
 
 const db = require('../db')
-// Error handlers
-// sql for partial update method
 const { NotFoundError } = require('../expressError');
 
 class Student {
@@ -30,18 +29,33 @@ class Student {
     /**
      * Get all students in class
      * 
-     * Returns {students: [{id, first_name, last_name, level}, ...]}
+     * Returns {students: [{id, first_name, last_name, level, book_id, title, isbn, borrow_date}, ...]}
+     *  borrowing id
      */
     static async getAllStudents(){
 
-        // TODO - Add class filter
         const students = await db.query(`
-        SELECT  id,
-                first_name,
-                last_name,
-                level
-        FROM students
-        `)
+        SELECT  S.id,
+                S.first_name,
+                S.last_name,
+                S.level, 
+                q2.title,
+                q2.isbn,
+                q2.book_id,
+                q2.borrow_date
+        FROM students S
+        LEFT OUTER JOIN 
+            (SELECT B.id as book_id, 
+                    B.title, 
+                    B.isbn, 
+                    rec.borrow_date, 
+                    rec.student_id
+            FROM books as B 
+            JOIN borrow_record AS rec
+            ON B.id = rec.book_id
+            WHERE return_date IS NULL) AS q2 
+        ON s.id = q2.student_id`)
+        
         return students.rows;
     }
 

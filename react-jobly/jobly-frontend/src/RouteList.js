@@ -1,6 +1,5 @@
 import './App.css';
 import "jwt-decode"
-// import RouteList from './RouteList';
 import JobList from './jobs/JobList';
 import CompanyList from './companies/CompanyList';
 import LoginForm from './user/LoginForm';

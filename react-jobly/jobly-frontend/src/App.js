@@ -1,6 +1,6 @@
 import './App.css';
 import RouteList from './RouteList';
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import NavBar from './NavBar';

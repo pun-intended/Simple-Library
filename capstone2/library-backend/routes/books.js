@@ -31,7 +31,7 @@ router.get("/", ensureLoggedIn, async function (req, res, next) {
 
 
 
-/** GET /outstanding => {books: [{id, isbn, title, stage, condition}, ...]}
+/** GET /outstanding => {books: [{book_id, isbn, title, stage, condition, student_id, first_name, last_name, borrow_date}, ...]}
  * 
  * Returns all books that are still outstanding
  * 
@@ -67,7 +67,7 @@ router.post("/checkout", ensureLoggedIn, async function (req, res, next) {
 
 /** POST /checkin {book_id, date} => {returned: {id, return_date}}
  * 
- * Returns {Returned: {id, return_date}}
+ * Returns {returned: {id, return_date}}
  * 
  * Auth: login
  */

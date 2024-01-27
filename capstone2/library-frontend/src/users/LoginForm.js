@@ -1,14 +1,57 @@
+import {React, useState} from "react";
+import {useNavigate} from "react-router-dom"
+import {Form, FormGroup, Label, Input, Button} from "reactstrap"
 
-import React from "react";
+const LoginForm = (login) => {
+    
+    const INITIAL_STATE = {
+        username: "",
+        password: ""
+    }
+    const navigate = useNavigate()
 
-const LoginForm = () => {
+    const[formData, setFormData] = useState(INITIAL_STATE)
+
+    const handleSubmit = (evt) => {
+        evt.preventDefault()
+        try{
+            login(formData)
+            setFormData(INITIAL_STATE)
+            navigate("/")
+        } catch(e){
+            console.log(e)
+        }
+    }
+
+    const handleChange = evt => {
+        const { name, value } = evt.target
+        setFormData(fData => ({
+            ...fData,
+            [name]: value
+        }));
+    }
+    return(
     <div className="LoginForm">
-        <label for="id">ID</label>
-        <input name="id" />
-        <label for="password">Password</label>
-        <input name="password" />
-        
+        <Form onSubmit={handleSubmit}>
+            <FormGroup>
+                <Label for="id">ID</ Label>
+                <Input id="id"
+                    name="id"
+                    placegolder="ID"
+                    type="text"
+                    onChange={handleChange} 
+                    value={formData.id}/>
+                <Label for="password">Password</Label>
+                <Input id="password"
+                    name="password"
+                    placegolder="Password"
+                    type="text"
+                    onChange={handleChange} 
+                    value={formData.password} />
+            </FormGroup>
+        </Form>
     </div>
+    )
 }
 
 export default LoginForm;
