@@ -53,7 +53,8 @@ function App() {
       <UserContext.Provider value={currentUser}>
         <BrowserRouter>
           <NavBar />
-          <RouteList login={login} signup={signup} patchUser={patchUser} setToken={setToken} setCurrentUser={setCurrentUser}/>
+          {/* <RouteList login={login} signup={signup} patchUser={patchUser} setToken={setToken} setCurrentUser={setCurrentUser}/> */}
+          <RouteList />
         </BrowserRouter>
       </UserContext.Provider>
     </div>

@@ -13,7 +13,7 @@ const BookCard = ({book}) => {
     return(
         <div className="BookCard">
             <img className="BookCard bookCover" 
-                src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-m.jpg`} 
+                src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg`} 
                 alt={`${book.title}`} />
             <p className="BookCard bookTitle">{`${book.title}`}</p>
             {book.borrow_date && <p>{book.student_id} - {book.last_name}, {book.first_name}</p>}

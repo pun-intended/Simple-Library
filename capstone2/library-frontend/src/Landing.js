@@ -6,7 +6,7 @@ function Landing () {
     useEffect( () => {
         async function getConn(){
             const res = await LibraryApi.testConnection()
-            setResult(res)
+            setResult(res.result)
         }
         getConn()
     }
