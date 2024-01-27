@@ -5,6 +5,10 @@
     "default": {},
     "title": "/auth/register Schema",
     "required": [
+        "id",
+        "first_name",
+        "last_name",
+        "password"
     ],
     "properties": {
         "id": {

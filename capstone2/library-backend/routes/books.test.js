@@ -210,7 +210,7 @@ describe("POST /books/checkin", function() {
         const resp = await request(app)
             .post("/books/checkin")
             .send({
-                book_id: '104',
+                book_id: 104,
                 date: "12-12-2024"
             })
             .set("authorization", `Bearer ${u1Token}`);

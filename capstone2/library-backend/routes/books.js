@@ -2,14 +2,15 @@
 
 /** Routes for books. */
 
-// const jsonschema = require("jsonschema");
+const jsonschema = require("jsonschema");
 const express = require("express");
 
 const { BadRequestError } = require("../expressError");
 const { ensureLoggedIn } = require("../middleware/auth");
 const Book = require("../models/book");
 
-// const schema = require("../schemas/schema.json");
+const checkInSchema = require("../schemas/checkIn.json");
+const checkOutSchema = require("../schemas/checkOut.json");
 
 const router = new express.Router();
 
@@ -42,17 +43,21 @@ router.get("/outstanding", ensureLoggedIn, async function (req, res, next) {
     return res.json({ books });
 })
 
-/** POST /[id]/checkout {book_id, student_id, date}
+/** POST /checkout {book_id, student_id, date}
  *                  => {borrowed: {id, book_id, student_id, borrow_date}}
  * 
  * Returns borrow_record object for book
  * 
  * Auth: login
  */
-// QUESTION - Would these two better without the url params? send the ID in the post request?
 router.post("/checkout", ensureLoggedIn, async function (req, res, next) {
     // TODO - add validation
     try{
+        const validator = jsonschema.validate(req.body, checkOutSchema)
+        if(!validator.valid){
+            const errs = validator.errors.map(e => e.stack)
+            throw new BadRequestError(errs)
+        }
         const data = req.body
         const borrowed = await Book.checkOut(req.body);
         return res.status(201).json({ borrowed });
@@ -61,16 +66,20 @@ router.post("/checkout", ensureLoggedIn, async function (req, res, next) {
     }
 })
 
-/** POST /[id]/checkin {book_id, date} => {returned: {id, return_date}}
+/** POST /checkin {book_id, date} => {returned: {id, return_date}}
  * 
  * Returns {Returned: {id, return_date}}
  * 
  * Auth: login
  */
-// QUESTION - Would these two better without the url params? send the ID in the post request?
 router.post("/checkin", ensureLoggedIn, async function (req, res, next) {
     // TODO - add validation
     try{
+        const validator = jsonschema.validate(req.body, checkInSchema)
+        if(!validator.valid){
+            const errs = validator.errors.map(e => e.stack)
+            throw new BadRequestError(errs)
+        }
         const returned = await Book.checkIn(req.body);
         return res.status(201).json({ returned });
     }catch(e){

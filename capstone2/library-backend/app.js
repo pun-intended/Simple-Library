@@ -6,7 +6,6 @@
 // TODO - disallow students from borrowing more than one book
 
 const express = require("express");
-// QUESTION - what does this do?
 const cors = require("cors");
 
 const { NotFoundError } = require("./expressError");
@@ -17,7 +16,6 @@ const booksRoutes = require("./routes/books");
 const usersRoutes = require("./routes/users");
 const studentsRoutes = require("./routes/students");
 
-// QUESTION - What does this do?
 const morgan = require("morgan");
 
 const app = express();

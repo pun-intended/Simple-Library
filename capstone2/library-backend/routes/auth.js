@@ -2,16 +2,17 @@
 
 /** Routes for auth. */
 
-// TODO - add schema
+// TODO - change naming conventions to match JSON standards - camelCase over underscore
 
-// const jsonschema = require("jsonschema");
+const jsonschema = require("jsonschema");
 const express = require("express");
 
 const { BadRequestError } = require("../expressError");
 const { createToken } = require("../helpers/tokens");
 const User = require("../models/user");
 
-// const schema = require("../schemas/schema.json");
+const authRegisterSchema = require("../schemas/authRegister.json");
+const authTokenSchema = require("../schemas/authToken.json");
 
 const router = new express.Router();
 
@@ -27,6 +28,11 @@ router.post("/register", async function(req, res, next){
     // TODO - add validation
     
     try{
+        const validator = jsonschema.validate(req.body, authRegisterSchema)
+        if(!validator.valid){
+            const errs = validator.errors.map(e => e.stack)
+            throw new BadRequestError(errs)
+        }
         const data = req.body;
         const user = await User.create({...data, is_admin: false});
     
@@ -46,7 +52,11 @@ router.post("/register", async function(req, res, next){
 router.post("/token", async function(req, res, next){
     // TODO - Add validation
     try{
-        // const { id, password } = req.body;
+        const validator = jsonschema.validate(req.body, authTokenSchema)
+        if(!validator.valid){
+            const errs = validator.errors.map(e => e.stack)
+            throw new BadRequestError(errs)
+        }
         const user = await User.authenticate(req.body);
         const token = createToken(user);
         return res.json({token});

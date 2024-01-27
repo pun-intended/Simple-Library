@@ -54,7 +54,7 @@ function App() {
       <div className="App">
         <BrowserRouter>
           <NavBar />
-            {/*TODO - better abstraction, refactor */}
+            {/*TODO - better abstraction, refactor - useContext for route methods?*/}
             <RouteList login={login} signup={signup} patchUser={patchUser} setToken={setToken} setCurrentUser={setCurrentUser}/>
         </BrowserRouter>
       </div>

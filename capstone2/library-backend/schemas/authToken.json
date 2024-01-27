@@ -3,30 +3,30 @@
     "$id": "http://example.com/example.json",
     "type": "object",
     "default": {},
-    "title": "Root Schema",
+    "title": "/auth/token Schema",
     "required": [
-        "book_id",
-        "date"
+        "id",
+        "password"
     ],
     "properties": {
-        "book_id": {
+        "id": {
             "type": "integer",
-            "title": "The book_id Schema",
+            "title": "ID",
             "examples": [
-                101
+                10001
             ]
         },
-        "date": {
+        "password": {
             "type": "string",
-            "title": "The date Schema",
+            "title": "password",
             "examples": [
-                "10-24-2023"
+                "password"
             ]
         }
     },
     "additionalProperties": false,
     "examples": [{
-        "book_id": 101,
-        "date": "10-24-2023"
+        "id": 10001,
+        "password": "password"
     }]
 }

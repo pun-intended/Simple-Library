@@ -3,7 +3,7 @@
 // TODO - add authorization
 /** Routes for users. */
 
-// const jsonschema = require("jsonschema");
+const jsonschema = require("jsonschema");
 const express = require("express");
 
 const { BadRequestError } = require("../expressError");
@@ -11,7 +11,8 @@ const { ensureAdmin, ensureCorrectUserOrAdmin, ensureLoggedIn } = require("../mi
 const User = require("../models/user");
 const { createToken } = require("../helpers/tokens");
 
-// const schema = require("../schemas/schema.json");
+const userCreateSchema = require("../schemas/userCreate.json");
+const userUpdateSchema = require("../schemas/userUpdate.json");
 
 const router = new express.Router();
 
@@ -25,7 +26,13 @@ const router = new express.Router();
  */
 router.post("/", ensureAdmin, async function (req, res, next) {
     // Add Validation
+    
     try{
+        const validator = jsonschema.validate(req.body, userCreateSchema)
+        if(!validator.valid){
+            const errs = validator.errors.map(e => e.stack)
+            throw new BadRequestError(errs)
+        }
         const user = await User.create(req.body)
         const token = createToken(user)
         return res.status(201).json({ user, token })
@@ -66,16 +73,21 @@ router.get("/:id", ensureCorrectUserOrAdmin, async function (req, res, next) {
 
 /** PATCH /[id] {data} => {user} 
  * 
- * data can include {first_name, last_name, password, is_admin}
+ * data can include {first_name, last_name, password}
  * 
  * Returns {updated: {id, first_name, last_name, is_admin}}
  * 
  * Auth: admin or same user
  */
-// QUESTION - Best way to prevent someone from changing admins status
+// QUESTION - Best way to prevent someone from changing admins status while allowing admin change
 router.patch("/:id", ensureCorrectUserOrAdmin, async function (req, res, next) {
     try{
-        // Add validation
+        const validator = jsonschema.validate(req.body, userUpdateSchema)
+        if(!validator.valid){
+            const errs = validator.errors.map(e => e.stack)
+            throw new BadRequestError(errs)
+        }
+        
         const updated = await User.updateUser(req.params.id, req.body);
         return res.json({updated})
     } catch (e) {

@@ -5,6 +5,11 @@
     "default": {},
     "title": "/auth/register Schema",
     "required": [
+        "id",
+        "first_name",
+        "last_name",
+        "password",
+        "is_admin"
     ],
     "properties": {
         "id": {
@@ -34,13 +39,22 @@
             "examples": [
                 "password"
             ]
+        },
+        "is_admin": {
+            "type": "boolean",
+            "title": "is_admin",
+            "examples": [
+                true
+            ]
         }
+
     },
     "additionalProperties": false,
     "examples": [{
         "id": 10001,
         "first_name": "john",
         "last_name": "smith",
-        "password": "password"
+        "password": "password",
+        "is_admin": true
     }]
 }
