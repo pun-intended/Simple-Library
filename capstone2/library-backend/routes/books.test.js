@@ -81,7 +81,6 @@ describe("GET /books/:id", function() {
     });
 });
 
-// TODO - Why is this throwing an error?
 describe("GET /books/outstanding", function() {
     test("works for users", async function(){
         const resp = await request(app)
@@ -106,7 +105,6 @@ describe("GET /books/outstanding", function() {
             });
     });
 
-        // TODO - After middleware added
     test("unauth for anon", async function(){
         const resp = await request(app)
             .get("/books/outstanding")
@@ -136,7 +134,6 @@ describe("POST /books/checkout", function() {
         });
     });
 
-    // TODO - After middleware added
     test("unauth for anon", async function(){
         const resp = await request(app)
             .post("/books/checkout")
@@ -172,7 +169,6 @@ describe("POST /books/checkout", function() {
         expect(resp.statusCode).toEqual(404);
     });
 
-    // TODO - After validation added
     test("bad request if invalid data", async function(){
         const resp = await request(app)
             .post("/books/checkout")
@@ -224,7 +220,6 @@ describe("POST /books/checkin", function() {
         });
     });
 
-    // TODO - After middleware added
     test("unauth for anon", async function(){
         const resp = await request(app)
             .post("/books/checkin")
@@ -248,7 +243,6 @@ describe("POST /books/checkin", function() {
         expect(resp.statusCode).toEqual(404);
     });
 
-    // TODO - After validation added
     test("bad request if invalid data", async function(){
         const resp = await request(app)
         .post("/books/checkin")

@@ -51,7 +51,6 @@ router.get("/outstanding", ensureLoggedIn, async function (req, res, next) {
  * Auth: login
  */
 router.post("/checkout", ensureLoggedIn, async function (req, res, next) {
-    // TODO - add validation
     try{
         const validator = jsonschema.validate(req.body, checkOutSchema)
         if(!validator.valid){
@@ -73,7 +72,6 @@ router.post("/checkout", ensureLoggedIn, async function (req, res, next) {
  * Auth: login
  */
 router.post("/checkin", ensureLoggedIn, async function (req, res, next) {
-    // TODO - add validation
     try{
         const validator = jsonschema.validate(req.body, checkInSchema)
         if(!validator.valid){

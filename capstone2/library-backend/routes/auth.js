@@ -25,7 +25,6 @@ const router = new express.Router();
  * Auth: none
  */
 router.post("/register", async function(req, res, next){
-    // TODO - add validation
     
     try{
         const validator = jsonschema.validate(req.body, authRegisterSchema)
@@ -50,7 +49,6 @@ router.post("/register", async function(req, res, next){
  * Auth: none
  */
 router.post("/token", async function(req, res, next){
-    // TODO - Add validation
     try{
         const validator = jsonschema.validate(req.body, authTokenSchema)
         if(!validator.valid){

@@ -88,7 +88,6 @@ describe("POST /users/", function() {
         expect(resp.statusCode).toEqual(400);
     });
 
-    // TODO - after validation
     test("bad request with invalid data", async function(){
         const resp = await request(app)
             .post("/users")

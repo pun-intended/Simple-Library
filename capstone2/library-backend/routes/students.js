@@ -1,5 +1,4 @@
 "use strict";
-// TODO - add validation
 // TODO - add student method (admin)
 
 /** Routes for companies. */

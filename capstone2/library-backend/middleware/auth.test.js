@@ -1,7 +1,5 @@
 "use strict";
 
-// TODO - Fix to work with id instead of username
-
 const jwt = require("jsonwebtoken");
 const { UnauthorizedError } = require("../expressError");
 const {
