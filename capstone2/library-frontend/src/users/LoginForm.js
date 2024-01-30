@@ -1,11 +1,11 @@
 import {React, useState} from "react";
 import {useNavigate} from "react-router-dom"
-import {Form, FormGroup, Label, Input, Button} from "reactstrap"
+import {Form, FormGroup, Label, Input, Container, Button} from "reactstrap"
 
-const LoginForm = (login) => {
+const LoginForm = ({login}) => {
     
     const INITIAL_STATE = {
-        username: "",
+        id: "",
         password: ""
     }
     const navigate = useNavigate()
@@ -31,26 +31,28 @@ const LoginForm = (login) => {
         }));
     }
     return(
-    <div className="LoginForm">
-        <Form onSubmit={handleSubmit}>
-            <FormGroup>
+    <Container className="LoginForm" >
+        <Form onSubmit={handleSubmit} >
+            <FormGroup > 
                 <Label for="id">ID</ Label>
                 <Input id="id"
                     name="id"
                     placegolder="ID"
                     type="text"
                     onChange={handleChange} 
-                    value={formData.id}/>
+                    value={formData.id}
+                    />
                 <Label for="password">Password</Label>
                 <Input id="password"
                     name="password"
                     placegolder="Password"
-                    type="text"
+                    type="password"
                     onChange={handleChange} 
                     value={formData.password} />
             </FormGroup>
+            <Button>Login</Button>
         </Form>
-    </div>
+    </Container>
     )
 }
 
