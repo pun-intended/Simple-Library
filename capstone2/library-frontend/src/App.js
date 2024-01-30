@@ -25,6 +25,11 @@ function App() {
     setToken(newToken)
   }
 
+  function logout() {
+    setToken("")
+    setCurrentUser("")
+  }
+
   async function signup(data) {
     const newToken = await LibraryApi.register(data)
     setToken(newToken)
@@ -64,7 +69,7 @@ function App() {
         <BrowserRouter>
           <NavBar />
           {/* <RouteList login={login} signup={signup} patchUser={patchUser} setToken={setToken} setCurrentUser={setCurrentUser}/> */}
-          <RouteList login={login}/>
+          <RouteList login={login} logout={logout}/>
         </BrowserRouter>
         </StudentContext.Provider>
       </UserContext.Provider>
