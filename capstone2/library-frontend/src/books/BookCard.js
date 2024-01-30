@@ -4,11 +4,14 @@
 import React, { useState } from "react"
 import {Card, CardBody, CardTitle, CardText, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import CheckOutModal from "./CheckOutModal.js";
+import CheckInModal from "./CheckInModal.js";
 
-const BookCard = ({book}) => {
+const BookCard = ({book, setUpdate}) => {
 
-    const [modal, setModal] = useState(false);
-    const toggle = () => { setModal(!modal)};
+    const [outModal, setOutModal] = useState(false);
+    const [inModal, setInModal] = useState(false);
+    const toggleOut = () => { setOutModal(!outModal)};
+    const toggleIn = () => { setInModal(!inModal)};
 
     async function checkIn(){
         console.log("Check in")
@@ -30,23 +33,14 @@ const BookCard = ({book}) => {
             </CardBody>
             <CardBody >
                 <CardText>
-                    {!book.available && <Button className="btn-primary" onClick={checkIn}>Check-in</Button>}
-                    {book.available && <Button className="btn-primary" onClick={toggle}>Check-out</Button>}
+                    {!book.available && <Button className="btn-primary" onClick={toggleIn}>Check-in</Button>}
+                    {book.available && <Button className="btn-primary" onClick={toggleOut}>Check-out</Button>}
                 </CardText>
             </CardBody>
-            <CheckOutModal modal={modal} toggle={toggle} book={book}/>
+           {outModal && <CheckOutModal modal={outModal} toggle={toggleOut} book={book} setUpdate={setUpdate}/>}
+           {inModal && <CheckInModal modal={inModal} toggle={toggleIn} book={book} setUpdate={setUpdate}/>}
         </Card>
     )
-    //     <div className="BookCard">
-    //         <img className="BookCard bookCover" 
-    //             src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg`} 
-    //             alt={`${book.title}`} />
-    //         <p className="BookCard bookTitle">{`${book.title}`}</p>
-    //         {book.borrow_date && <p>{book.student_id} - {book.last_name}, {book.first_name}</p>}
-    //         {!book.available && <button onClick={checkIn}> "Check-in"</button>}
-    //         {book.available && <button onClick={checkOut}> "Check-out"</button>}
-    //     </div>
-    // )
 }
 
 export default BookCard
