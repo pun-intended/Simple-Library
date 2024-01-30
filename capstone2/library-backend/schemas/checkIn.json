@@ -6,11 +6,12 @@
     "title": "Root Schema",
     "required": [
         "book_id",
-        "date"
+        "date",
+        "condition"
     ],
     "properties": {
         "book_id": {
-            "type": "integer",
+            "type": "string",
             "title": "The book_id Schema",
             "examples": [
                 101
@@ -22,11 +23,19 @@
             "examples": [
                 "10-24-2023"
             ]
+        },
+        "condition": {
+            "type": "string",
+            "title": "The condition Schema",
+            "examples": [
+                "10-24-2023"
+            ]
         }
     },
     "additionalProperties": false,
     "examples": [{
         "book_id": 101,
-        "date": "10-24-2023"
+        "date": "10-24-2023",
+        "condition": "great"
     }]
 }
