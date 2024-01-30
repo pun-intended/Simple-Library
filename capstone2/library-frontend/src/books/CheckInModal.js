@@ -6,23 +6,22 @@ import StudentContext from "../StudentContext";
 import LibraryApi from "../api";
 
 
-const CheckOutModal = ({modal, toggle, book, setUpdate}) => {
+const CheckInModal = ({modal, toggle, book_id, setUpdate}) => {
 
-    let bookDetails;
-
-    
+    const [book, setBook] = useState([]);
 
     useEffect(() => {
         async function getBookDetails() {
-            bookDetails = await LibraryApi.getBook(book.id)
+            const bookDetails = await LibraryApi.getBook(book_id);
+            setBook(bookDetails);
         }
         getBookDetails()
     }, [])
 
     const INITIAL_STATE = {
         'date': new Date().toISOString().slice(0, 10),
-        'book_id': book.id.toString(),
-        'condition': "good"
+        'book_id': book_id.toString(),
+        'condition': book.condition || "good"
     }
 
     const students = useContext(StudentContext)
@@ -42,8 +41,6 @@ const CheckOutModal = ({modal, toggle, book, setUpdate}) => {
     }
 
     const handleDateChange = (v, f) => {
-        console.log(`v - ${v}`)
-        console.log(`f - ${f}`)
         setFormData(fData => ({
             ...fData,
             'date': f
@@ -90,13 +87,13 @@ const CheckOutModal = ({modal, toggle, book, setUpdate}) => {
                                     onChange={handleChange}
                                     placeholder="--Condition"
                             >
-                                <option>
+                                <option value="poor">
                                     Poor
                                 </option>
-                                <option>
+                                <option value="good">
                                     Good
                                 </option>
-                                <option>
+                                <option value="great">
                                     Great
                                 </option>
                             </Input>
@@ -113,5 +110,5 @@ const CheckOutModal = ({modal, toggle, book, setUpdate}) => {
     )
 }
 
-export default CheckOutModal
+export default CheckInModal
 
