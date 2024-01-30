@@ -4,6 +4,8 @@ import React from "react"
 import StudentCard from "./StudentCard";
 import { useState, useEffect } from "react";
 import LibraryApi from "../api";
+import {Container, Col, Row, Button} from 'reactstrap'
+import "./StudentCard.css";
 
 const StudentList = () => {
     const [students, setStudents] = useState([])
@@ -17,10 +19,16 @@ const StudentList = () => {
 
     return(
         <div className="StudentList">
+            <Container>
+                <Row>
             {students.map((st) =>  {
                 return (
+                    <Col sm="2">
                     <StudentCard student={st} />
+                    </Col>
                 )})}
+                </Row>
+            </Container>
             
         </div>
     )
