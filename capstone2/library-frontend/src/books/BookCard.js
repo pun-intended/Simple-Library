@@ -38,7 +38,7 @@ const BookCard = ({book, setUpdate}) => {
                 </CardText>
             </CardBody>
            {outModal && <CheckOutModal modal={outModal} toggle={toggleOut} book={book} setUpdate={setUpdate}/>}
-           {inModal && <CheckInModal modal={inModal} toggle={toggleIn} book={book} setUpdate={setUpdate}/>}
+           {inModal && <CheckInModal modal={inModal} toggle={toggleIn} book_id={book.id} setUpdate={setUpdate}/>}
         </Card>
     )
 }
