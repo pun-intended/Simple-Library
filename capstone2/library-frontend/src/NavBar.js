@@ -29,7 +29,7 @@ const NavBar = () =>{
           </NavItem>
         </Nav>
         {currentUser && <NavLink to="/profile" className="navbar-brand">
-          {`${currentUser.id}`}
+          {`${currentUser.id} - ${currentUser.first_name}`}
         </NavLink>}
         {currentUser && <NavLink exact to="/logout" className="navbar-brand">
           Logout
