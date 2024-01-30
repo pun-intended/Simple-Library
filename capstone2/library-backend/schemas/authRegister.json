@@ -12,7 +12,7 @@
     ],
     "properties": {
         "id": {
-            "type": "integer",
+            "type": "string",
             "title": "ID",
             "examples": [
                 10001
@@ -42,7 +42,7 @@
     },
     "additionalProperties": false,
     "examples": [{
-        "id": 10001,
+        "id": "10001",
         "first_name": "john",
         "last_name": "smith",
         "password": "password"
