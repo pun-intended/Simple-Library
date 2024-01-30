@@ -31,7 +31,7 @@ VALUES
     ('109', '978-0-316-21758-3', 'Nemesis Games', 1, 'poor'),
     ('110', '978-0-316-33474-7', 'Babylon''s Ashes', 4, 'poor'),
     ('111', '978-0-316-33283-5', 'Persepolis Rising', 4, 'good'),
-    ('112', '978-0-316-33286-6', 'Tiamat''s Wrath', 1, 'great'),
+    ('112', '978-0-316-33287-3', 'Tiamat''s Wrath', 1, 'great'),
     ('113', '978-0-316-33291-0', 'Leviathan Falls', 2, 'poor');
 
 INSERT INTO borrow_record (student_id, book_id, borrow_date, return_date)
