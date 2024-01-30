@@ -118,7 +118,7 @@ class Book {
     /**
      * Get all books in library.
      * 
-     * Returns [{id, isbn, title, stage, condition}, ...] 
+     * Returns [{id, isbn, title, stage, condition, available}, ...] 
      */
 
 // TODO - STRETCH - add stage filter
@@ -128,7 +128,10 @@ class Book {
                     isbn,
                     title,
                     stage,
-                    condition
+                    condition,
+                    id NOT IN (SELECT b.id FROM books b JOIN borrow_record rec
+                            ON rec.book_id = b.id
+                            WHERE rec.return_date IS NULL) AS available
             FROM books`
         )
         return books.rows
