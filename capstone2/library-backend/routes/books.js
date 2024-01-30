@@ -65,7 +65,7 @@ router.post("/checkout", ensureLoggedIn, async function (req, res, next) {
     }
 })
 
-/** POST /checkin {book_id, date} => {returned: {id, return_date}}
+/** POST /checkin {book_id, date, condition} => {returned: {id, return_date, condition}}
  * 
  * Returns {returned: {id, return_date}}
  * 
