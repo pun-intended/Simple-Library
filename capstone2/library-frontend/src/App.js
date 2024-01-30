@@ -12,7 +12,8 @@ import StudentContext from './StudentContext.js';
 
 
 function App() {
-
+// TODO - Add alert funtionality
+  // Alert component, state inside, display contingent on alert in state
   const [token, setToken] = useLocalStorage('token', '')
   const [currentUser, setCurrentUser] = useLocalStorage('currentUser', '')
   const [students, setStudents] = useState([])
@@ -20,6 +21,7 @@ function App() {
       
   async function login(data) {
     const newToken = await LibraryApi.login(data);
+    console.log(newToken)
     setToken(newToken)
   }
 
@@ -32,11 +34,9 @@ function App() {
     setCurrentUser(newUser);
   }
 
-
   useEffect(() => {
     async function updateUser() {
       if(token.length > 0){
-        
         try{
           const decodedToken = jwtDecode(token)
           const id = decodedToken.id
@@ -55,24 +55,16 @@ function App() {
           setStudents(Ss)
     }
     populateStudents()
-  },[token])
-
-//   useEffect( () => {
-//     async function initializeList(){
-//         const students = await LibraryApi.getAllStudents()
-//         setStudents(students)
-//     }
-//     initializeList()
-// }, [])
+  },[token, ])
 
   return (
     <div className="App">
       <UserContext.Provider value={currentUser}>
-        <StudentContext.Provider value={students}>
+        <StudentContext.Provider value={{students, setStudents}}>
         <BrowserRouter>
           <NavBar />
           {/* <RouteList login={login} signup={signup} patchUser={patchUser} setToken={setToken} setCurrentUser={setCurrentUser}/> */}
-          <RouteList />
+          <RouteList login={login}/>
         </BrowserRouter>
         </StudentContext.Provider>
       </UserContext.Provider>
