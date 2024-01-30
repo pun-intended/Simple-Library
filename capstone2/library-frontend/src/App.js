@@ -62,3 +62,11 @@ function App() {
 }
 
 export default App;
+
+// TODO - Set max height of images, cards
+// TODO - create cards for students
+// TODO - Complete check-out modal
+// TODO - Create check-in modal
+// TODO - create book detail modal?
+// TODO - Set default image for image not found
+// TODO - Add alert notification to next page "____ checked in" / "_____ checked out to _____"
