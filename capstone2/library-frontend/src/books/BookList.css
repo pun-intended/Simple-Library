@@ -1,0 +1,11 @@
+.BookCard {
+    max-height: 37vh;
+    margin-bottom: 1vw;
+}
+
+.BookCover {
+    min-height: 18vh;
+    max-height: 18vh;
+}
+
+/* TODO - Fix text height to fit into cards */
