@@ -15,7 +15,7 @@ const checkOutSchema = require("../schemas/checkOut.json");
 const router = new express.Router();
 
 
-/** GET / {books: [{id, isbn, title, stage, condition}...]}
+/** GET / {books: [{id, isbn, title, stage, condition, available}...]}
  * 
  * Returns all books in library
  * 
