@@ -8,7 +8,7 @@ import StudentList from "./students/StudentList"
 import BookList from "./books/BookList"
 import Landing from './Landing';
 
-function RouteList({login, checkIn, patchUser, setToken, setCurrentUser}) {
+function RouteList({login}) {
 
     return(
         <Routes>
@@ -16,7 +16,6 @@ function RouteList({login, checkIn, patchUser, setToken, setCurrentUser}) {
             <Route exact path="/checkin" element={<CheckInList />} />
             <Route exact path="/students" element={<StudentList />} />
             <Route exact path="/books" element={<BookList />} />
-            <Route exact path="/login" element={<LoginForm />} />
             {/* <Route exact path="/signup" element={<SignUpForm />} /> */}
             <Route exact path="/" element={<Landing />} />
         </Routes>
