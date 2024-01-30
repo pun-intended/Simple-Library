@@ -8,8 +8,7 @@ import LibraryApi from "../api";
 
 const CheckOutModal = ({modal, toggle, book , setUpdate}) => {
 
-    const students = useContext(StudentContext)
-    const [values, setValues] = useState([])
+    const {students} = useContext(StudentContext)
 
     const INITIAL_STATE = {
         'student_id': "",
@@ -52,7 +51,7 @@ const CheckOutModal = ({modal, toggle, book , setUpdate}) => {
     }
 
     return(
-        <Modal isOpen={modal} toggle={toggle} backdrop="true">
+        <Modal isOpen={modal} toggle={toggle} backdrop={true}>
             <ModalHeader toggle={toggle}>
                 Check-Out - {`${book.title}`}
             </ModalHeader>
@@ -72,11 +71,12 @@ const CheckOutModal = ({modal, toggle, book , setUpdate}) => {
                                     onChange={handleChange}>
                             <option>--Select Student</option>
                                 {students.map(st => {
-                                    return (
-                                    <option value={parseInt(st.id)}>
-                                        {st.first_name} {st.last_name}
-                                    </option>
-                                    )
+                                    if(!st.book_id){
+                                        return (
+                                        <option value={parseInt(st.id)}>
+                                            {st.first_name} {st.last_name}
+                                        </option>
+                                        )}
                                 })}
                             </Input>
                             <DatePicker name="date" 
