@@ -11,13 +11,15 @@ import "./BookList.css"
 
 const BookList = () => {
     const [books, setBooks] = useState([])
+    const [update, setUpdate] = useState(false)
     useEffect( () => {
         async function initializeList(){
             const books = await LibraryApi.getAllBooks()
             setBooks(books)
+            setUpdate(false)
         }
         initializeList()
-    }, [])
+    }, [update])
 
     async function checkIn(book){
         const date = getDateStr()
@@ -31,7 +33,7 @@ const BookList = () => {
                     {books.map((book) => {
                         return(
                         <Col className="BookCard" xs="2">
-                            <BookCard book={book}/>
+                            <BookCard book={book} setUpdate={setUpdate}/>
                         </Col>
                         )
                     })}
