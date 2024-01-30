@@ -76,7 +76,7 @@ class Book {
      * Get all book data given the ID
      * 
      * {book_id} => {book_id, isbn, title, stage, condition, student}
-     *  where borrowing is {student_id, first_name, last_name, level, borrowDate}
+     *  where student is {student_id, first_name, last_name, level, borrowDate}
      */
     static async getBook(bookId){
         const bookRes = await db.query(
