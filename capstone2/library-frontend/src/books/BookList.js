@@ -2,30 +2,28 @@
 // List all books checked out -> book card
 // Click available book to show checkout card
 
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useContext } from "react"
 import BookCard from "./BookCard";
 import LibraryApi from "../api";
-import getDateStr from "../helpers";
 import {Container, Row, Col, CardGroup} from 'reactstrap'
+import StudentContext from "../StudentContext";
 import "./BookList.css"
 
 const BookList = () => {
+    const {setStudents} = useContext(StudentContext)
     const [books, setBooks] = useState([])
     const [update, setUpdate] = useState(false)
     useEffect( () => {
         async function initializeList(){
-            const books = await LibraryApi.getAllBooks()
-            setBooks(books)
+            const updateBooks = await LibraryApi.getAllBooks()
+            const updateStudents = await LibraryApi.getAllStudents()
+            setBooks(updateBooks)
+            setStudents(updateStudents)
             setUpdate(false)
         }
         initializeList()
     }, [update])
 
-    async function checkIn(book){
-        const date = getDateStr()
-        const checkIn = await LibraryApi.checkIn(book, date)
-        return checkIn;
-    }
     return(
         <Container className="BookList">
             <h1>All Books</h1>
@@ -33,7 +31,7 @@ const BookList = () => {
                     {books.map((book) => {
                         return(
                         <Col className="BookCard" xs="2">
-                            <BookCard book={book} setUpdate={setUpdate}/>
+                            <BookCard book={book} setUpdate={setUpdate} key={book.id}/>
                         </Col>
                         )
                     })}
