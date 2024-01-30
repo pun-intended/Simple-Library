@@ -19,11 +19,11 @@ class LibraryApi {
         // nitpicky?
     static async request(endpoint, data = {}, method = "get") {
         console.debug("API Call:", endpoint, data, method);
-        // try{
-        //   this.token = JSON.parse(localStorage.getItem('token'))
-        // } catch(e) {
-        //   console.log(e)
-        // }
+        try{
+          this.token = JSON.parse(localStorage.getItem('token'))
+        } catch(e) {
+          console.log(e)
+        }
         
         // add token to header
         const url = `${BASE_URL}/${endpoint}`;
@@ -144,6 +144,6 @@ class LibraryApi {
 }
 
 // for testing - (id - 10001, password: password)
-LibraryApi.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpc19hZG1pbiI6dHJ1ZSwiaWF0IjoxNTk4MTU5MjU5fQ.b9jGEl-PGBoquqakuQVym89Vw0B5FInCk0MJD0FIb_k";
+// LibraryApi.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpc19hZG1pbiI6dHJ1ZSwiaWF0IjoxNTk4MTU5MjU5fQ.b9jGEl-PGBoquqakuQVym89Vw0B5FInCk0MJD0FIb_k";
 
 export default LibraryApi;
