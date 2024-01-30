@@ -82,7 +82,8 @@ describe("getUnread", function(){
             isbn: '978-0-7653-2635-5', 
             title: 'The Way of Kings', 
             stage: 2, 
-            condition: 'good'
+            condition: 'good',
+            available: true
         });
     });
 });

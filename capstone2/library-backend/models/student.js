@@ -84,11 +84,18 @@ class Student {
     /**
      * Return array of book that have not been read by a given student
      * 
-     * {id} => [{id, isbn, title, stage, condition}, ...]
+     * {id} => [{id, isbn, title, stage, condition, available}, ...]
      */
     static async getUnreadBooks(studentId){
         const unread = await db.query(
-            `SELECT id, isbn, title, stage, condition
+            `SELECT id, 
+                    isbn, 
+                    title, 
+                    stage, 
+                    condition,
+                    id NOT IN (SELECT b.id FROM books b JOIN borrow_record rec
+                        ON rec.book_id = b.id
+                        WHERE rec.return_date IS NULL) AS available
             FROM books
             WHERE id NOT IN
                 (SELECT book_id
