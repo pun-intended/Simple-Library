@@ -1,12 +1,13 @@
 import './App.css';
 import LibraryApi from './api';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import NavBar from "./NavBar"
 import RouteList from "./RouteList"
 import UserContext from "./UserContext.js"
 import { BrowserRouter } from "react-router-dom";
 import useLocalStorage from './useLocalStorage';
 import { jwtDecode } from 'jwt-decode';
+import StudentContext from './StudentContext.js';
 
 
 
@@ -14,6 +15,7 @@ function App() {
 
   const [token, setToken] = useLocalStorage('token', '')
   const [currentUser, setCurrentUser] = useLocalStorage('currentUser', '')
+  const [students, setStudents] = useState([])
 
       
   async function login(data) {
@@ -45,17 +47,34 @@ function App() {
         }}
     }
     updateUser()
-    
   },[token])
+
+  useEffect(() => {
+    async function populateStudents() {
+          const Ss = await LibraryApi.getAllStudents()
+          setStudents(Ss)
+    }
+    populateStudents()
+  },[token])
+
+//   useEffect( () => {
+//     async function initializeList(){
+//         const students = await LibraryApi.getAllStudents()
+//         setStudents(students)
+//     }
+//     initializeList()
+// }, [])
 
   return (
     <div className="App">
       <UserContext.Provider value={currentUser}>
+        <StudentContext.Provider value={students}>
         <BrowserRouter>
           <NavBar />
           {/* <RouteList login={login} signup={signup} patchUser={patchUser} setToken={setToken} setCurrentUser={setCurrentUser}/> */}
           <RouteList />
         </BrowserRouter>
+        </StudentContext.Provider>
       </UserContext.Provider>
     </div>
   );

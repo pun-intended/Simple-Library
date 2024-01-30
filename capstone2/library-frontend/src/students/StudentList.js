@@ -2,24 +2,19 @@
 // Dropdown menu for class
 import React from "react"
 import StudentCard from "./StudentCard";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import LibraryApi from "../api";
-import {Container, Col, Row, Button} from 'reactstrap'
+import {Container, Col, Row, Button, Input} from 'reactstrap'
 import "./StudentCard.css";
+import StudentContext from "../StudentContext";
 
 const StudentList = () => {
-    const [students, setStudents] = useState([])
-    useEffect( () => {
-        async function initializeList(){
-            const students = await LibraryApi.getAllStudents()
-            setStudents(students)
-        }
-        initializeList()
-    }, [])
+    const students = useContext(StudentContext)
 
     return(
         <div className="StudentList">
             <Container>
+                <h1> All Students </h1>
                 <Row>
             {students.map((st) =>  {
                 return (
