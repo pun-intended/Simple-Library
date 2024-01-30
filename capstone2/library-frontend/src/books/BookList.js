@@ -6,6 +6,8 @@ import React, { useEffect, useState } from "react"
 import BookCard from "./BookCard";
 import LibraryApi from "../api";
 import getDateStr from "../helpers";
+import {Container, Row, Col, CardGroup} from 'reactstrap'
+import "./BookList.css"
 
 const BookList = () => {
     const [books, setBooks] = useState([])
@@ -23,15 +25,18 @@ const BookList = () => {
         return checkIn;
     }
     return(
-        <div className="BookList">
+        <Container className="BookList">
             <h1>All Books</h1>
-            {books.map((book) => {
-                return(
-                    <BookCard book={book}/>
-                )
-            })}
-            
-        </div>
+                <CardGroup> 
+                    {books.map((book) => {
+                        return(
+                        <Col className="BookCard" xs="2">
+                            <BookCard book={book}/>
+                        </Col>
+                        )
+                    })}
+                </CardGroup>     
+        </Container>
     )
 }
 
