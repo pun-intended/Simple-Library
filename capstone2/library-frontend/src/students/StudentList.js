@@ -9,7 +9,18 @@ import "./StudentCard.css";
 import StudentContext from "../StudentContext";
 
 const StudentList = () => {
-    const students = useContext(StudentContext)
+    const [update, setUpdate] = useState(false)
+    const {students, setStudents} = useContext(StudentContext) 
+    // const [students, setStudents] = studentState
+    
+    useEffect( () => {
+        async function initializeList(){
+            const allStudents = await LibraryApi.getAllStudents()
+            setStudents(allStudents)
+            setUpdate(false)
+        }
+        initializeList()
+    }, [update])
 
     return(
         <div className="StudentList">
@@ -18,8 +29,8 @@ const StudentList = () => {
                 <Row>
             {students.map((st) =>  {
                 return (
-                    <Col sm="2">
-                    <StudentCard student={st} />
+                    <Col xs="6" sm="4" md="3" lg="2">
+                    <StudentCard student={st} setUpdate={setUpdate} key={st.id}/>
                     </Col>
                 )})}
                 </Row>
