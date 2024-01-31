@@ -14,7 +14,8 @@ const CheckOutStudent = ({modal, toggle, student , setUpdate}) => {
     useEffect(() => {
         async function getBooks() {
             const newBooks = await LibraryApi.getUnread(student.id);
-            setBooks(newBooks);
+            const available = newBooks.filter((book) => book.available)
+            setBooks(available);
         }
         getBooks()
     }, [])
