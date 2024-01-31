@@ -29,7 +29,7 @@ class Student {
     /**
      * Get all students in class
      * 
-     * Returns {students: [{id, first_name, last_name, level, book_id, title, isbn, borrow_date}, ...]}
+     * Returns {students: [{id, first_name, last_name, level, has_read, book_id, title, isbn, borrow_date}, ...]}
      *  borrowing id
      */
     static async getAllStudents(){
@@ -38,7 +38,12 @@ class Student {
         SELECT  S.id,
                 S.first_name,
                 S.last_name,
-                S.level, 
+                S.level,
+                ARRAY(
+                    SELECT book_id 
+                    FROM borrow_record
+                    WHERE student_id = s.id
+                ) AS has_read, 
                 q2.title,
                 q2.isbn,
                 q2.book_id,
