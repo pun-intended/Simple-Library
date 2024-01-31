@@ -93,8 +93,25 @@ router.post("/checkin", ensureLoggedIn, async function (req, res, next) {
  */
 router.get("/:id", ensureLoggedIn, async function (req, res, next) {
     try {
-        // validate schema
+        // TODO - validate schema
         const book = await Book.getBook(req.params.id);
+        return res.json({ book });
+    } catch (e) {
+        return next(e);
+    }
+})
+
+
+/** GET /[id] => {book}
+ * 
+ * Returns {id, isbn, title, stage, condition}
+ * 
+ * Auth: login
+ */
+router.get("/:id", ensureLoggedIn, async function (req, res, next) {
+    try {
+        // TODO - validate schema
+        const book = await Book.getHasNotRead(req.params.id);
         return res.json({ book });
     } catch (e) {
         return next(e);
