@@ -30,10 +30,10 @@ const NavBar = () =>{
           <NavItem>
             <NavLink to="/login">Login</NavLink>
           </NavItem>}
-          {!currentUser &&
+          {/* {!currentUser &&
           <NavItem>
             <NavLink to="/signup">Signup</NavLink>
-          </NavItem>}
+          </NavItem>} */}
           {currentUser && 
           <NavItem>
             <NavLink exact to="/logout"> Logout </NavLink>
