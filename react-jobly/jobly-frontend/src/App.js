@@ -11,7 +11,6 @@ import UserContext from './UserContext';
 
 function App() {
 
-
   const [token, setToken] = useLocalStorage('token', '')
   const [currentUser, setCurrentUser] = useLocalStorage('currentUser', '')
 
@@ -33,8 +32,7 @@ function App() {
 
   useEffect(() => {
     async function updateUser() {
-      if(token.length > 0){
-        
+      if(token.length > 0){  
         try{
           const decodedToken = jwtDecode(token)
           const username = decodedToken.username
@@ -44,7 +42,6 @@ function App() {
           console.log(`Token Error: ${e}`)
         }}
       }
-
     updateUser()
     
   },[token])

@@ -14,9 +14,11 @@ import StudentContext from './StudentContext.js';
 function App() {
 // TODO - Add alert funtionality
   // Alert component, state inside, display contingent on alert in state
+  // dismissing alert removes alert from state, set timeout
   const [token, setToken] = useLocalStorage('token', '')
   const [currentUser, setCurrentUser] = useLocalStorage('currentUser', '')
   const [students, setStudents] = useState([])
+  const [alerts, setAlerts] = useState([])
 
       
   async function login(data) {
@@ -27,6 +29,7 @@ function App() {
 
   function logout() {
     setToken("")
+    // Clear session?
     setCurrentUser("")
   }
 
@@ -56,11 +59,17 @@ function App() {
 
   useEffect(() => {
     async function populateStudents() {
+      if(token.length > 0){
+        try{
           const Ss = await LibraryApi.getAllStudents()
           setStudents(Ss)
+        }catch(e){
+          console.log(`Error Loading Students: ${e}`)
+        }
+      }
     }
     populateStudents()
-  },[token, ])
+  },[token])
 
   return (
     <div className="App">
