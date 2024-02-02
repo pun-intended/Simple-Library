@@ -5,10 +5,11 @@
 import React, { useEffect, useState, useContext } from "react"
 import BookCard from "./BookCard";
 import LibraryApi from "../api";
-import {Container, Row, Col, CardGroup} from 'reactstrap'
+import {Container, Col, CardGroup} from 'reactstrap'
 import StudentContext from "../StudentContext";
 import "./BookList.css"
 
+// TODO - Move books/update out, pass books as param to make {outstanding} {all books} {available} list
 const BookList = () => {
     const {setStudents} = useContext(StudentContext)
     const [books, setBooks] = useState([])
