@@ -10,7 +10,7 @@ const NavBar = () =>{
   return (
     <div>
       <Navbar expand="md">
-        <NavLink exact to="/" className="navbar-brand">
+        <NavLink exact="true" to="/" className="navbar-brand">
           Library
         </NavLink>
         {currentUser && <NavLink to="/profile" className="navbar-brand">
@@ -36,7 +36,7 @@ const NavBar = () =>{
           </NavItem>} */}
           {currentUser && 
           <NavItem>
-            <NavLink exact to="/logout"> Logout </NavLink>
+            <NavLink to="/logout"> Logout </NavLink>
           </NavItem>}
         </Nav>
         
