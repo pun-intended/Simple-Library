@@ -10,11 +10,11 @@ function RouteList({login, logout}) {
 
     return(
         <Routes>
-            <Route exact path="/login" element={<LoginForm login={login}/>} />
-            <Route exact path="/logout" element={<LogOut logout={logout}/>} />
-            <Route exact path="/students" element={<StudentList />} />
-            <Route exact path="/books" element={<BookList />} />
-            <Route exact path="/" element={<Landing />} />
+            <Route path="/login" element={<LoginForm login={login}/>} />
+            <Route path="/logout" element={<LogOut logout={logout}/>} />
+            <Route path="/students" element={<StudentList />} />
+            <Route path="/books" element={<BookList />} />
+            <Route path="/" element={<Landing />} />
         </Routes>
     )
 
