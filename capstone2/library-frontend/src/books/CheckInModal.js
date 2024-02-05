@@ -16,37 +16,37 @@ const CheckInModal = ({modal, toggle, book_id, setUpdate}) => {
             setBook(bookDetails);
         }
         getBookDetails()
-    }, [])
+    }, []);
 
     const INITIAL_STATE = {
         'date': new Date().toISOString().slice(0, 10),
         'book_id': book_id.toString(),
         'condition': book.condition || "good"
-    }
+    };
 
-    const students = useContext(StudentContext)
-    const[formData, setFormData] = useState(INITIAL_STATE)
+    const students = useContext(StudentContext);
+    const[formData, setFormData] = useState(INITIAL_STATE);
     
     const handleSubmit = (evt) => {
         evt.preventDefault()
         try{
-            console.log(formData)
-            LibraryApi.checkIn(formData)
-            setFormData(INITIAL_STATE)
+            console.log(formData);
+            LibraryApi.checkIn(formData);
+            setFormData(INITIAL_STATE);
             setUpdate(true);
-            toggle()
+            toggle();
         } catch(e){
-            console.log(e)
-        }
-    }
+            console.log(e);
+        };
+    };
 
     const handleDateChange = (v, f) => {
         setFormData(fData => ({
             ...fData,
             'date': f
         }));
-        console.log(formData)
-    }
+        console.log(formData);
+    };
 
     // For changing condition
     const handleChange = evt => {
@@ -55,11 +55,11 @@ const CheckInModal = ({modal, toggle, book_id, setUpdate}) => {
             ...fData,
             [name]: value
         }));
-        console.log(formData)
-    }
+        console.log(formData);
+    };
 
     return(
-        <Modal isOpen={modal} toggle={toggle} backdrop="true">
+        <Modal isOpen={modal} toggle={toggle} backdrop={true}>
             <ModalHeader toggle={toggle}>
                 Check-In - {`${book.title}`}
             </ModalHeader>
@@ -107,8 +107,8 @@ const CheckInModal = ({modal, toggle, book_id, setUpdate}) => {
                 <Button color="secondary" onClick={toggle}>Cancel</Button>
             </ModalFooter>
         </Modal>
-    )
-}
+    );
+};
 
-export default CheckInModal
+export default CheckInModal;
 
