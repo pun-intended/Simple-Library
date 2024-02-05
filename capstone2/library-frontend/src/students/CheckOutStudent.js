@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react"
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Container, Col, Row, FormGroup, CardGroup, Card, CardBody, CardTitle } from 'reactstrap'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Container, Col, Row, FormGroup, Card, CardBody, CardTitle } from 'reactstrap'
 import {DatePicker} from "reactstrap-date-picker"
-// import "./CheckOutStudent.css"
 import LibraryApi from "../api";
 
 
@@ -58,7 +57,7 @@ const CheckOutStudent = ({modal, toggle, student , setUpdate}) => {
     }
 
     return(
-        <Modal isOpen={modal} toggle={toggle} backdrop="true" size="lg">
+        <Modal isOpen={modal} toggle={toggle} backdrop={true} size="lg">
             <ModalHeader toggle={toggle}>
                 Check-Out
             </ModalHeader>

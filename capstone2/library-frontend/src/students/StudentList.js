@@ -4,14 +4,13 @@ import React from "react"
 import StudentCard from "./StudentCard";
 import { useState, useEffect, useContext } from "react";
 import LibraryApi from "../api";
-import {Container, Col, Row, Button, Input} from 'reactstrap'
+import {Container, Col, Row } from 'reactstrap'
 import "./StudentCard.css";
 import StudentContext from "../StudentContext";
 
 const StudentList = () => {
     const [update, setUpdate] = useState(false)
-    const {students, setStudents} = useContext(StudentContext) 
-    // const [students, setStudents] = studentState
+    const {students, setStudents} = useContext(StudentContext)
     
     useEffect( () => {
         async function initializeList(){

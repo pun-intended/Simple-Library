@@ -2,7 +2,7 @@
 // Cover (l, set height), title, who has, borrowed date
 // OnClick function pass
 import React, { useState } from "react"
-import {Card, CardBody, CardTitle, CardText, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
+import {Card, CardBody, CardTitle, CardText, Button } from 'reactstrap'
 import CheckOutModal from "./CheckOutModal.js";
 import CheckInModal from "./CheckInModal.js";
 
@@ -13,12 +13,6 @@ const BookCard = ({book, setUpdate}) => {
     const toggleOut = () => { setOutModal(!outModal)};
     const toggleIn = () => { setInModal(!inModal)};
 
-    async function checkIn(){
-        console.log("Check in")
-    }
-    async function checkOut(){
-        console.log("Check out")
-    }
     return(
         <Card >
             <CardBody>
