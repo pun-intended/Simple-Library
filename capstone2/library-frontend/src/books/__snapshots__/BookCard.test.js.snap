@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+<DocumentFragment>
+  <div
+    class="card"
+  >
+    <div
+      class="card-body"
+    >
+      <h5
+        class="card-title"
+      >
+        test book - in
+      </h5>
+    </div>
+    <div
+      class="card-body"
+    >
+      <img
+        alt="test book - in"
+        class="BookCard BookCover"
+        src="https://covers.openlibrary.org/b/isbn/0-330-25864-8-M.jpg"
+      />
+    </div>
+    <div
+      class="card-body"
+    >
+      <p
+        class="card-text"
+      >
+        <button
+          class="btn-primary btn btn-secondary"
+          type="button"
+        >
+          Check-out
+        </button>
+      </p>
+    </div>
+  </div>
+</DocumentFragment>
+`;
