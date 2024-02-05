@@ -6,7 +6,7 @@ import StudentContext from "../StudentContext";
 import LibraryApi from "../api";
 
 
-const CheckOutModal = ({modal, toggle, book , setUpdate}) => {
+const CheckOutModal = ({modal, toggle, book, setUpdate}) => {
 
     const {students} = useContext(StudentContext)
 
@@ -93,12 +93,12 @@ const CheckOutModal = ({modal, toggle, book , setUpdate}) => {
                 </Container>
             </ModalBody>
             <ModalFooter>
-                <Button color="primary" onClick={handleSubmit}>Check Out</Button>
-                <Button color="secondary" onClick={toggle}>Cancel</Button>
+                <Button className="submitBtn" color="primary" onClick={handleSubmit}>Check Out</Button>
+                <Button className="cancelBtn" color="secondary" onClick={toggle}>Cancel</Button>
             </ModalFooter>
         </Modal>
     )
 }
 
-export default CheckOutModal
+export default CheckOutModal;
 
