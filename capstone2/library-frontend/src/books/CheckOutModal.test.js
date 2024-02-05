@@ -1,6 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import CheckOutModal from "./CheckOutModal";
+import StudentContext from "../StudentContext";
 
 const modal = true;
 const toggle = jest.fn();
@@ -14,19 +15,35 @@ const book = {
 };
 const setUpdate = jest.fn();
 
+const students = {
+    students: [{
+        fist_name: "test",
+        last_name: "student",
+    },
+    {
+        fist_name: "test",
+        last_name: "student",
+        book_id: "101",
+    }]
+};
 
 // Smoke test
 it("renders without crashing", () => {
-    render(<CheckOutModal modal={modal} toggle={toggle} book={book} setUpdate={setUpdate}/>);
+    render(
+        <StudentContext.Provider value={students}>
+        <CheckOutModal modal={modal} toggle={toggle} book={book} setUpdate={setUpdate}/>
+        </StudentContext.Provider>);
 })
 
 // Snapshot
 it("matches snapshot", () => {
     const {asFragment} = render(
+        <StudentContext.Provider value={students}>
         <CheckOutModal  modal={modal} 
                         toggle={toggle} 
                         book={book} 
-                        setUpdate={setUpdate}/>);
+                        setUpdate={setUpdate}/>
+        </StudentContext.Provider>);
     expect(asFragment()).toMatchSnapshot();
 });
 

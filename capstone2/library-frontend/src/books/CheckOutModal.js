@@ -71,7 +71,7 @@ const CheckOutModal = ({modal, toggle, book, setUpdate}) => {
                                     onChange={handleChange}>
                             <option>--Select Student</option>
                                 {students.map(st => {
-                                    if(!st.book_id && !(st.has_read.includes(book.id))){
+                                    if(!st.book_id && st.has_read && !(st.has_read.includes(book.id))){
                                         return (
                                         <option value={parseInt(st.id)}>
                                             {st.first_name} {st.last_name}

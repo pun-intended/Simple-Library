@@ -1,6 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import BookList from "./BookList";
+import StudentContext from "../StudentContext";
 
 
 const books = {
@@ -29,17 +30,28 @@ const books = {
         available: "good",
     }]
 };
+const students = {
+    students: [{
+        fist_name: "test",
+        last_name: "student",
+    },
+    {
+        fist_name: "test",
+        last_name: "student",
+        book_id: "101",
+    }]
+};
 
 // LibraryApi.getAllStudents = jest.fn();
 // LibraryApi.getAllBooks = jest.fn(() => books);
 // Smoke test
 it("renders without crashing", () => {
-    render(<BookList />)
+    render(<StudentContext.Provider value={students}><BookList /></StudentContext.Provider>)
 });
 
 // Snapshot
 it("matches snapshot", () => {
-    const {asFragment} = render(<BookList />);
+    const {asFragment} = render(<StudentContext.Provider value={students}><BookList /></StudentContext.Provider>);
     expect(asFragment()).toMatchSnapshot();
 });
 

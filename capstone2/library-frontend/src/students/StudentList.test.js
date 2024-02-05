@@ -1,6 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import StudentList from "./StudentList";
+import StudentContext from "../StudentContext";
 
 
 const students = {
@@ -22,10 +23,18 @@ const setUpdate = jest.fn()
 
 // Smoke test
 it("renders without crashing", () => {
-    render(<StudentList />)
-})
+    render(<StudentContext.Provider value={students}>
+        <StudentList />
+        </StudentContext.Provider>);
+});
 
 // Snapshot
+it("Matches snapshot", () => {
+    const {asFragment} = render(<StudentContext.Provider value={students}>
+        <StudentList />
+        </StudentContext.Provider>);
+    expect(asFragment()).toMatchSnapshot();
+})
 
 // .getAllStudents called once
 

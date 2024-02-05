@@ -4,7 +4,7 @@ import LoginForm from "./LoginForm";
 import { MemoryRouter } from 'react-router-dom'
 
 const login = jest.fn()
-const useNavigate = jest.fn()
+// const useNavigate = jest.fn()
 // Smoke test
 it("renders without crashing", () => {
     render(<MemoryRouter><LoginForm login={login} /></MemoryRouter>);
