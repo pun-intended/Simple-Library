@@ -45,7 +45,7 @@ router.get("/:id", ensureLoggedIn, async function (req, res, next) {
     }
 })
 
-/** GET /[id]/unread => {books: {books...}}
+/** GET /[id]/unread => {books: [{book}, ...]}
  * 
  * Returns {id, isbn, title, stage, condition} For all books 
  * not read by student
