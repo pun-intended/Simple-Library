@@ -37,10 +37,9 @@ it("Matches snapshot", () => {
 
 // List contains all students
 it("contains a list of students", () => {
-    const {queryAllByTitle} = render(
+    const {getAllByText} = render(
         <StudentContext.Provider value={students}>
         <StudentList />
         </StudentContext.Provider>);
-    const studentName = queryAllByTitle("test");
-    expect(studentName.length).toBe(2);
+    expect(getAllByText('test student').length).toEqual(students.students.length);
 })
