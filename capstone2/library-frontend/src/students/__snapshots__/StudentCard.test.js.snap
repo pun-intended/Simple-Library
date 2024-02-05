@@ -11,11 +11,11 @@ exports[` 1`] = `
       <div
         class="col"
       >
-        <div
+        <h6
           class="card-title"
         >
            student
-        </div>
+        </h6>
       </div>
       <div
         class="col"

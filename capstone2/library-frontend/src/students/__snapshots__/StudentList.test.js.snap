@@ -26,11 +26,11 @@ exports[`Matches snapshot 1`] = `
               <div
                 class="col"
               >
-                <div
+                <h6
                   class="card-title"
                 >
-                   student
-                </div>
+                  test student
+                </h6>
               </div>
               <div
                 class="col"
@@ -66,11 +66,11 @@ exports[`Matches snapshot 1`] = `
               <div
                 class="col"
               >
-                <div
+                <h6
                   class="card-title"
                 >
-                   student
-                </div>
+                  test student
+                </h6>
               </div>
               <div
                 class="col"

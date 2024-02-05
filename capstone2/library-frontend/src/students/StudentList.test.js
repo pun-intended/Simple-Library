@@ -6,20 +6,19 @@ import StudentContext from "../StudentContext";
 
 const students = {
     students: [{
-        fist_name: "test",
+        first_name: "test",
         last_name: "student",
+        id: "1001"
     },
     {
-        fist_name: "test",
+        first_name: "test",
         last_name: "student",
-        book_id: "101",
+        id: "1002",
+        book_id: "101"
     }]
 };
 
-const setUpdate = jest.fn()
-// LibraryApi.getAllStudents = jest.fn(() => {
-//     return students;
-// })
+const initializeList = jest.fn()
 
 // Smoke test
 it("renders without crashing", () => {
@@ -36,6 +35,12 @@ it("Matches snapshot", () => {
     expect(asFragment()).toMatchSnapshot();
 })
 
-// .getAllStudents called once
-
 // List contains all students
+it("contains a list of students", () => {
+    const {queryAllByTitle} = render(
+        <StudentContext.Provider value={students}>
+        <StudentList />
+        </StudentContext.Provider>);
+    const studentName = queryAllByTitle("test");
+    expect(studentName.length).toBe(2);
+})

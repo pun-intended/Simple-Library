@@ -19,7 +19,7 @@ const StudentCard = ({student, setUpdate}) => {
         <Card className="StudentCard">
             <Row>
             <Col >
-            <CardTitle >{student.first_name} {student.last_name}</CardTitle>
+            <CardTitle tag="h6">{student.first_name} {student.last_name}</CardTitle>
             </Col>
             <Col>
             {student.book_id && 
