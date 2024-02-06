@@ -21,13 +21,32 @@ it("renders without crashing", () => {
 })
 
 // Snapshot
-const {asFragment} = render(<StudentCard student={studentHas} setUpdate={setUpdate} />)
-expect(asFragment()).toMatchSnapshot()
+it("matches snapshot", () => {
+    const {asFragment} = render(<StudentCard student={studentHas} setUpdate={setUpdate} />);
+    expect(asFragment()).toMatchSnapshot();
+})
+
 
 // check_in button calls toggleIn method
+it("calls toggleIn method when check_in clicked", () => {
+
+})
 
 // check_out button calls toggleOut method
+it("calls toggleOut method when check_out clicked", () => {
+    
+})
 
 // card contains student name
+it("Contains the student name", () => {
+
+})
 
 // card contains correct book icon
+it("Contains the hand icon if there is no book borrowed", () => {
+    
+})
+
+it("Contains the book icon if there is a book borrowed", () => {
+
+})
