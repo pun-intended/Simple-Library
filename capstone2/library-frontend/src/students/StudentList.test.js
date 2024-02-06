@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import StudentList from "./StudentList";
 import StudentContext from "../StudentContext";
 
@@ -36,10 +36,11 @@ it("Matches snapshot", () => {
 })
 
 // List contains all students
-it("contains a list of students", () => {
-    const {getAllByText} = render(
+it("contains all students from test data", () => {
+    render(
         <StudentContext.Provider value={students}>
         <StudentList />
         </StudentContext.Provider>);
-    expect(getAllByText('test student').length).toEqual(students.students.length);
+    // expect(getAllByRole('heading').length).toEqual(students.students.length);
+    expect(screen.getAllByRole('heading', {name: /test student/i}).length).toEqual(students.students.length)
 })
