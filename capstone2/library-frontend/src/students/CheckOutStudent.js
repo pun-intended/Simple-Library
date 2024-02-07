@@ -100,7 +100,7 @@ const CheckOutStudent = ({modal, toggle, student , setUpdate}) => {
                 </Container>
             </ModalBody>
             <ModalFooter>
-                <Button className="submit" id="submit" color="primary" onClick={handleSubmit}>Check Out</Button>
+                <Button className="submit" disabled={formData.book_id && formData.date} id="submit" color="primary" onClick={handleSubmit}>Check Out</Button>
                 <Button className="cancelBtn" id="cancelBtn" color="secondary" onClick={toggle}>Cancel</Button>
             </ModalFooter>
         </Modal>

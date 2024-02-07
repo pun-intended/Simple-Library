@@ -23,11 +23,11 @@ const StudentCard = ({student, setUpdate}) => {
             </Col>
             <Col>
             {student.book_id && 
-                <FontAwesomeIcon icon={faBookOpen} size="lg" className="btn btn-primary" onClick={toggleIn} />
+                <FontAwesomeIcon icon={faBookOpen} size="lg" className="btn btn-primary" title="has-book" onClick={toggleIn} />
             }
 
             {!student.book_id &&
-                <FontAwesomeIcon icon={faHandHolding} className="btn btn-primary" onClick={toggleOut}/>}
+                <FontAwesomeIcon icon={faHandHolding} className="btn btn-primary" title="no-book" onClick={toggleOut}/>}
             {outModal && <CheckOutStudent modal={outModal} toggle={toggleOut} student={student} setUpdate={setUpdate}/>}
             {inModal && <CheckInModal modal={inModal} toggle={toggleIn} book_id={student.book_id} setUpdate={setUpdate}/>}
             </Col>

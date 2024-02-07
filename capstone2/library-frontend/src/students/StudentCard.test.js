@@ -5,7 +5,7 @@ import StudentCard from "./StudentCard";
 
 const setUpdate = jest.fn()
 const toggleOut = jest.fn()
-const toggleIn = jest.fn()
+// const toggleIn = jest.fn()
 const studentHas = {
     fist_name: "test",
     last_name: "student",
@@ -27,18 +27,21 @@ it("matches snapshot", () => {
 })
 
 
-// check_in button calls toggleIn method
-it("calls toggleIn method when check_in clicked", () => {
-    render(<StudentCard student={studentHas} setUpdate={setUpdate} />);
-    screen.getByRole('')
-    // fireEvent.click(getByRole("button"));
+// check_in opens modal
+it("opens modal when check_in clicked", () => {
+    const {getByTitle} = render(<StudentCard student={studentHas} setUpdate={setUpdate} />);
+    fireEvent.click(getByTitle('has-book'));
     // expect(toggleIn).toHaveBeenCalled();
+    screen.debug();
 })
 
 // // check_out button calls toggleOut method
-// it("calls toggleOut method when check_out clicked", () => {
-    
-// })
+it("opens modal when check_in clicked", () => {
+    const {getByTitle} = render(<StudentCard student={studentHasNot} setUpdate={setUpdate} />);
+    fireEvent.click(getByTitle('no-book'));
+    // expect(toggleIn).toHaveBeenCalled();
+    screen.debug();
+})
 
 // // card contains student name
 // it("Contains the student name", () => {
