@@ -35,6 +35,7 @@ exports[`Matches snapshot 1`] = `
               <div
                 class="col"
               >
+<<<<<<< Updated upstream
                 <svg
                   aria-labelledby="svg-inline--fa-title-z7tTqHVQndN6"
                   class="svg-inline--fa fa-hand-holding btn btn-primary"
@@ -54,6 +55,14 @@ exports[`Matches snapshot 1`] = `
                     fill="currentColor"
                   />
                 </svg>
+=======
+                <button
+                  class="btn btn-primary btn btn-secondary"
+                  type="button"
+                >
+                   Check out 
+                </button>
+>>>>>>> Stashed changes
               </div>
             </div>
           </div>
@@ -79,6 +88,7 @@ exports[`Matches snapshot 1`] = `
               <div
                 class="col"
               >
+<<<<<<< Updated upstream
                 <svg
                   aria-labelledby="svg-inline--fa-title-Rr1R9kZcD4ev"
                   class="svg-inline--fa fa-book-open fa-lg btn btn-primary"
@@ -98,6 +108,14 @@ exports[`Matches snapshot 1`] = `
                     fill="currentColor"
                   />
                 </svg>
+=======
+                <button
+                  class="btn btn-primary btn btn-secondary"
+                  type="button"
+                >
+                   Check in 
+                </button>
+>>>>>>> Stashed changes
               </div>
             </div>
           </div>

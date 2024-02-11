@@ -55,7 +55,11 @@ it("matches snapshot", () => {
     expect(asFragment()).toMatchSnapshot();
 });
 
-// Renders books provided
+// test book list contains all books
+it("contains all books from test data", () => {
+    const {getAllByRole} = render(<StudentContext.Provider value={students}><BookList /></StudentContext.Provider>);
+    expect(getAllByRole('heading').length).toEqual(books.books.length);
+});
 
 
 // renders correct number of books

@@ -36,7 +36,8 @@ expect(asFragment()).toMatchSnapshot();
 
 // Renders book correctly
 
-// Correct button rendered for available book
+// Check-out button shown for available book
+
 
 // Correct button rendered for unavailable book
 

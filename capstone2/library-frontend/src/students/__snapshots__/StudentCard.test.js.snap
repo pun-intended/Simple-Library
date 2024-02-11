@@ -14,12 +14,13 @@ exports[`matches snapshot 1`] = `
         <h6
           class="card-title"
         >
-           student
+          test student
         </h6>
       </div>
       <div
         class="col"
       >
+<<<<<<< Updated upstream
         <svg
           aria-labelledby="svg-inline--fa-title-CUpsAwnhoJs2"
           class="svg-inline--fa fa-book-open fa-lg btn btn-primary"
@@ -39,6 +40,14 @@ exports[`matches snapshot 1`] = `
             fill="currentColor"
           />
         </svg>
+=======
+        <button
+          class="btn btn-primary btn btn-secondary"
+          type="button"
+        >
+           Check in 
+        </button>
+>>>>>>> Stashed changes
       </div>
     </div>
   </div>

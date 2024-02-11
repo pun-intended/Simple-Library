@@ -23,11 +23,19 @@ const StudentCard = ({student, setUpdate}) => {
             </Col>
             <Col>
             {student.book_id && 
+<<<<<<< Updated upstream
                 <FontAwesomeIcon icon={faBookOpen} size="lg" className="btn btn-primary" title="has-book" onClick={toggleIn} />
             }
 
             {!student.book_id &&
                 <FontAwesomeIcon icon={faHandHolding} className="btn btn-primary" title="no-book" onClick={toggleOut}/>}
+=======
+                <Button className="btn btn-primary" onClick={toggleIn}> Check in </Button>
+            }
+
+            {!student.book_id &&
+                <Button className="btn btn-primary" onClick={toggleOut}> Check out </Button>}
+>>>>>>> Stashed changes
             {outModal && <CheckOutStudent modal={outModal} toggle={toggleOut} student={student} setUpdate={setUpdate}/>}
             {inModal && <CheckInModal modal={inModal} toggle={toggleIn} book_id={student.book_id} setUpdate={setUpdate}/>}
             </Col>

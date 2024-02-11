@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import CheckOutStudent from "./CheckOutStudent";
 import LibraryApi from "../api";
 
@@ -23,22 +23,29 @@ const books = {
     }]
 };
 
-const student = {
+const studentRead = {
     id: "1001",
     fist_name: "test",
     last_name: "student",
     has_read: ["101"],
 };
 
+const studentNotRead = {
+    id: "1001",
+    fist_name: "test",
+    last_name: "student"
+};
+
 const toggle = jest.fn();
 const setUpdate = jest.fn();
+LibraryApi.checkOut = jest.fn();
 
 
 // Smoke test
 it("renders without crashing", () => {
     render(<CheckOutStudent modal={true} 
                             toggle={toggle} 
-                            student={student} 
+                            student={studentRead} 
                             setUpdate={setUpdate} />)
 });
 
@@ -46,20 +53,52 @@ it("renders without crashing", () => {
 it("matches snapshot", () => {
     const asFragment = render(<CheckOutStudent  modal={true} 
                                                 toggle={toggle} 
-                                                student={student} 
+                                                student={studentRead} 
                                                 setUpdate={setUpdate} />)
 });
 
-// Book List includes all books
+// ----- Can't get books to appear in list
+// // Book List includes all books
+// it("contains all books from test data", () => {
+//     const {getAllByRole} = render(<CheckOutStudent modal={true} 
+//                                                     toggle={toggle} 
+//                                                     student={studentNotRead} 
+//                                                     setUpdate={setUpdate} />);
+//     expect(getAllByRole('image').length).toEqual(books.books.length);
+// })
 
-// Book list excludes read books
+// // Book list excludes read books
+// it("list excludes books read", async () => {
+//     const {getAllByRole} = await render(<CheckOutStudent modal={true} 
+//                                                     toggle={toggle} 
+//                                                     student={studentNotRead} 
+//                                                     setUpdate={setUpdate} />);
+    
+//     screen.getAllByRole('image');
+//     expect(getAllByRole('image').length).toEqual(books.books.length - 1);
+// })
 
-// list excludes students who have read
 
-// Check-out calls setUpdate
+// Check out button calls handleSubmit method
+it("check out button calls handleSubmit method", () => {
+    render(<CheckOutStudent modal={true} 
+                            toggle={toggle} 
+                            student={studentRead} 
+                            setUpdate={setUpdate} />);
+    const btn = screen.getByText(/check out/i);
+    fireEvent.click(btn);
+    expect(LibraryApi.checkOut).toHaveBeenCalled();
+    expect(setUpdate).toHaveBeenCalled();
+    expect(toggle).toHaveBeenCalled();
+})
 
-// X Calls toggle
-
-// cancel calls toggle
-
-// Can mocking mock state variables?
+// Cancel button calls toggle method
+it("cancel button calls toggle method", () => {
+    render(<CheckOutStudent modal={true} 
+                            toggle={toggle} 
+                            student={studentRead} 
+                            setUpdate={setUpdate} />);
+    const btn = screen.getByText(/cancel/i);
+    fireEvent.click(btn);
+    expect(toggle).toHaveBeenCalled();
+})
