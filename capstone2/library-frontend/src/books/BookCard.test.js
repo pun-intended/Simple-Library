@@ -1,6 +1,7 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import BookCard from "./BookCard";
+import StudentContext from "../StudentContext";
 
 
 const bookIn = {
@@ -19,6 +20,17 @@ const bookOut = {
     stage: 2,
     condition: "good",
     available: false,
+};
+
+const students = {
+    students: [{
+        fist_name: "test",
+        last_name: "student",
+    },
+    {
+        fist_name: "test",
+        last_name: "student",
+    }]
 };
 
 const setUpdate = jest.fn();
@@ -46,7 +58,19 @@ it("renders check-in button for unavailable book", () => {
 
 // check-in button opens check-in modal
 it("opens check-in modal", () => {
-    const { getByText } = render(<BookCard book={bookOut} setUpdate={setUpdate} />);
-    getByText("Check-in").click();
+    const { getAllByText } = render(<BookCard book={bookOut} setUpdate={setUpdate} />);
+    const btn = getAllByText(/check-in/i);
+    fireEvent.click(btn[0]); 
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+}); 
+
+// check-out button opens check-out modal
+it("opens check-out modal", () => {
+    const { getAllByText } = render(
+        <StudentContext.Provider value={students}>
+        <BookCard book={bookIn} setUpdate={setUpdate} />
+        </StudentContext.Provider>);
+    const btn = getAllByText(/check-out/i);
+    fireEvent.click(btn[0]); 
     expect(screen.getByRole('dialog')).toBeInTheDocument();
 });

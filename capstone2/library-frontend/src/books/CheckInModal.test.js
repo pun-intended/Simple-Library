@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import CheckInModal from "./CheckInModal";
 
 const modal = true;
@@ -33,12 +33,26 @@ it("matches snapshot", () => {
     expect(asFragment()).toMatchSnapshot();
 });
 
-// .getBook called on load
+// X button closes modal
+it("closes modal on X click", () => {
+    const {getAllByRole} = render(
+        <CheckInModal   modal={modal} 
+                        toggle={toggle} 
+                        book_id={book_id} 
+                        setUpdate={setUpdate}/>);
+    const x = getAllByRole("button");
+    x[0].click();
+    expect(toggle).toHaveBeenCalled();
+});
 
-// Correct method call on button click (checkin, setUpdate, toggle)
-
-// x calls toggle
-
-// cancel calls toggle
-
-// SetUpdate called on submission
+// cancel button calls toggle
+it("closes modal on cancel click", () => {
+    const {getAllByText} = render(
+        <CheckInModal   modal={modal} 
+                        toggle={toggle} 
+                        book_id={book_id} 
+                        setUpdate={setUpdate}/>);
+    const cancel = getAllByText(/cancel/i);
+    cancel[0].click();
+    expect(toggle).toHaveBeenCalled();
+});

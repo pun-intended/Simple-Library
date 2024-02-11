@@ -4,6 +4,7 @@ import {DatePicker} from "reactstrap-date-picker"
 import "./CheckOutModal.css"
 import StudentContext from "../StudentContext";
 import LibraryApi from "../api";
+import { v4 as uuid } from "uuid"
 
 
 const CheckOutModal = ({modal, toggle, book, setUpdate}) => {
@@ -71,9 +72,9 @@ const CheckOutModal = ({modal, toggle, book, setUpdate}) => {
                                     onChange={handleChange}>
                             <option>--Select Student</option>
                                 {students.map(st => {
-                                    if(!st.book_id && st.has_read && !(st.has_read.includes(book.id))){
+                                    if((!st.book_id && !st.has_read) || (!st.book_id && !(st.has_read.includes(book.id)))){
                                         return (
-                                        <option value={parseInt(st.id)}>
+                                        <option value={parseInt(st.id)} key={uuid()}>
                                             {st.first_name} {st.last_name}
                                         </option>
                                         )}
