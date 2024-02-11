@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import BookCard from "./BookCard";
 
 
@@ -22,8 +22,6 @@ const bookOut = {
 };
 
 const setUpdate = jest.fn();
-const toggleIn = jest.fn();
-const toggleOut = jest.fn();
 
 // Smoke test
 it("renders without crashing", () => {
@@ -34,11 +32,21 @@ it("renders without crashing", () => {
 const {asFragment} = render(<BookCard book={bookIn} setUpdate={setUpdate} />);
 expect(asFragment()).toMatchSnapshot();
 
-// Renders book correctly
-
 // Check-out button shown for available book
+it("renders check-out button for available book", () => {
+    const { getByText } = render(<BookCard book={bookIn} setUpdate={setUpdate} />);
+    expect(getByText("Check-out")).toBeInTheDocument();
+});
 
+// Check-in button shown for unavailable book
+it("renders check-in button for unavailable book", () => {
+    const { getByText } = render(<BookCard book={bookOut} setUpdate={setUpdate} />);
+    expect(getByText("Check-in")).toBeInTheDocument();
+});
 
-// Correct button rendered for unavailable book
-
-// button links to correct modal?
+// check-in button opens check-in modal
+it("opens check-in modal", () => {
+    const { getByText } = render(<BookCard book={bookOut} setUpdate={setUpdate} />);
+    getByText("Check-in").click();
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+});

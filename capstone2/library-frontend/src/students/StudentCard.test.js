@@ -27,23 +27,6 @@ it("matches snapshot", () => {
 })
 
 
-<<<<<<< Updated upstream
-// check_in opens modal
-it("opens modal when check_in clicked", () => {
-    const {getByTitle} = render(<StudentCard student={studentHas} setUpdate={setUpdate} />);
-    fireEvent.click(getByTitle('has-book'));
-    // expect(toggleIn).toHaveBeenCalled();
-    screen.debug();
-})
-
-// // check_out button calls toggleOut method
-it("opens modal when check_in clicked", () => {
-    const {getByTitle} = render(<StudentCard student={studentHasNot} setUpdate={setUpdate} />);
-    fireEvent.click(getByTitle('no-book'));
-    // expect(toggleIn).toHaveBeenCalled();
-    screen.debug();
-})
-=======
 // Check in button opens modal
 it("opens check in modal when check in clicked", () => {
     render(<StudentCard student={studentHas} setUpdate={setUpdate} />)
@@ -59,7 +42,6 @@ it("opens check in modal when check in clicked", () => {
     fireEvent.click(btn[0])
     expect(screen.getByRole('dialog')).toBeInTheDocument()
 });
->>>>>>> Stashed changes
 
 // // card contains student name
 it("Contains student name", () => {
