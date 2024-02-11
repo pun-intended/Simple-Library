@@ -1,5 +1,5 @@
 import React from "react";
-import { getAllByText, render } from "@testing-library/react";
+import { getAllByRole, getAllByText, render } from "@testing-library/react";
 import CheckOutModal from "./CheckOutModal";
 import StudentContext from "../StudentContext";
 
@@ -115,16 +115,17 @@ it("Calls toggle on cancel button", () => {
 })
 
 // ----- Not calling handle submit -----
-// // Check-out calls handleSubmit
-// it("Calls handleSubmit on check-out", () => {
-//     const {getByText} = render(
-//         <StudentContext.Provider value={students}>
-//         <CheckOutModal  modal={modal} 
-//                         toggle={toggle} 
-//                         book={book} 
-//                         setUpdate={setUpdate}/>
-//         </StudentContext.Provider>);
-//     const button = getByText(/check-out/i);
-//     button.click();
-//     expect(handleSubmit).toHaveBeenCalled();
-// })
+// Check-out calls handleSubmit
+it("Calls handleSubmit on check-out", () => {
+    const {getByText} = render(
+        <StudentContext.Provider value={students}>
+        <CheckOutModal  modal={modal} 
+                        toggle={toggle} 
+                        book={book} 
+                        setUpdate={setUpdate}/>
+        </StudentContext.Provider>);
+    const button = getByText(/check-out/i);
+    const student = getAllByRole("input")
+    button.click();
+    expect(handleSubmit).toHaveBeenCalled();
+})
