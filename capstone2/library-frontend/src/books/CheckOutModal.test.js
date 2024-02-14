@@ -1,12 +1,11 @@
 import React from "react";
-import { getAllByRole, getAllByText, render } from "@testing-library/react";
+import { fireEvent, render } from "@testing-library/react";
 import CheckOutModal from "./CheckOutModal";
 import StudentContext from "../StudentContext";
 
 const modal = true;
 const toggle = jest.fn();
 const setUpdate = jest.fn();
-const handleSubmit = jest.fn();
 
 const book = {
     id: "101",
@@ -59,32 +58,7 @@ it("matches snapshot", () => {
     expect(asFragment()).toMatchSnapshot();
 });
 
-// ----- Not populating list of students -----
-// list contains students from context
-it("Contains all all students from the test data", () => {
-    const {getAllByText} = render(
-        <StudentContext.Provider value={students}>
-        <CheckOutModal  modal={modal} 
-                        toggle={toggle} 
-                        book={bookNeverBorrowed} 
-                        setUpdate={setUpdate}/>
-        </StudentContext.Provider>);
-    const student = getAllByText(/test student/i);
-    expect(student).toHaveLength(2);
-})
 
-// list excludes students who have read the book
-it("Excludes students who have read the book", () => {
-    const {getAllByText} = render(
-        <StudentContext.Provider value={students}>
-        <CheckOutModal  modal={modal} 
-                        toggle={toggle} 
-                        book={book} 
-                        setUpdate={setUpdate}/>
-        </StudentContext.Provider>);
-    const student = getAllByText(/test student/i);
-    expect(student).toHaveLength(1);
-})
 
 // X button closes modal
 it("Calls toggle on X button", () => {
@@ -114,18 +88,45 @@ it("Calls toggle on cancel button", () => {
     expect(toggle).toHaveBeenCalled();
 })
 
-// ----- Not calling handle submit -----
-// Check-out calls handleSubmit
-it("Calls handleSubmit on check-out", () => {
-    const {getByText} = render(
+// Check-out calls toggle
+it("Calls toggle on check-out", () => {
+    const {getByText, queryAllByRole, getByRole} = render(
         <StudentContext.Provider value={students}>
         <CheckOutModal  modal={modal} 
                         toggle={toggle} 
                         book={book} 
                         setUpdate={setUpdate}/>
         </StudentContext.Provider>);
-    const button = getByText(/check-out/i);
-    const student = getAllByRole("input")
-    button.click();
-    expect(handleSubmit).toHaveBeenCalled();
+    const button = getByRole('button', {name: "Check Out"});
+    const student = queryAllByRole('option', {name: /test student/i})
+    const dropdown = getByRole('combobox')
+    fireEvent.change(dropdown, {target: {value: "1"}})
+    fireEvent.click(button);
+    expect(toggle).toHaveBeenCalled(); 
+})
+
+// list contains students from context
+it("Contains all all students from the test data", () => {
+    const {getAllByText} = render(
+        <StudentContext.Provider value={students}>
+        <CheckOutModal  modal={modal} 
+                        toggle={toggle} 
+                        book={bookNeverBorrowed} 
+                        setUpdate={setUpdate}/>
+        </StudentContext.Provider>);
+    const student = getAllByText(/test student/i);
+    expect(student).toHaveLength(2);
+})
+
+// list excludes students who have read the book
+it("Excludes students who have read the book", () => {
+    const {getAllByText} = render(
+        <StudentContext.Provider value={students}>
+        <CheckOutModal  modal={modal} 
+                        toggle={toggle} 
+                        book={book} 
+                        setUpdate={setUpdate}/>
+        </StudentContext.Provider>);
+    const student = getAllByText(/test student/i);
+    expect(student).toHaveLength(1);
 })

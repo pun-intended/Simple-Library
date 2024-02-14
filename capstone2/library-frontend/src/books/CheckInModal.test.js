@@ -15,9 +15,6 @@ const book = {
 const book_id = "101"
 const setUpdate = jest.fn();
 
-// LibraryApi.getBook = jest.fn(() => {return book})
-// LibraryApi.checkIn = jest.fn()
-
 // Smoke test
 it("renders without crashing", () => {
     render(<CheckInModal modal={modal} toggle={toggle} book_id={book_id} setUpdate={setUpdate}/>)
