@@ -2,8 +2,6 @@
 // book - onClick ->BookDetails
 import React, {useState} from "react"
 import { Row, Col, Card, CardBody, CardTitle, CardText, Button } from 'reactstrap'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBookOpen, faHandHolding } from '@fortawesome/free-solid-svg-icons'
 import CheckOutStudent from "./CheckOutStudent"
 import CheckInModal from "../books/CheckInModal"
 
@@ -23,11 +21,11 @@ const StudentCard = ({student, setUpdate}) => {
             </Col>
             <Col>
             {student.book_id && 
-                <Button className="btn btn-primary" onClick={toggleIn}> Check in </Button>
+                <Button className="btn" color="secondary" onClick={toggleIn}> Check in </Button>
             }
 
             {!student.book_id &&
-                <Button className="btn btn-primary" onClick={toggleOut}> Check out </Button>}
+                <Button className="btn" color="primary" onClick={toggleOut}> Check out </Button>}
             {outModal && <CheckOutStudent modal={outModal} toggle={toggleOut} student={student} setUpdate={setUpdate}/>}
             {inModal && <CheckInModal modal={inModal} toggle={toggleIn} book_id={student.book_id} setUpdate={setUpdate}/>}
             </Col>
