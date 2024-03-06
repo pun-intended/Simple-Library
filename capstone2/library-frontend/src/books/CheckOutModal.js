@@ -1,15 +1,17 @@
 import React, { useContext, useState } from "react"
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Container, Col, Row, Input, FormGroup } from 'reactstrap'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Container, Col, Row, Input, FormGroup, Alert } from 'reactstrap'
 import {DatePicker} from "reactstrap-date-picker"
 import "./CheckOutModal.css"
 import StudentContext from "../StudentContext";
 import LibraryApi from "../api";
 import { v4 as uuid } from "uuid"
+import AlertContext from "../AlertContext";
 
 
 const CheckOutModal = ({modal, toggle, book, setUpdate}) => {
 
     const {students} = useContext(StudentContext)
+    const {addAlert} = useContext(AlertContext)
 
     const INITIAL_STATE = {
         'student_id': "",
@@ -25,6 +27,7 @@ const CheckOutModal = ({modal, toggle, book, setUpdate}) => {
             console.log(formData)
             LibraryApi.checkOut(formData)
             setFormData(INITIAL_STATE)
+            addAlert(`Checked out book ${formData.book_id} to ${formData.student_id}`)
             setUpdate(true);
             toggle()
         } catch(e){
@@ -39,16 +42,15 @@ const CheckOutModal = ({modal, toggle, book, setUpdate}) => {
             ...fData,
             'date': f
         }));
-        console.log(formData)
     }
 
-    const handleChange = evt => {
+    const handleChange = (evt) => {
         const { name, value } = evt.target
+        console.log(`Changing - ${name} - ${value}`)
         setFormData(fData => ({
             ...fData,
             [name]: value
         }));
-        console.log(formData)
     }
 
     return(
@@ -67,16 +69,16 @@ const CheckOutModal = ({modal, toggle, book, setUpdate}) => {
                         <FormGroup id="checkoutForm">
                             <Input  type="select" 
                                     name="student_id" 
-                                    id="selectStudent" 
-                                    value={formData.student}
+                                    id="student_id" 
+                                    value={formData.student_id}
                                     onChange={handleChange}>
-                            <option>--Select Student</option>
-                                {students.map(st => {
-                                    if((!st.book_id && !st.has_read) || (!st.book_id && !(st.has_read.includes(book.id)))){
-                                        return (
-                                        <option value={parseInt(st.id)} key={uuid()}>
-                                            {st.first_name} {st.last_name}
-                                        </option>
+                                        <option>--Select Student</option>
+                                        {students.map(st => {
+                                        if((!st.book_id && !st.has_read) || (!st.book_id && !(st.has_read.includes(book.id)))){
+                                            return (
+                                            <option value={parseInt(st.id)} key={uuid()}>
+                                                {st.first_name} {st.last_name}
+                                            </option>
                                         )}
                                 })}
                             </Input>

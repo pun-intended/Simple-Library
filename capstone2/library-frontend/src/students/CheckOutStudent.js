@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useContext } from "react"
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Container, Col, Row, FormGroup, Card, CardBody, CardTitle } from 'reactstrap'
 import {DatePicker} from "reactstrap-date-picker"
 import LibraryApi from "../api";
+import AlertContext from "../AlertContext";
 
 
 const CheckOutStudent = ({modal, toggle, student , setUpdate}) => {
 
     const [books, setBooks] = useState([])
     const [selected, setSelected] = useState([])
+    const {addAlert} = useContext(AlertContext)
 
 
     useEffect(() => {
@@ -31,6 +33,7 @@ const CheckOutStudent = ({modal, toggle, student , setUpdate}) => {
         evt.preventDefault()
         try{
             LibraryApi.checkOut(formData)
+            addAlert(`Book ${formData.book_id} checked out to ${formData.student_id}`, "success")
             setFormData(INITIAL_STATE)
             setUpdate(true);
             toggle()
@@ -100,7 +103,7 @@ const CheckOutStudent = ({modal, toggle, student , setUpdate}) => {
                 </Container>
             </ModalBody>
             <ModalFooter>
-                <Button className="submit" disabled={formData.book_id && formData.date} id="submit" color="primary" onClick={handleSubmit}>Check Out</Button>
+                <Button color="primary" className="submit" disabled={!(formData.book_id && formData.date)} id="submit" onClick={handleSubmit}>Check Out</Button>
                 <Button className="cancelBtn" id="cancelBtn" color="secondary" onClick={toggle}>Cancel</Button>
             </ModalFooter>
         </Modal>

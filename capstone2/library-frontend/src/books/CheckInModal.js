@@ -4,11 +4,13 @@ import {DatePicker} from "reactstrap-date-picker"
 import "./CheckOutModal.css"
 import StudentContext from "../StudentContext";
 import LibraryApi from "../api";
+import AlertContext from "../AlertContext";
 
 
 const CheckInModal = ({modal, toggle, book_id, setUpdate}) => {
 
     const [book, setBook] = useState([]);
+    const {addAlert} = useContext(AlertContext)
 
     useEffect(() => {
         async function getBookDetails() {
@@ -33,6 +35,7 @@ const CheckInModal = ({modal, toggle, book_id, setUpdate}) => {
             console.log(formData);
             LibraryApi.checkIn(formData);
             setFormData(INITIAL_STATE);
+            addAlert(`Checked in book ${formData.book_id}`)
             setUpdate(true);
             toggle();
         } catch(e){
@@ -45,7 +48,6 @@ const CheckInModal = ({modal, toggle, book_id, setUpdate}) => {
             ...fData,
             'date': f
         }));
-        console.log(formData);
     };
 
     // For changing condition
@@ -55,7 +57,7 @@ const CheckInModal = ({modal, toggle, book_id, setUpdate}) => {
             ...fData,
             [name]: value
         }));
-        console.log(formData);
+        console.log(formData)
     };
 
     return(
