@@ -12,3 +12,7 @@ it("renders without crashing", () => {
 })
 
 // Calls logout function
+it("calls logout function when clicked", () => {
+    render(<MemoryRouter><LogOut logout={logout}/></MemoryRouter>)
+    expect(logout).toHaveBeenCalled()
+})
