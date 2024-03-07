@@ -87,7 +87,6 @@ const CheckInModal = ({modal, toggle, book_id, setUpdate}) => {
                                     id="condition"
                                     value={formData.condition}
                                     onChange={handleChange}
-                                    placeholder="--Condition"
                             >
                                 <option value="poor">
                                     Poor
