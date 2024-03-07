@@ -122,9 +122,13 @@ function App() {
 
 export default App;
 
-// TODO - create alert hook (alerts, addAlert, setAlerts)
+// TODO - Fix CSS
+/**
+ * remove image on mobile
+ * shrink text to fit screen
+ * center align items
+ * responsive size for inputs in login
+ */
 // TODO - timeout? close? close on refresh?
-// TODO - put alerts in context
 // TODO - add qr code functionality
 // TODO - Set default image for image not found
-// TODO - Add alert notification to next page "____ checked in" / "_____ checked out to _____"
