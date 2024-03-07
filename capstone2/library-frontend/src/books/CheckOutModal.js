@@ -12,6 +12,7 @@ const CheckOutModal = ({modal, toggle, book, setUpdate}) => {
 
     const {students} = useContext(StudentContext)
     const {addAlert} = useContext(AlertContext)
+    const [student, setStudent] = useState("")
 
     const INITIAL_STATE = {
         'student_id': "",
@@ -27,7 +28,7 @@ const CheckOutModal = ({modal, toggle, book, setUpdate}) => {
             console.log(formData)
             LibraryApi.checkOut(formData)
             setFormData(INITIAL_STATE)
-            addAlert(`Checked out book ${formData.book_id} to ${formData.student_id}`)
+            addAlert(`Checked out book ${book.title} to ${student}`, 'success')
             setUpdate(true);
             toggle()
         } catch(e){
@@ -45,12 +46,13 @@ const CheckOutModal = ({modal, toggle, book, setUpdate}) => {
     }
 
     const handleChange = (evt) => {
-        const { name, value } = evt.target
-        console.log(`Changing - ${name} - ${value}`)
+        const { name, value, selectedIndex, options } = evt.target
+        setStudent(options[selectedIndex].innerText)
         setFormData(fData => ({
             ...fData,
             [name]: value
         }));
+        // setStudent(innerText) 
     }
 
     return(

@@ -10,6 +10,7 @@ const CheckOutStudent = ({modal, toggle, student , setUpdate}) => {
     const [books, setBooks] = useState([])
     const [selected, setSelected] = useState([])
     const {addAlert} = useContext(AlertContext)
+    const [title, setTitle] = useState("")
 
 
     useEffect(() => {
@@ -33,7 +34,7 @@ const CheckOutStudent = ({modal, toggle, student , setUpdate}) => {
         evt.preventDefault()
         try{
             LibraryApi.checkOut(formData)
-            addAlert(`Book ${formData.book_id} checked out to ${formData.student_id}`, "success")
+            addAlert(`Book ${title} checked out to ${student.first_name} ${student.last_name} `, "success")
             setFormData(INITIAL_STATE)
             setUpdate(true);
             toggle()
@@ -50,8 +51,10 @@ const CheckOutStudent = ({modal, toggle, student , setUpdate}) => {
         console.log(formData)
     }
 
-    const handleBookChange = (id) => {
+    const handleBookChange = (id, title) => {
         setSelected(id)
+        console.log(title)
+        setTitle(title)
         setFormData(fData => ({
             ...fData,
             'book_id': id
@@ -87,7 +90,7 @@ const CheckOutStudent = ({modal, toggle, student , setUpdate}) => {
                                             color="secondary"
                                             outline={!(selected == book.id)}
                                             inverse={(selected == book.id)}
-                                            onClick={() => {handleBookChange(book.id.toString())}}>
+                                            onClick={() => {handleBookChange(book.id.toString(), book.title)}}>
                                         <img    src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg`} 
                                                 alt={`${book.title}`}/>
                                         <CardBody>

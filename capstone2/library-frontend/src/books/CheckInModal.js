@@ -35,7 +35,7 @@ const CheckInModal = ({modal, toggle, book_id, setUpdate}) => {
             console.log(formData);
             LibraryApi.checkIn(formData);
             setFormData(INITIAL_STATE);
-            addAlert(`Checked in book ${formData.book_id}`)
+            addAlert(`Checked in book ${book.title}`, 'success')
             setUpdate(true);
             toggle();
         } catch(e){

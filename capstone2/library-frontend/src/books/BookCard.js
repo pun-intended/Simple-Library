@@ -27,8 +27,8 @@ const BookCard = ({book, setUpdate}) => {
             </CardBody>
             <CardBody >
                 <CardText>
-                    {!book.available && <Button className="btn-primary" onClick={toggleIn}>Check-in</Button>}
-                    {book.available && <Button className="btn-primary" onClick={toggleOut}>Check-out</Button>}
+                    {!book.available && <Button color="secondary" className="btn-primary" onClick={toggleIn}>Check-in</Button>}
+                    {book.available && <Button color="primary" className="btn-primary" onClick={toggleOut}>Check-out</Button>}
                 </CardText>
             </CardBody>
            {outModal && <CheckOutModal modal={outModal} toggle={toggleOut} book={book} setUpdate={setUpdate}/>}
