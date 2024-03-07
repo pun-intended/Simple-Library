@@ -22,7 +22,7 @@ const app = express();
 
 app.use(cors(
     {
-        origin: "https://lending-library-xjrg.onrender.com",
+        origin: "*",
         methods: ["GET", "POST", "PATCH", "DELETE"],
         credentials: true
     }
