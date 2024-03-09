@@ -15,7 +15,7 @@ const CheckOutModal = ({modal, toggle, book, setUpdate}) => {
     const [student, setStudent] = useState("")
 
     const INITIAL_STATE = {
-        'student_id': "",
+        'student_id': null,
         'date': new Date().toISOString().slice(0, 10),
         'book_id': book.id.toString()
     }
@@ -98,7 +98,7 @@ const CheckOutModal = ({modal, toggle, book, setUpdate}) => {
                 </Container>
             </ModalBody>
             <ModalFooter>
-                <Button className="submitBtn" color="primary" onClick={handleSubmit}>Check Out</Button>
+                <Button disabled= {!formData.student_id} className="submitBtn" color="primary" onClick={handleSubmit}>Check Out</Button>
                 <Button className="cancelBtn" color="secondary" onClick={toggle}>Cancel</Button>
             </ModalFooter>
         </Modal>
