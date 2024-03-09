@@ -30,7 +30,7 @@ function App() {
   }
 
   function removeAlert(id){
-    console.log("removing alert")
+    const alert = document.getElementById(id)
     const filtered = alerts.filter((alert) => {
       return (alert.id != id)
     })
@@ -122,13 +122,33 @@ function App() {
 
 export default App;
 
-// TODO - Fix CSS
+// TODO - Functional - DB changes
+/**
+ * - add admin levels
+ * - Change db - book set (title, isbn, stage), school set (book id/isbn, school, set) referencing books
+ */
+
+// TODO - Function - Add admin levels - School, company
+/**
+ * School admin 
+ * - change roster
+ * - change books in set
+ * - add set of books
+ * - set teacher class
+ * 
+ * 
+ * Company admin
+ * - Add teachers
+ * - Change teacher school
+ */
+
+// TODO - function - add qr code functionality
+// TODO - cosmetic - add container for alerts so things dont shift on removal
+// TODO - cosmetic - Set default image for image not found
+// TODO - cosmetic - Fix CSS
 /**
  * remove image on mobile
  * shrink text to fit screen
  * center align items
  * responsive size for inputs in login
  */
-// TODO - timeout? close? close on refresh?
-// TODO - add qr code functionality
-// TODO - Set default image for image not found
