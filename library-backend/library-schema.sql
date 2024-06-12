@@ -40,7 +40,7 @@ CREATE TABLE books (
     stage INTEGER NOT NULL,
     set INTEGER,
     school_id INTEGER,
-    condition VARCHAR(10) NOT NULL DEFAULT "Great"
+    condition VARCHAR(10) NOT NULL DEFAULT 'Great'
 );
 
 -- // TODO - fix dateTime formatting
