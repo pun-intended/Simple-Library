@@ -55,17 +55,10 @@ function App() {
     setCurrentUser("")
   }
 
-  async function signup(data) {
-    const newToken = await LibraryApi.register(data)
-    setToken(newToken)
-  }
-  async function patchUser(data){
-    const newUser = LibraryApi.patchUser(data);
-    setCurrentUser(newUser);
-  }
-
   useEffect(() => {
     async function updateUser() {
+
+      console.log("updating user")
       if(token.length > 0){
         try{
           const decodedToken = jwtDecode(token)
@@ -110,7 +103,7 @@ function App() {
           }
           </Container>
           {/* <RouteList login={login} signup={signup} patchUser={patchUser} setToken={setToken} setCurrentUser={setCurrentUser}/> */}
-          <RouteList login={login} logout={logout}/>
+          <RouteList login={login} logout={logout} setToken={setToken}/>
 
         </BrowserRouter>
         </AlertContext.Provider>
@@ -121,34 +114,3 @@ function App() {
 }
 
 export default App;
-
-// TODO - Functional - DB changes
-/**
- * - add admin levels
- * - Change db - book set (title, isbn, stage), school set (book id/isbn, school, set) referencing books
- */
-
-// TODO - Function - Add admin levels - School, company
-/**
- * School admin 
- * - change roster
- * - change books in set
- * - add set of books
- * - set teacher class
- * 
- * 
- * Company admin
- * - Add teachers
- * - Change teacher school
- */
-
-// TODO - function - add qr code functionality
-// TODO - cosmetic - add container for alerts so things dont shift on removal
-// TODO - cosmetic - Set default image for image not found
-// TODO - cosmetic - Fix CSS
-/**
- * remove image on mobile
- * shrink text to fit screen
- * center align items
- * responsive size for inputs in login
- */
