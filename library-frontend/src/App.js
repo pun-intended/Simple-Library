@@ -13,6 +13,7 @@ import {Alert, Container} from "reactstrap"
 import { v4 as uuidv4} from "uuid";
 import DismissableAlert from './DismissableAlert.js';
 
+
 function App() {
   const [token, setToken] = useLocalStorage('token', '')
   const [currentUser, setCurrentUser] = useLocalStorage('currentUser', '')
@@ -41,6 +42,7 @@ function App() {
     try{
       const newToken = await LibraryApi.login(data);
       console.log(`token - ${newToken}`)
+      
       setToken(newToken)
       if(newToken){
         addAlert("Welcome Back"); // Set alert message to welcome
@@ -57,8 +59,7 @@ function App() {
 
   useEffect(() => {
     async function updateUser() {
-
-      console.log("updating user")
+      console.log("New Token - updating user")
       if(token.length > 0){
         try{
           const decodedToken = jwtDecode(token)
