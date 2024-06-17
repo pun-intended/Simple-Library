@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Alert } from "reactstrap";
-
+// TODO fix fadeout
 function DismissableAlert(message, color, id, removeAlert) {
     function fade(id) {
-      (`#${id}`).fadeOut(600, () => {removeAlert(id)})
+      $(`#${id}`).fadeOut(600, () => {removeAlert(id)})
     }
     window.setTimeout(() => { fade(id)}, 5000)
     
