@@ -4,7 +4,7 @@ import React from "react"
 import StudentCard from "./StudentCard";
 import { useState, useEffect, useContext } from "react";
 import LibraryApi from "../api";
-import {Container, Col, Row } from 'reactstrap'
+import {Container, Col, Table } from 'reactstrap'
 import "./StudentCard.css";
 import StudentContext from "../StudentContext";
 
@@ -24,15 +24,23 @@ const StudentList = () => {
     return(
         <div className="StudentList">
             <Container>
-                <h1> All Students </h1>
-                <Row>
+                <h1> Students </h1>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr class="table-primary">
+                            <th>Student</th>
+                            <th></th>
+                            <th>Book</th>
+                            <th>Borrow Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
             {students.map((st) =>  {
                 return (
-                    <Col xs="6" sm="4" md="3" lg="2">
                     <StudentCard student={st} setUpdate={setUpdate} key={st.id}/>
-                    </Col>
                 )})}
-                </Row>
+                    </tbody>
+                </table>
             </Container>
             
         </div>
