@@ -77,7 +77,6 @@ router.get("/:id", ensureCorrectUserOrAdmin, async function (req, res, next) {
  * 
  * Auth: admin or same user
  */
-// QUESTION - Best way to prevent someone from changing admins status while allowing admin change
 router.patch("/:id", ensureCorrectUserOrAdmin, async function (req, res, next) {
     try{
         const validator = jsonschema.validate(req.body, userUpdateSchema)
