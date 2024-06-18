@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Alert } from "reactstrap";
+import $ from 'jquery'
 function DismissableAlert(message, color, id, removeAlert) {
     function fade(id) {
       $(`#${id}`).fadeOut(600, () => {removeAlert(id)})
