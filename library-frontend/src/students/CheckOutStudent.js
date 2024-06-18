@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react"
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Container, Col, Row, FormGroup, Card, CardBody, CardTitle } from 'reactstrap'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Container, Col, Row, FormGroup,  } from 'reactstrap'
 import {DatePicker} from "reactstrap-date-picker"
 import LibraryApi from "../api";
 import AlertContext from "../AlertContext";
@@ -85,20 +85,20 @@ const CheckOutStudent = ({modal, toggle, student , setUpdate}) => {
                         <Row>
                             {books.map((book) => {
                                 return(
-                                    <Col sm="3">
-                                    <Card   className="my-2"
-                                            color="secondary"
+                                    <Container className="my-2"
                                             outline={!(selected == book.id)}
                                             inverse={(selected == book.id)}
                                             onClick={() => {handleBookChange(book.id.toString(), book.title)}}>
+                                        <Col xs="3"
+                                            className="bg-light border d-flex flex-row">
                                         <img    src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg`} 
                                                 alt={`${book.title}`}/>
-                                        <CardBody>
-                                            <CardTitle>{book.title}</CardTitle>
-                                            {book.available}
-                                        </CardBody>
-                                    </Card>
-                                    </Col>
+                                        </Col>
+                                        <Col xs="3"
+                                            className="bg-light border d-flex flex-row">
+                                            {book.title}
+                                        </Col>
+                                    </Container>
                                 )
                             })}
                         </Row>
