@@ -4,8 +4,7 @@ import React from "react"
 import StudentCard from "./StudentCard";
 import { useState, useEffect, useContext } from "react";
 import LibraryApi from "../api";
-import {Container, Col, Table } from 'reactstrap'
-import "./StudentCard.css";
+import {Container } from 'reactstrap'
 import StudentContext from "../StudentContext";
 
 const StudentList = () => {

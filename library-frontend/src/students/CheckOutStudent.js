@@ -1,3 +1,4 @@
+import "./CheckOutStudent.css"
 import React, { useEffect, useState, useContext } from "react"
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Container, Col, Row, FormGroup,  } from 'reactstrap'
 import {DatePicker} from "reactstrap-date-picker"
@@ -85,20 +86,24 @@ const CheckOutStudent = ({modal, toggle, student , setUpdate}) => {
                         <Row>
                             {books.map((book) => {
                                 return(
-                                    <Container className="my-2"
+                                        <Col    xs="3"
+                                            className="d-flex bookCard"
                                             outline={!(selected == book.id)}
                                             inverse={(selected == book.id)}
                                             onClick={() => {handleBookChange(book.id.toString(), book.title)}}>
-                                        <Col xs="3"
-                                            className="bg-light border d-flex flex-row">
-                                        <img    src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg`} 
-                                                alt={`${book.title}`}/>
+                                    
+                                        <Col xs="6"
+                                            className="bg-light border d-flex flex-row bookImage">
+                                            <img    src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg`} 
+                                                className="object-fit-scale mx-auto"
+                                                alt={`${book.title}`}
+                                                />
                                         </Col>
-                                        <Col xs="3"
-                                            className="bg-light border d-flex flex-row">
-                                            {book.title}
+                                        <Col xs="6"
+                                            className="bg-light border d-flex flex-row bookTitle">
+                                            <h4>{book.title}</h4>
                                         </Col>
-                                    </Container>
+                                        </Col>
                                 )
                             })}
                         </Row>
