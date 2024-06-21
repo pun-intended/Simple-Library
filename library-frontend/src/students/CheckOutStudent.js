@@ -86,21 +86,20 @@ const CheckOutStudent = ({modal, toggle, student , setUpdate}) => {
                         <Row>
                             {books.map((book) => {
                                 return(
-                                        <Col    xs="3"
-                                            className="d-flex bookCard"
-                                            outline={!(selected == book.id)}
+                                        <Col    
+                                            className={`d-flex bookCard col-6 col-sm-6 col-md-4 col-lg-3 border rounded ${selected==book.id && "isSelected"}`}
                                             inverse={(selected == book.id)}
                                             onClick={() => {handleBookChange(book.id.toString(), book.title)}}>
                                     
                                         <Col xs="6"
-                                            className="bg-light border d-flex flex-row bookImage">
+                                            className="bg-light border d-flex flex-row bookImage rounded-left">
                                             <img    src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg`} 
-                                                className="object-fit-scale mx-auto"
+                                                className="object-fit-scale mx-auto rounded"
                                                 alt={`${book.title}`}
                                                 />
                                         </Col>
                                         <Col xs="6"
-                                            className="bg-light border d-flex flex-row bookTitle">
+                                            className="bg-light border d-flex flex-row bookTitle rounded-right">
                                             <h4>{book.title}</h4>
                                         </Col>
                                         </Col>

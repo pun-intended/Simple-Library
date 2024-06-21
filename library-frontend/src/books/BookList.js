@@ -5,7 +5,7 @@
 import React, { useEffect, useState, useContext } from "react"
 import BookCard from "./BookCard";
 import LibraryApi from "../api";
-import {Container, Col, CardGroup} from 'reactstrap'
+import {Container, Col, Row} from 'reactstrap'
 import StudentContext from "../StudentContext";
 import "./BookList.css"
 
@@ -28,15 +28,13 @@ const BookList = () => {
     return(
         <Container className="BookList">
             <h1>All Books</h1>
-                <CardGroup> 
+                <Row className="align-items-stretch"> 
                     {books.map((book) => {
                         return(
-                        <Col className="BookCard" xs="2">
-                            <BookCard book={book} setUpdate={setUpdate} key={book.id}/>
-                        </Col>
+                            <BookCard book={book} setUpdate={setUpdate} key={book.id}/> 
                         )
                     })}
-                </CardGroup>     
+                </Row>     
         </Container>
     )
 }

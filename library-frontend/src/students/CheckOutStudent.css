@@ -5,31 +5,33 @@ img {
 }
 
 h4 {
-    font-size: 1vw;
+    font-size: calc(8px + .390625vw);
     padding-left: .1vw;
     padding-right: .1vw;
 }
 
-.bookCard:hover {
-    border: darkgray;
-    border-style: solid;
-    border-width: .2vw;
-    background: grey;
+.bookCard {
+    margin-top: .3vh;
+    margin-bottom: .3vh;
 }
 
-.bookCard{
-    border: blue;
-    border-style: solid;
-    border-width: .2vw;
-    background: grey;
+.bookCard.isSelected {
+    background: gray;
+}
+
+.bookCard .isSelected .bookImage {
+    background: blue;
+    text-emphasis: bold;
 }
 
 .bookImage{
+    border-radius: 15% 0 0 15%;
     padding: .3vw;
 }
 
 .bookTitle{
     display: flex;
+    border-radius: 0 15% 15% 0;
     align-items: center;
     justify-content: center;
 }
