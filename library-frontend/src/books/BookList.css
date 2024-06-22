@@ -1,11 +1,11 @@
 .BookCard {
-    max-height: 37vh;
+    height: 100%;
     margin-bottom: 1vw;
+    
 }
 
 .BookCover {
-    min-height: 18vh;
-    max-height: 18vh;
+    height: 100%;
 }
 
 /* TODO - Fix text height to fit into cards */
