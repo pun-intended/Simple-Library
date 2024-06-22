@@ -87,7 +87,7 @@ const CheckOutStudent = ({modal, toggle, student , setUpdate}) => {
                             {books.map((book) => {
                                 return(
                                         <Col    
-                                            className={`d-flex bookCard col-6 col-sm-6 col-md-4 col-lg-3 border rounded ${selected==book.id && "isSelected"}`}
+                                            className={`d-flex bookCard col-6 col-sm-6 col-md-4 col-lg-3 rounded ${selected==book.id && "isSelected"}`}
                                             inverse={(selected == book.id)}
                                             onClick={() => {handleBookChange(book.id.toString(), book.title)}}>
                                     
