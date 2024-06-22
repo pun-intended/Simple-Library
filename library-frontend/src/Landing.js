@@ -7,7 +7,6 @@ const Landing = ({setToken}) => {
 
         function handleClick(evt){
             const target = evt.target
-            addAlert(`Token Chosen - ${target.value}`)
             setToken(target.value)
 
         }
