@@ -5,7 +5,7 @@ img {
 }
 
 h4 {
-    font-size: calc(8px + .390625vw);
+    font-size: calc(7px + .390625vw);
     padding-left: .1vw;
     padding-right: .1vw;
 }
@@ -17,11 +17,6 @@ h4 {
 
 .bookCard.isSelected {
     background: gray;
-}
-
-.bookCard .isSelected .bookImage {
-    background: blue;
-    text-emphasis: bold;
 }
 
 .bookImage{
