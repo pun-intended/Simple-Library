@@ -14,13 +14,17 @@ img {
     padding-right: 3px;
 }
 
+.bookTitle h4 {
+    font-size: .7em;
+}
+
 .bookImage {
     justify-content: center;
     align-items: center;
 }
 
 .bookListBtn {
-     width: 6.5em;
-     padding: 6px 0px 6px 0px;
-     font-size: calc(5px + .390625vw);
+     width: 6.2em;
+     padding: 4px 0px 4px 0px;
+     font-size: .7em;
 }
